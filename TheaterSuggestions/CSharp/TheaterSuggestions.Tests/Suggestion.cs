@@ -9,7 +9,7 @@ namespace SeatsSuggestions.Tests
             PartyRequested = partyRequested;
         }
 
-        private int PartyRequested { get; }
+        public int PartyRequested { get; }
 
         public List<Seat> Seats { get; set; } = new List<Seat>();
 

@@ -4,6 +4,6 @@ namespace ExternalDependencies.ReservationsProvider
 {
     public class ReservedSeatsDto
     {
-        public List<string> BookedSeats { get; set; }
+        public List<string> ReservedSeats { get; set; }
     }
 }

@@ -4,25 +4,28 @@ using ExternalDependencies.ReservationsProvider;
 
 namespace SeatsSuggestions.Tests
 {
-    public class AuditoriumLayoutProvider
+    /// <summary>
+    /// Adapt Dtos coming from the external dependencies (ReservationsProvider, AuditoriumLayoutRepository) to AuditoriumLayout instances.
+    /// </summary>
+    public class AuditoriumLayoutAdapter
     {
-        private readonly ReservationsProvider _bookedSeatsRepository;
-        private readonly AuditoriumLayoutRepository _theaterEventRepository;
+        private readonly ReservationsProvider _reservedSeatsRepository;
+        private readonly AuditoriumLayoutRepository _auditoriumLayoutRepository;
 
-        public AuditoriumLayoutProvider(AuditoriumLayoutRepository auditoriumLayoutRepository,
+        public AuditoriumLayoutAdapter(AuditoriumLayoutRepository auditoriumLayoutRepository,
             ReservationsProvider reservationsProvider)
         {
-            _theaterEventRepository = auditoriumLayoutRepository;
-            _bookedSeatsRepository = reservationsProvider;
+            _auditoriumLayoutRepository = auditoriumLayoutRepository;
+            _reservedSeatsRepository = reservationsProvider;
         }
 
-        public TheaterLayout GetTheater(string showId)
+        public AuditoriumLayout GetAuditoriumLayout(string showId)
         {
-            return AdaptTheaterDto(_theaterEventRepository.GetAuditoriumLayoutFor(showId),
-                _bookedSeatsRepository.GetBookedSeats(showId));
+            return Adapt(_auditoriumLayoutRepository.GetAuditoriumLayoutFor(showId),
+                _reservedSeatsRepository.GetReservedSeats(showId));
         }
 
-        private static TheaterLayout AdaptTheaterDto(AuditoriumDto auditoriumDto, ReservedSeatsDto reservedSeatsDto)
+        private static AuditoriumLayout Adapt(AuditoriumDto auditoriumDto, ReservedSeatsDto reservedSeatsDto)
         {
             var rows = new Dictionary<string, Row>();
 
@@ -33,7 +36,7 @@ namespace SeatsSuggestions.Tests
                 var number = ExtractNumber(seatDto.Name);
                 var priceCategory = ConvertCategory(seatDto.Category);
 
-                var isBookedSeat = reservedSeatsDto.BookedSeats.Contains(seatDto.Name);
+                var isBookedSeat = reservedSeatsDto.ReservedSeats.Contains(seatDto.Name);
 
                 if (!rows.ContainsKey(rowName))
                 {
@@ -44,7 +47,7 @@ namespace SeatsSuggestions.Tests
                     isBookedSeat ? SeatAvailability.Booked : SeatAvailability.Available));
             }
 
-            return new TheaterLayout(rows);
+            return new AuditoriumLayout(rows);
         }
 
         private static PricingCategory ConvertCategory(int seatDtoCategory)

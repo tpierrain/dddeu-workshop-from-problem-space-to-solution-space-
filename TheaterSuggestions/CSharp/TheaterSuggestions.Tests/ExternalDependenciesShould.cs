@@ -5,6 +5,9 @@ using NUnit.Framework;
 
 namespace SeatsSuggestions.Tests
 {
+    /// <summary>
+    /// Tests suite for the External dependencies/services.
+    /// </summary>
     [TestFixture]
     public class ExternalDependenciesShould
     {
@@ -24,9 +27,9 @@ namespace SeatsSuggestions.Tests
         public void Allow_us_to_retrieve_reserved_seats_for_a_given_ShowId()
         {
             var seatsRepository = new ReservationsProvider();
-            var reservedSeatsDto = seatsRepository.GetBookedSeats("1");
+            var reservedSeatsDto = seatsRepository.GetReservedSeats("1");
 
-            Check.That(reservedSeatsDto.BookedSeats).HasSize(19);
+            Check.That(reservedSeatsDto.ReservedSeats).HasSize(19);
         }
     }
 }

@@ -8,46 +8,36 @@ namespace SeatsSuggestions.Tests
     [TestFixture]
     public class SeatsAllocatorShould
     {
-        [SetUp]
-        public void SetUp()
-        {
-            _theaterEventRepository = new AuditoriumLayoutRepository();
-            _bookedSeatsRepository = new ReservationsProvider();
-        }
-
-        private AuditoriumLayoutRepository _theaterEventRepository;
-        private ReservationsProvider _bookedSeatsRepository;
-
         [Test]
-        public void Not_offer_any_seat_when_theater_is_totally_full()
+        public void Return_SeatsNotAvailable_when_Auditorium_has_all_its_seats_already_reserved()
         {
             const string showId = "5";
             const int partyRequested = 1;
 
-            var theaterLayoutProvider = new AuditoriumLayoutProvider(_theaterEventRepository, _bookedSeatsRepository);
+            var theaterLayoutProvider = new AuditoriumLayoutAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
 
             var seatAllocator = new SeatAllocator(theaterLayoutProvider);
 
-            var suggestion = seatAllocator.MakeSuggestion(showId, partyRequested);
+            var suggestionMade = seatAllocator.MakeSuggestion(showId, partyRequested);
 
-            Check.That(suggestion.Seats).HasSize(0);
-            Check.That(suggestion).IsInstanceOfType(typeof(SuggestionFailure));
+            Check.That(suggestionMade.SuggestedSeats).HasSize(0);
+            Check.That(suggestionMade).IsInstanceOf<SeatsNotAvailable>();
         }
 
         [Test]
-        public void Offer_one_seat_when_theater_contains_only_one_available_seat()
+        public void Suggest_one_seat_when_Auditorium_contains_one_available_seat_only()
         {
             const string showId = "1";
             const int partyRequested = 1;
 
-            var theaterLayoutProvider = new AuditoriumLayoutProvider(_theaterEventRepository, _bookedSeatsRepository);
+            var theaterLayoutProvider = new AuditoriumLayoutAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
 
             var seatAllocator = new SeatAllocator(theaterLayoutProvider);
 
-            var suggestion = seatAllocator.MakeSuggestion(showId, partyRequested);
+            var suggestionMade = seatAllocator.MakeSuggestion(showId, partyRequested);
 
-            Check.That(suggestion.Seats).HasSize(1);
-            Check.That(suggestion.Seats[0].ToString()).IsEqualTo("A3");
+            Check.That(suggestionMade.SuggestedSeats).HasSize(1);
+            Check.That(suggestionMade.SuggestedSeats[0].ToString()).IsEqualTo("A3");
         }
     }
 }

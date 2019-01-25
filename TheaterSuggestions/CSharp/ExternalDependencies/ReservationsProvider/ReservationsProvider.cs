@@ -26,7 +26,7 @@ namespace ExternalDependencies.ReservationsProvider
             }
         }
 
-        public ReservedSeatsDto GetBookedSeats(string showId)
+        public ReservedSeatsDto GetReservedSeats(string showId)
         {
             if (_repository.ContainsKey(showId))
             {
