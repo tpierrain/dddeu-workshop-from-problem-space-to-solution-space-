@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 
 namespace ExternalDependencies.ReservationsProvider
 {
     public class ReservationsProvider
     {
-        private readonly Dictionary<string, BookedSeatsDto> _repository = new Dictionary<string, BookedSeatsDto>();
+        private readonly Dictionary<string, ReservedSeatsDto> _repository = new Dictionary<string, ReservedSeatsDto>();
 
         public ReservationsProvider()
         {
@@ -13,26 +14,31 @@ namespace ExternalDependencies.ReservationsProvider
 
             foreach (var fileFullName in Directory.EnumerateFiles($"{directoryName}"))
 
+            {
                 if (fileFullName.Contains("_booked_seats.json"))
                 {
                     var fileName = Path.GetFileName(fileFullName);
 
                     var eventId = Path.GetFileName(fileName.Split("-")[0]);
 
-                    _repository[eventId] = JsonFile.ReadFromJsonFile<BookedSeatsDto>(fileFullName);
+                    _repository[eventId] = JsonFile.ReadFromJsonFile<ReservedSeatsDto>(fileFullName);
                 }
+            }
         }
 
-        public BookedSeatsDto GetBookedSeats(string showId)
+        public ReservedSeatsDto GetBookedSeats(string showId)
         {
-            if (_repository.ContainsKey(showId)) return _repository[showId];
+            if (_repository.ContainsKey(showId))
+            {
+                return _repository[showId];
+            }
 
-            return new BookedSeatsDto();
+            return new ReservedSeatsDto();
         }
 
         private static string GetExecutingAssemblyDirectoryFullPath()
         {
-            var directoryName = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
+            var directoryName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
 
             if (directoryName.StartsWith(@"file:\"))
             {

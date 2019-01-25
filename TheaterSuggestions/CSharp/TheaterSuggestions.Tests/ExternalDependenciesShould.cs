@@ -9,24 +9,24 @@ namespace SeatsSuggestions.Tests
     public class ExternalDependenciesShould
     {
         [Test]
-        public void Allow_us_to_retrieve_reserved_seats_for_a_given_ShowId()
+        public void Allow_us_to_retrieve_AuditoriumLayout_for_a_given_ShowId()
         {
-            var seatsRepository = new ReservationsProvider();
-            var bookedSeatsDto = seatsRepository.GetBookedSeats(showId: "1");
+            var auditoriumLayoutRepository = new AuditoriumLayoutRepository();
+            var auditoriumDto = auditoriumLayoutRepository.GetAuditoriumLayoutFor("2");
 
-            Check.That(bookedSeatsDto.BookedSeats).HasSize(19);
+            Check.That(auditoriumDto.Rows).HasSize(6);
+            Check.That(auditoriumDto.Corridors).HasSize(2);
+            var firstSeatOfFirstRow = auditoriumDto.Rows["A"][0];
+            Check.That(firstSeatOfFirstRow.Category).IsEqualTo(2);
         }
 
         [Test]
-        public void Allow_us_to_retrieve_AuditoriumLayout_for_a_given_ShowId()
+        public void Allow_us_to_retrieve_reserved_seats_for_a_given_ShowId()
         {
-            var eventRepository = new AuditoriumLayoutRepository();
-            var theaterDto = eventRepository.GetAuditoriumLayoutFor(showId: "2");
+            var seatsRepository = new ReservationsProvider();
+            var reservedSeatsDto = seatsRepository.GetBookedSeats("1");
 
-            Check.That(theaterDto.Rows).HasSize(6);
-            Check.That(theaterDto.Corridors).HasSize(2);
-            var firstSeatOfFirstRow = theaterDto.Rows["A"][0];
-            Check.That(firstSeatOfFirstRow.Category).IsEqualTo(2);
+            Check.That(reservedSeatsDto.BookedSeats).HasSize(19);
         }
     }
 }
