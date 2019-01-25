@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ExternalDependencies.Theater
+namespace ExternalDependencies.AuditoriumLayoutRepository
 {
     public class TheaterDto
     {
