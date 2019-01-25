@@ -2,7 +2,7 @@
 {
     public enum SeatAvailability
     {
-        Booked,
+        Reserved,
         Available,
         Suggested
     }

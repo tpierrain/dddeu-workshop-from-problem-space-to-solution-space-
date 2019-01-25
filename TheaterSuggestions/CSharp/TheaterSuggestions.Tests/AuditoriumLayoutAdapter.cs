@@ -36,7 +36,7 @@ namespace SeatsSuggestions.Tests
                 var number = ExtractNumber(seatDto.Name);
                 var priceCategory = ConvertCategory(seatDto.Category);
 
-                var isBookedSeat = reservedSeatsDto.ReservedSeats.Contains(seatDto.Name);
+                var isReserved = reservedSeatsDto.ReservedSeats.Contains(seatDto.Name);
 
                 if (!rows.ContainsKey(rowName))
                 {
@@ -44,7 +44,7 @@ namespace SeatsSuggestions.Tests
                 }
 
                 rows[rowName].Seats.Add(new Seat(rowName, number, priceCategory,
-                    isBookedSeat ? SeatAvailability.Booked : SeatAvailability.Available));
+                    isReserved ? SeatAvailability.Reserved : SeatAvailability.Available));
             }
 
             return new AuditoriumLayout(rows);
