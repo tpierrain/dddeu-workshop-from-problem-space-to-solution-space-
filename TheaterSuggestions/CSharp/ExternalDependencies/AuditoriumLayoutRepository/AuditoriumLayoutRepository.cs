@@ -6,7 +6,7 @@ namespace ExternalDependencies.AuditoriumLayoutRepository
 {
     public class AuditoriumLayoutRepository
     {
-        private readonly Dictionary<string, TheaterDto> _repository = new Dictionary<string, TheaterDto>();
+        private readonly Dictionary<string, AuditoriumDto> _repository = new Dictionary<string, AuditoriumDto>();
 
         public AuditoriumLayoutRepository()
         {
@@ -18,15 +18,15 @@ namespace ExternalDependencies.AuditoriumLayoutRepository
                     var fileName = Path.GetFileName(fileFullName);
 
                     var eventId = Path.GetFileName(fileName.Split("-")[0]);
-                    _repository[eventId] = JsonFile.ReadFromJsonFile<TheaterDto>(fileFullName);
+                    _repository[eventId] = JsonFile.ReadFromJsonFile<AuditoriumDto>(fileFullName);
                 }
         }
 
-        public TheaterDto GetAuditoriumLayoutFor(string showId)
+        public AuditoriumDto GetAuditoriumLayoutFor(string showId)
         {
             if (_repository.ContainsKey(showId)) return _repository[showId];
 
-            return new TheaterDto();
+            return new AuditoriumDto();
         }
 
         private static string GetExecutingAssemblyDirectoryFullPath()
