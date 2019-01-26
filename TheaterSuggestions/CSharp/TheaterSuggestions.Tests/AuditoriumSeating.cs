@@ -2,13 +2,13 @@
 
 namespace SeatsSuggestions.Tests
 {
-    public class AuditoriumLayout
+    public class AuditoriumSeating
     {
         public readonly Dictionary<string, Row> Rows;
 
-        public AuditoriumLayout(Dictionary<string, Row> Rows)
+        public AuditoriumSeating(Dictionary<string, Row> rows)
         {
-            this.Rows = Rows;
+            Rows = rows;
         }
     }
 }
