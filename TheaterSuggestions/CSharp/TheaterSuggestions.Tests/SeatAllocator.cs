@@ -13,7 +13,7 @@ namespace SeatsSuggestions.Tests
             _auditoriumLayoutAdapter = auditoriumLayoutAdapter;
         }
 
-        private static SuggestionMade MakeSuggestion(int partyRequested,
+        private static Suggestion MakeSuggestion(int partyRequested,
             PricingCategory pricingCategory, Dictionary<string, Row> rows)
         {
             var suggestion = new Suggestion(partyRequested);
@@ -27,12 +27,14 @@ namespace SeatsSuggestions.Tests
                         suggestion.AddSeat(seat);
 
                         if (suggestion.IsFulFilled)
+                        {
                             return suggestion;
+                        }
                     }
                 }
             }
 
-            return new SuggestionNotAvailable(partyRequested);
+            return new AllocationNotAvailable(partyRequested);
         }
 
         public SuggestionMade MakeSuggestion(string showId, int partyRequested)
@@ -60,16 +62,23 @@ namespace SeatsSuggestions.Tests
 
         public Suggestions MakeSuggestions(string showId, int partyRequested)
         {
-            var auditoriumLayout = _auditoriumLayoutAdapter.GetAuditoriumLayout(showId);
+            AuditoriumSeating auditoriumSeating = _auditoriumLayoutAdapter.GetAuditoriumLayout(showId);
 
             var suggestions = new Suggestions(showId);
 
             foreach (var pricingCategory in Enum.GetValues(typeof(PricingCategory)).Cast<PricingCategory>())
             {
-                suggestions.AddSuggestion(pricingCategory, suggestion: MakeSuggestion(partyRequested, pricingCategory, auditoriumLayout.Rows));
+                suggestions.AddSuggestion(pricingCategory, suggestion: MakeSuggestion(partyRequested, pricingCategory, auditoriumSeating.Rows));
             }
 
             return suggestions;
+        }
+    }
+
+    internal class AllocationNotAvailable : Suggestion
+    {
+        public AllocationNotAvailable(int partyRequested) : base(partyRequested)
+        {
         }
     }
 
