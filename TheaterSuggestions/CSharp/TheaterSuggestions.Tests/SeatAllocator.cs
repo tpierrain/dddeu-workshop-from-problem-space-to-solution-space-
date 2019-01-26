@@ -29,7 +29,7 @@
                 }
             }
 
-            return new SeatsNotAvailable(partyRequested);
+            return new SuggestionNotAvailable(partyRequested);
         }
     }
 }
