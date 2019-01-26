@@ -11,7 +11,7 @@ namespace SeatsSuggestions.Tests
             Rows = rows;
         }
 
-        public SuggestionMade MakeSuggestionFor(int partyRequested, PricingCategory pricingCategory)
+        public SeatAllocation MakeAllocationFor(int partyRequested, PricingCategory pricingCategory)
         {
             foreach (var row in Rows.Values)
             {
@@ -19,12 +19,11 @@ namespace SeatsSuggestions.Tests
 
                 if (seatAllocation.MatchExpectation())
                 {
-                    // Cool, we mark the seat as Suggested (that we turns into a SuggestionMode)
-                    return seatAllocation.ConfirmInterest();
+                    return seatAllocation;
                 }
             }
 
-            return new NotSuggestionMatchedExpectation(partyRequested, pricingCategory);
+            return new AllocationNotAvailable(partyRequested, pricingCategory);
         }
     }
 }

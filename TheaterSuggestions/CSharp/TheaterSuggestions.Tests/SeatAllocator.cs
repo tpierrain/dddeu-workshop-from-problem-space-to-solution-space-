@@ -42,7 +42,17 @@ namespace SeatsSuggestions.Tests
             var foundedSuggestions = new List<SuggestionMade>();
             for (var i = 0; i < numberOfSuggestions; i++)
             {
-                foundedSuggestions.Add(auditoriumSeating.MakeSuggestionFor(partyRequested, pricingCategory));
+                var seatAllocation = auditoriumSeating.MakeAllocationFor(partyRequested, pricingCategory);
+
+                if (seatAllocation.MatchExpectation())
+                {
+                    foreach (var seat in seatAllocation.Seats)
+                    {
+                        seat.MarkAsAlreadySuggested();
+                    }
+
+                    foundedSuggestions.Add(new SuggestionMade(partyRequested, pricingCategory, seatAllocation.Seats));
+                }
             }
 
             return foundedSuggestions;

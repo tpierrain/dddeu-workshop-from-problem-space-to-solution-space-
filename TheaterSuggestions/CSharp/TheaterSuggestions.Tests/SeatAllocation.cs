@@ -4,14 +4,14 @@ namespace SeatsSuggestions.Tests
 {
     public class SeatAllocation
     {
-        private readonly PricingCategory _pricingCategory;
+        public PricingCategory PricingCategory { get; }
         public List<Seat> Seats { get; } = new List<Seat>();
         public int PartyRequested { get; }
 
         public SeatAllocation(int partyRequested, PricingCategory priceCategory)
         {
             PartyRequested = partyRequested;
-            _pricingCategory = priceCategory;
+            PricingCategory = priceCategory;
         }
 
         public void AddSeat(Seat seat)
@@ -22,16 +22,6 @@ namespace SeatsSuggestions.Tests
         public bool MatchExpectation()
         {
             return Seats.Count == PartyRequested;
-        }
-
-        public SuggestionMade ConfirmInterest()
-        {
-            foreach (var seat in Seats)
-            {
-                seat.MarkAsAlreadySuggested();
-            }
-
-            return new SuggestionMade(PartyRequested, _pricingCategory, Seats);
         }
     }
 }

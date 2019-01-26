@@ -25,6 +25,7 @@ namespace SeatsSuggestions.Tests
         {
             return _suggestedSeats.Select(s => s.ToString());
         }
+
         public bool MatchExpectation()
         {
             return _suggestedSeats.Count == PartyRequested;
