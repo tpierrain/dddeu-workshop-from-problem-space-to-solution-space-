@@ -29,7 +29,7 @@ public class AuditoriumLayoutRepository {
         }
     }
 
-    public AuditoriumDto GetAuditoriumLayoutFor(String showId) {
+    public AuditoriumDto getAuditoriumLayoutFor(String showId) {
         if (repository.containsKey(showId)) {
             return repository.get(showId);
         }
