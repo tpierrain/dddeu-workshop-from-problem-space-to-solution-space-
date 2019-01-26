@@ -22,11 +22,7 @@ public class SeatAllocation {
         return seats.size() == partyRequested;
     }
 
-    public SuggestionMade confirmInterest() {
-
-        seats.forEach(Seat::markAsAlreadySuggested);
-
-        return new SuggestionMade(seats, partyRequested, pricingCategory);
+    public List<Seat> seats() {
+        return seats;
     }
-
 }

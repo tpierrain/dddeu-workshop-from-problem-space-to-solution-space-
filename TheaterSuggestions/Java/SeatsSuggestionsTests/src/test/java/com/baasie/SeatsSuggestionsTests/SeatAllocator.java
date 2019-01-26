@@ -41,7 +41,12 @@ public class SeatAllocator {
                                                                             AuditoriumSeating auditoriumSeating, int numberOfSuggestions, PricingCategory pricingCategory) {
         List<SuggestionMade> foundedSuggestions = new ArrayList<>();
         for (int i = 0; i < numberOfSuggestions; i++) {
-            foundedSuggestions.add(auditoriumSeating.makeSuggestionFor(partyRequested, pricingCategory));
+            SeatAllocation seatAllocation = auditoriumSeating.makeAllocationFor(partyRequested, pricingCategory);
+
+            if (seatAllocation.matchExpectation()) {
+                seatAllocation.seats().forEach(Seat::markAsAlreadySuggested);
+                foundedSuggestions.add(new SuggestionMade(seatAllocation.seats(), partyRequested, pricingCategory));
+            }
         }
 
         return ImmutableList.copyOf(foundedSuggestions);
