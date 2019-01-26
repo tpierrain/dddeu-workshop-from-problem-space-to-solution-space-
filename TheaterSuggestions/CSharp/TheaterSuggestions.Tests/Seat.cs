@@ -15,7 +15,7 @@
         public PricingCategory PricingCategory { get; }
         private SeatAvailability SeatAvailability { get; set; }
 
-        public bool IsAvailable => SeatAvailability == SeatAvailability.Available;
+        public bool IsAvailable() => SeatAvailability == SeatAvailability.Available;
 
         public override string ToString()
         {
@@ -25,6 +25,16 @@
         public void UpdateCategory(SeatAvailability seatAvailability)
         {
             SeatAvailability = seatAvailability;
+        }
+
+        public bool MatchCategory(PricingCategory pricingCategory)
+        {
+            if (pricingCategory == PricingCategory.Mixed)
+            {
+                return true;
+            }
+
+            return PricingCategory == pricingCategory;
         }
     }
 }

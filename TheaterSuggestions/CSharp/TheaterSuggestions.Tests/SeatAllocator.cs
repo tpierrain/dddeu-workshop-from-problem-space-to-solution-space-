@@ -1,4 +1,8 @@
-﻿namespace SeatsSuggestions.Tests
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace SeatsSuggestions.Tests
 {
     public class SeatAllocator
     {
@@ -7,6 +11,28 @@
         public SeatAllocator(AuditoriumLayoutAdapter auditoriumLayoutAdapter)
         {
             _auditoriumLayoutAdapter = auditoriumLayoutAdapter;
+        }
+
+        private static Suggestion MakeSuggestion(int partyRequested,
+            PricingCategory pricingCategory, Dictionary<string, Row> rows)
+        {
+            var suggestion = new Suggestion(partyRequested);
+
+            foreach (var row in rows)
+            {
+                foreach (var seat in row.Value.Seats)
+                {
+                    if (seat.IsAvailable() && seat.MatchCategory(pricingCategory))
+                    {
+                        suggestion.AddSeat(seat);
+
+                        if (suggestion.IsFulFilled)
+                            return suggestion;
+                    }
+                }
+            }
+
+            return new SuggestionFailure(partyRequested);
         }
 
         public SuggestionMade MakeSuggestion(string showId, int partyRequested)
@@ -18,7 +44,7 @@
             foreach (var row in theaterLayout.Rows)
             foreach (var seat in row.Value.Seats)
             {
-                if (seat.IsAvailable)
+                if (seat.IsAvailable())
                 {
                     suggestion.AddSeat(seat);
 
@@ -30,6 +56,43 @@
             }
 
             return new SeatsNotAvailable(partyRequested);
+        }
+
+        public Suggestions MakeSuggestions(string showId, int partyRequested)
+        {
+            var auditoriumLayout = _auditoriumLayoutAdapter.GetAuditoriumLayout(showId);
+
+            var suggestions = new Suggestions(showId);
+
+            foreach (var pricingCategory in Enum.GetValues(typeof(PricingCategory)).Cast<PricingCategory>())
+            {
+                suggestions.AddSuggestion(pricingCategory, suggestion: MakeSuggestion(partyRequested, pricingCategory, auditoriumLayout.Rows));
+            }
+
+            return suggestions;
+        }
+    }
+
+    public class Suggestions
+    {
+        public string ShowId { get; }
+
+        public Dictionary<PricingCategory, List<Suggestion>> ProposalsPerCategory { get; } =
+            new Dictionary<PricingCategory, List<Suggestion>>();
+
+        public Suggestions(string showId)
+        {
+            ShowId = showId;
+        }
+
+        public void AddSuggestion(PricingCategory pricingCategory, Suggestion suggestion)
+        {
+            if (!ProposalsPerCategory.ContainsKey(pricingCategory))
+            {
+                ProposalsPerCategory[pricingCategory] = new List<Suggestion>();
+            }
+
+            ProposalsPerCategory[pricingCategory].Add(suggestion);
         }
     }
 }
