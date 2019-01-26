@@ -5,6 +5,6 @@
         First = 1,
         Second,
         Third,
-        All
+        Mixed
     }
 }
