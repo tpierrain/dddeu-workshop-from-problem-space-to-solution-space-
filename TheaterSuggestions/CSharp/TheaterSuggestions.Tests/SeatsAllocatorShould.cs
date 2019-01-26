@@ -1,4 +1,5 @@
-﻿using ExternalDependencies.AuditoriumLayoutRepository;
+﻿using System.Linq;
+using ExternalDependencies.AuditoriumLayoutRepository;
 using ExternalDependencies.ReservationsProvider;
 using NFluent;
 using NUnit.Framework;

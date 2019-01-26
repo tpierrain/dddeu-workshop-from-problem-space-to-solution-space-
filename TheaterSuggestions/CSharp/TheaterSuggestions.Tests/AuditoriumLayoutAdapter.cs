@@ -5,7 +5,7 @@ using ExternalDependencies.ReservationsProvider;
 namespace SeatsSuggestions.Tests
 {
     /// <summary>
-    /// Adapt Dtos coming from the external dependencies (ReservationsProvider, AuditoriumLayoutRepository) to AuditoriumLayout instances.
+    /// Adapt Dtos coming from the external dependencies (ReservationsProvider, AuditoriumLayoutRepository) to AuditoriumSeating instances.
     /// </summary>
     public class AuditoriumLayoutAdapter
     {
@@ -19,13 +19,13 @@ namespace SeatsSuggestions.Tests
             _reservedSeatsRepository = reservationsProvider;
         }
 
-        public AuditoriumLayout GetAuditoriumLayout(string showId)
+        public AuditoriumSeating GetAuditoriumLayout(string showId)
         {
             return Adapt(_auditoriumLayoutRepository.GetAuditoriumLayoutFor(showId),
                 _reservedSeatsRepository.GetReservedSeats(showId));
         }
 
-        private static AuditoriumLayout Adapt(AuditoriumDto auditoriumDto, ReservedSeatsDto reservedSeatsDto)
+        private static AuditoriumSeating Adapt(AuditoriumDto auditoriumDto, ReservedSeatsDto reservedSeatsDto)
         {
             var rows = new Dictionary<string, Row>();
 
@@ -47,7 +47,7 @@ namespace SeatsSuggestions.Tests
                     isReserved ? SeatAvailability.Reserved : SeatAvailability.Available));
             }
 
-            return new AuditoriumLayout(rows);
+            return new AuditoriumSeating(rows);
         }
 
         private static PricingCategory ConvertCategory(int seatDtoCategory)
