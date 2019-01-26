@@ -8,21 +8,21 @@ namespace SeatsSuggestions.Tests
     ///     Adapt Dtos coming from the external dependencies (ReservationsProvider, AuditoriumLayoutRepository) to
     ///     AuditoriumSeating instances.
     /// </summary>
-    public class AuditoriumLayoutAdapter
+    public class AuditoriumSeatingAdapter
     {
         private readonly ReservationsProvider _reservedSeatsRepository;
         private readonly AuditoriumLayoutRepository _auditoriumLayoutRepository;
 
-        public AuditoriumLayoutAdapter(AuditoriumLayoutRepository auditoriumLayoutRepository,
+        public AuditoriumSeatingAdapter(AuditoriumLayoutRepository auditoriumLayoutRepository,
             ReservationsProvider reservationsProvider)
         {
             _auditoriumLayoutRepository = auditoriumLayoutRepository;
             _reservedSeatsRepository = reservationsProvider;
         }
 
-        public AuditoriumSeating GetAuditoriumLayout(string showId)
+        public AuditoriumSeating GetAuditoriumSeating(string showId)
         {
-            return Adapt(_auditoriumLayoutRepository.GetAuditoriumLayoutFor(showId),
+            return Adapt(_auditoriumLayoutRepository.GetAuditoriumSeatingFor(showId),
                 _reservedSeatsRepository.GetReservedSeats(showId));
         }
 

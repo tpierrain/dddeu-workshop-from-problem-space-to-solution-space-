@@ -2,18 +2,18 @@
 {
     public class SeatAllocator
     {
-        private readonly AuditoriumLayoutAdapter _auditoriumLayoutAdapter;
+        private readonly AuditoriumSeatingAdapter _auditoriumSeatingAdapter;
 
-        public SeatAllocator(AuditoriumLayoutAdapter auditoriumLayoutAdapter)
+        public SeatAllocator(AuditoriumSeatingAdapter auditoriumSeatingAdapter)
         {
-            _auditoriumLayoutAdapter = auditoriumLayoutAdapter;
+            _auditoriumSeatingAdapter = auditoriumSeatingAdapter;
         }
 
         public SuggestionMade MakeSuggestion(string showId, int partyRequested)
         {
             var suggestion = new Suggestion(partyRequested);
 
-            var theaterLayout = _auditoriumLayoutAdapter.GetAuditoriumLayout(showId);
+            var theaterLayout = _auditoriumSeatingAdapter.GetAuditoriumSeating(showId);
 
             foreach (var row in theaterLayout.Rows)
             foreach (var seat in row.Value.Seats)
