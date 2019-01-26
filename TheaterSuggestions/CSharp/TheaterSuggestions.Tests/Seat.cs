@@ -39,5 +39,13 @@
 
             return PricingCategory == pricingCategory;
         }
+
+        public void MarkAsAlreadySuggested()
+        {
+            if (SeatAvailability == SeatAvailability.Available)
+            {
+                SeatAvailability = SeatAvailability.Suggested;
+            }
+        }
     }
 }

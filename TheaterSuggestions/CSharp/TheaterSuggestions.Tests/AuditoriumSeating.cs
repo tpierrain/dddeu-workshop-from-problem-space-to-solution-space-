@@ -10,5 +10,21 @@ namespace SeatsSuggestions.Tests
         {
             Rows = rows;
         }
+
+        public SuggestionMade MakeSuggestionFor(int partyRequested, PricingCategory pricingCategory)
+        {
+            foreach (var row in Rows.Values)
+            {
+                var seatAllocation = row.FindAllocation(partyRequested, pricingCategory);
+
+                if (seatAllocation.MatchExpectation())
+                {
+                    // Cool, we mark the seat as Suggested (that we turns into a SuggestionMode)
+                    return seatAllocation.ConfirmInterest();
+                }
+            }
+
+            return new NotSuggestionMatchedExpectation(partyRequested, pricingCategory);
+        }
     }
 }

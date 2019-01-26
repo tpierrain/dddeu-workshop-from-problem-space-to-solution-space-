@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 namespace SeatsSuggestions.Tests
 {
@@ -13,66 +11,41 @@ namespace SeatsSuggestions.Tests
             _auditoriumSeatingAdapter = auditoriumSeatingAdapter;
         }
 
-        private static Suggestion MakeSuggestion(int partyRequested,
-            PricingCategory pricingCategory, Dictionary<string, Row> rows)
-        {
-            var suggestion = new Suggestion(partyRequested);
-
-            foreach (var row in rows)
-            {
-                foreach (var seat in row.Value.Seats)
-                {
-                    if (seat.IsAvailable() && seat.MatchCategory(pricingCategory))
-                    {
-                        suggestion.AddSeat(seat);
-
-                        if (suggestion.IsFulFilled)
-                        {
-                            return suggestion;
-                        }
-                    }
-                }
-            }
-
-            return new AllocationNotAvailable(partyRequested);
-        }
-
-        public SuggestionMade MakeSuggestion(string showId, int partyRequested)
-        {
-            var suggestion = new Suggestion(partyRequested);
-
-            var theaterLayout = _auditoriumSeatingAdapter.GetAuditoriumSeating(showId);
-
-            foreach (var row in theaterLayout.Rows)
-            foreach (var seat in row.Value.Seats)
-            {
-                if (seat.IsAvailable())
-                {
-                    suggestion.AddSeat(seat);
-
-                    if (suggestion.IsFulFilled)
-                    {
-                        return new SuggestionMade(suggestion.PartyRequested, suggestion.Seats);
-                    }
-                }
-            }
-
-            return new SuggestionNotAvailable(partyRequested);
-        }
-
-        public Suggestions MakeSuggestions(string showId, int partyRequested)
+        public SuggestionsMade MakeSuggestions(string showId, int partyRequested)
         {
             var auditoriumSeating = _auditoriumSeatingAdapter.GetAuditoriumSeating(showId);
 
-            var suggestions = new Suggestions(showId);
+            var suggestionsMade = new SuggestionsMade(showId, partyRequested);
 
-            foreach (var pricingCategory in Enum.GetValues(typeof(PricingCategory)).Cast<PricingCategory>())
+            var numberOfSuggestions = 3;
+
+            suggestionsMade.Add(GiveMeSeveralSuggestionFor(partyRequested, auditoriumSeating, numberOfSuggestions,
+                PricingCategory.First));
+            suggestionsMade.Add(GiveMeSeveralSuggestionFor(partyRequested, auditoriumSeating, numberOfSuggestions,
+                PricingCategory.Second));
+            suggestionsMade.Add(GiveMeSeveralSuggestionFor(partyRequested, auditoriumSeating, numberOfSuggestions,
+                PricingCategory.Third));
+            suggestionsMade.Add(GiveMeSeveralSuggestionFor(partyRequested, auditoriumSeating, numberOfSuggestions,
+                PricingCategory.Mixed));
+
+            if (!suggestionsMade.MatchExpectations())
             {
-                suggestions.AddSuggestion(pricingCategory,
-                    MakeSuggestion(partyRequested, pricingCategory, auditoriumSeating.Rows));
+                return new SuggestionNotAvailable(showId, partyRequested);
             }
 
-            return suggestions;
+            return suggestionsMade;
+        }
+
+        private static IReadOnlyCollection<SuggestionMade> GiveMeSeveralSuggestionFor(int partyRequested,
+            AuditoriumSeating auditoriumSeating, int numberOfSuggestions, PricingCategory pricingCategory)
+        {
+            var foundedSuggestions = new List<SuggestionMade>();
+            for (var i = 0; i < numberOfSuggestions; i++)
+            {
+                foundedSuggestions.Add(auditoriumSeating.MakeSuggestionFor(partyRequested, pricingCategory));
+            }
+
+            return foundedSuggestions;
         }
     }
 }

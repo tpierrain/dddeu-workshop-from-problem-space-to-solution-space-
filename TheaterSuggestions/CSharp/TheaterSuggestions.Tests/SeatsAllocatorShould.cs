@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using ExternalDependencies.AuditoriumLayoutRepository;
+﻿using ExternalDependencies.AuditoriumLayoutRepository;
 using ExternalDependencies.ReservationsProvider;
 using NFluent;
 using NUnit.Framework;
@@ -20,10 +19,9 @@ namespace SeatsSuggestions.Tests
 
             var seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
 
-            var suggestionMade = seatAllocator.MakeSuggestion(showId, partyRequested);
+            var suggestionsMade = seatAllocator.MakeSuggestions(showId, partyRequested);
 
-            Check.That(suggestionMade.SuggestedSeats).HasSize(0);
-            Check.That(suggestionMade).IsInstanceOf<SuggestionNotAvailable>();
+            Check.That(suggestionsMade).IsInstanceOf<SuggestionNotAvailable>();
         }
 
         [Test]
@@ -37,10 +35,9 @@ namespace SeatsSuggestions.Tests
 
             var seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
 
-            var suggestionMade = seatAllocator.MakeSuggestion(showId, partyRequested);
+            var suggestionsMade = seatAllocator.MakeSuggestions(showId, partyRequested);
 
-            Check.That(suggestionMade.SuggestedSeats).HasSize(1);
-            Check.That(suggestionMade.SuggestedSeats[0].ToString()).IsEqualTo("A3");
+            Check.That(suggestionsMade.SeatNames(PricingCategory.First)).ContainsExactly("A3");
         }
 
         [Test]
@@ -54,24 +51,14 @@ namespace SeatsSuggestions.Tests
 
             var seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
 
-            var suggestions = seatAllocator.MakeSuggestions(eventId, partyRequested);
-
-            var suggestion = suggestions.ProposalsPerCategory[PricingCategory.First].First();
-            Check.That(suggestion.Seats).HasSize(1);
-            Check.That(suggestion.Seats[0].ToString()).IsEqualTo("A3");
-
-            suggestion = suggestions.ProposalsPerCategory[PricingCategory.Second].First();
-            Check.That(suggestion.Seats).HasSize(1);
-            Check.That(suggestion.Seats[0].ToString()).IsEqualTo("A1");
-
-            suggestion = suggestions.ProposalsPerCategory[PricingCategory.Third].First();
-            Check.That(suggestion.Seats).HasSize(1);
-            Check.That(suggestion.Seats[0].ToString()).IsEqualTo("E1");
-
-            // BUG!!! => return A2 instead of A1 (as expected)
-            suggestion = suggestions.ProposalsPerCategory[PricingCategory.Mixed].First();
-            Check.That(suggestion.Seats).HasSize(1);
-            Check.That(suggestion.Seats[0].ToString()).IsEqualTo("A1");
+            var suggestionsMade = seatAllocator.MakeSuggestions(eventId, partyRequested);
+            
+            Check.That(suggestionsMade.SeatNames(PricingCategory.First)).ContainsExactly("A3", "A4", "A5");
+            Check.That(suggestionsMade.SeatNames(PricingCategory.Second)).ContainsExactly("A1", "A2", "A9");
+            Check.That(suggestionsMade.SeatNames(PricingCategory.Third)).ContainsExactly("E1", "E2", "E3");
+            
+            // BUG!!! => return A6, A7, A8 instead of the expected A1, A2, A3
+            Check.That(suggestionsMade.SeatNames(PricingCategory.Mixed)).ContainsExactly("A1", "A2", "A3");
         }
     }
 }

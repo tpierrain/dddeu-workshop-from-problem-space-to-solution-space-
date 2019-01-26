@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-
-namespace SeatsSuggestions.Tests
+﻿namespace SeatsSuggestions.Tests
 {
     /// <summary>
     ///     Occurs when a Suggestion that does not meet expectation is made.
     /// </summary>
-    public class SuggestionNotAvailable : SuggestionMade
+    public class SuggestionNotAvailable : SuggestionsMade
     {
-        public SuggestionNotAvailable(int partyRequested) : base(partyRequested, new List<Seat>())
+        public SuggestionNotAvailable(string showId, int partyRequested) : base(showId, partyRequested)
         {
         }
     }
