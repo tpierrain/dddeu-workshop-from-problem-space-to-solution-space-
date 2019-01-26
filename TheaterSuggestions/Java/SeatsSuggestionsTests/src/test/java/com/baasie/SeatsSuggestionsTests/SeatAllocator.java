@@ -1,6 +1,9 @@
 package com.baasie.SeatsSuggestionsTests;
 
-import java.util.Map;
+import com.google.common.collect.ImmutableList;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SeatAllocator {
 
@@ -10,21 +13,37 @@ public class SeatAllocator {
         this.auditoriumSeatingAdapter = auditoriumLayoutAdapter;
     }
 
-    public SuggestionMade makeSuggestion(String showId, int partyRequested) {
-        Suggestion suggestion = new Suggestion(partyRequested);
+    public SuggestionsMade makeSuggestion(String showId, int partyRequested) {
 
-        AuditoriumSeating theaterLayout = auditoriumSeatingAdapter.getAuditoriumSeating(showId);
+        AuditoriumSeating auditoriumSeating = auditoriumSeatingAdapter.getAuditoriumSeating(showId);
 
-        for (Map.Entry<String, Row> entry : theaterLayout.rows().entrySet()) {
-            for (Seat seat : entry.getValue().seats()) {
-                if (seat.isAvailable()) {
-                    suggestion.addSeat(seat);
-                    if (suggestion.isFulFilled()) {
-                        return new SuggestionMade(suggestion.seats(), suggestion.partyRequested());
-                    }
-                }
-            }
+        SuggestionsMade suggestionsMade = new SuggestionsMade(showId, partyRequested);
+
+        int numberOfSuggestions = 3;
+
+        suggestionsMade.add(giveMeSeveralSuggestionFor(partyRequested, auditoriumSeating, numberOfSuggestions,
+                PricingCategory.First));
+        suggestionsMade.add(giveMeSeveralSuggestionFor(partyRequested, auditoriumSeating, numberOfSuggestions,
+                PricingCategory.Second));
+        suggestionsMade.add(giveMeSeveralSuggestionFor(partyRequested, auditoriumSeating, numberOfSuggestions,
+                PricingCategory.Third));
+        suggestionsMade.add(giveMeSeveralSuggestionFor(partyRequested, auditoriumSeating, numberOfSuggestions,
+                PricingCategory.Mixed));
+
+        if (!suggestionsMade.matchExpectations()) {
+            return new SuggestionNotAvailable(showId, partyRequested);
         }
-        return new SuggestionNotAvailable(partyRequested);
+
+        return suggestionsMade;
+    }
+
+    private static ImmutableList<SuggestionMade> giveMeSeveralSuggestionFor(int partyRequested,
+                                                                            AuditoriumSeating auditoriumSeating, int numberOfSuggestions, PricingCategory pricingCategory) {
+        List<SuggestionMade> foundedSuggestions = new ArrayList<>();
+        for (int i = 0; i < numberOfSuggestions; i++) {
+            foundedSuggestions.add(auditoriumSeating.makeSuggestionFor(partyRequested, pricingCategory));
+        }
+
+        return ImmutableList.copyOf(foundedSuggestions);
     }
 }

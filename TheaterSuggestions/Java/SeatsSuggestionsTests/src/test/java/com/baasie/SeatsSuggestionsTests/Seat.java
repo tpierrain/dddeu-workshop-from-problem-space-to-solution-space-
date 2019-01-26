@@ -23,6 +23,20 @@ public class Seat {
         this.seatAvailability = seatAvailability;
     }
 
+    public boolean matchCategory(PricingCategory pricingCategory) {
+        if (pricingCategory == PricingCategory.Mixed) {
+            return true;
+        }
+
+        return this.pricingCategory == pricingCategory;
+    }
+
+    public void markAsAlreadySuggested() {
+        if (seatAvailability == SeatAvailability.Available) {
+            seatAvailability = SeatAvailability.Suggested;
+        }
+    }
+
     @Override
     public String toString() {
         return rowName + number;

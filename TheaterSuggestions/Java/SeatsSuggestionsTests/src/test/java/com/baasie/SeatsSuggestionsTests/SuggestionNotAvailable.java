@@ -1,11 +1,9 @@
 package com.baasie.SeatsSuggestionsTests;
 
-import java.util.ArrayList;
-
-public class SuggestionNotAvailable extends SuggestionMade {
+public class SuggestionNotAvailable extends SuggestionsMade {
 
 
-    public SuggestionNotAvailable(int partyRequested) {
-        super(new ArrayList<>(), partyRequested);
+    public SuggestionNotAvailable(String showId, int partyRequested) {
+        super(showId, partyRequested);
     }
 }
