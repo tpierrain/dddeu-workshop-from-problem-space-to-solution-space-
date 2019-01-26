@@ -13,7 +13,7 @@ namespace SeatsSuggestions.Tests
             _auditoriumLayoutAdapter = auditoriumLayoutAdapter;
         }
 
-        private static Suggestion MakeSuggestion(int partyRequested,
+        private static SuggestionMade MakeSuggestion(int partyRequested,
             PricingCategory pricingCategory, Dictionary<string, Row> rows)
         {
             var suggestion = new Suggestion(partyRequested);
@@ -32,7 +32,7 @@ namespace SeatsSuggestions.Tests
                 }
             }
 
-            return new SuggestionFailure(partyRequested);
+            return new SuggestionNotAvailable(partyRequested);
         }
 
         public SuggestionMade MakeSuggestion(string showId, int partyRequested)
@@ -55,7 +55,7 @@ namespace SeatsSuggestions.Tests
                 }
             }
 
-            return new SeatsNotAvailable(partyRequested);
+            return new SuggestionNotAvailable(partyRequested);
         }
 
         public Suggestions MakeSuggestions(string showId, int partyRequested)

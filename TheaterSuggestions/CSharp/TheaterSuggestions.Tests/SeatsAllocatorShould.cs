@@ -22,7 +22,7 @@ namespace SeatsSuggestions.Tests
             var suggestionMade = seatAllocator.MakeSuggestion(showId, partyRequested);
 
             Check.That(suggestionMade.SuggestedSeats).HasSize(0);
-            Check.That(suggestionMade).IsInstanceOf<SeatsNotAvailable>();
+            Check.That(suggestionMade).IsInstanceOf<SuggestionNotAvailable>();
         }
 
         [Test]
