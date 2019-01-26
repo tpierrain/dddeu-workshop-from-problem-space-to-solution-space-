@@ -18,11 +18,6 @@ public class Seat {
         return seatAvailability == SeatAvailability.Available;
     }
 
-
-    public void updateCategory(SeatAvailability seatAvailability) {
-        this.seatAvailability = seatAvailability;
-    }
-
     public boolean matchCategory(PricingCategory pricingCategory) {
         if (pricingCategory == PricingCategory.Mixed) {
             return true;
