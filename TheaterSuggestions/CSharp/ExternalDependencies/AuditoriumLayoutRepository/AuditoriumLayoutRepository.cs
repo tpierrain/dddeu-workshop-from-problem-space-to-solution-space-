@@ -24,7 +24,7 @@ namespace ExternalDependencies.AuditoriumLayoutRepository
             }
         }
 
-        public AuditoriumDto GetAuditoriumLayoutFor(string showId)
+        public AuditoriumDto GetAuditoriumSeatingFor(string showId)
         {
             if (_repository.ContainsKey(showId))
             {

@@ -15,7 +15,8 @@ namespace SeatsSuggestions.Tests
             const string showId = "5";
             const int partyRequested = 1;
 
-            var auditoriumLayoutAdapter = new AuditoriumLayoutAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
+            var auditoriumLayoutAdapter =
+                new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
 
             var seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
 
@@ -31,7 +32,8 @@ namespace SeatsSuggestions.Tests
             const string showId = "1";
             const int partyRequested = 1;
 
-            var auditoriumLayoutAdapter = new AuditoriumLayoutAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
+            var auditoriumLayoutAdapter =
+                new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
 
             var seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
 
@@ -47,7 +49,8 @@ namespace SeatsSuggestions.Tests
             const string eventId = "18";
             const int partyRequested = 1;
 
-            var auditoriumLayoutAdapter = new AuditoriumLayoutAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
+            var auditoriumLayoutAdapter =
+                new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
 
             var seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
 
@@ -65,11 +68,10 @@ namespace SeatsSuggestions.Tests
             Check.That(suggestion.Seats).HasSize(1);
             Check.That(suggestion.Seats[0].ToString()).IsEqualTo("E1");
 
-            // BUG!!! => return A2 and not A1
+            // BUG!!! => return A2 instead of A1 (as expected)
             suggestion = suggestions.ProposalsPerCategory[PricingCategory.Mixed].First();
             Check.That(suggestion.Seats).HasSize(1);
             Check.That(suggestion.Seats[0].ToString()).IsEqualTo("A1");
         }
-
     }
 }

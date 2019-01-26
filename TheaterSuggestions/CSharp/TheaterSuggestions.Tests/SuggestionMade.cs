@@ -3,7 +3,7 @@
 namespace SeatsSuggestions.Tests
 {
     /// <summary>
-    /// Occurs when a Suggestion is made.
+    ///     Occurs when a Suggestion is made.
     /// </summary>
     public class SuggestionMade
     {
@@ -12,11 +12,11 @@ namespace SeatsSuggestions.Tests
         public int PartyRequested { get; }
 
         public IReadOnlyList<Seat> SuggestedSeats => _suggestedSeats;
-        
+
         public SuggestionMade(int partyRequested, List<Seat> seats)
         {
             PartyRequested = partyRequested;
-            this._suggestedSeats = seats;
+            _suggestedSeats = seats;
         }
     }
 }

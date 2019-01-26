@@ -5,23 +5,24 @@ using ExternalDependencies.ReservationsProvider;
 namespace SeatsSuggestions.Tests
 {
     /// <summary>
-    /// Adapt Dtos coming from the external dependencies (ReservationsProvider, AuditoriumLayoutRepository) to AuditoriumSeating instances.
+    ///     Adapt Dtos coming from the external dependencies (ReservationsProvider, AuditoriumLayoutRepository) to
+    ///     AuditoriumSeating instances.
     /// </summary>
-    public class AuditoriumLayoutAdapter
+    public class AuditoriumSeatingAdapter
     {
         private readonly ReservationsProvider _reservedSeatsRepository;
         private readonly AuditoriumLayoutRepository _auditoriumLayoutRepository;
 
-        public AuditoriumLayoutAdapter(AuditoriumLayoutRepository auditoriumLayoutRepository,
+        public AuditoriumSeatingAdapter(AuditoriumLayoutRepository auditoriumLayoutRepository,
             ReservationsProvider reservationsProvider)
         {
             _auditoriumLayoutRepository = auditoriumLayoutRepository;
             _reservedSeatsRepository = reservationsProvider;
         }
 
-        public AuditoriumSeating GetAuditoriumLayout(string showId)
+        public AuditoriumSeating GetAuditoriumSeating(string showId)
         {
-            return Adapt(_auditoriumLayoutRepository.GetAuditoriumLayoutFor(showId),
+            return Adapt(_auditoriumLayoutRepository.GetAuditoriumSeatingFor(showId),
                 _reservedSeatsRepository.GetReservedSeats(showId));
         }
 
@@ -30,21 +31,23 @@ namespace SeatsSuggestions.Tests
             var rows = new Dictionary<string, Row>();
 
             foreach (var rowDto in auditoriumDto.Rows)
-            foreach (var seatDto in rowDto.Value)
             {
-                var rowName = ExtractRowName(seatDto.Name);
-                var number = ExtractNumber(seatDto.Name);
-                var pricingCategory = ConvertCategory(seatDto.Category);
-
-                var isReserved = reservedSeatsDto.ReservedSeats.Contains(seatDto.Name);
-
-                if (!rows.ContainsKey(rowName))
+                foreach (var seatDto in rowDto.Value)
                 {
-                    rows[rowName] = new Row();
-                }
+                    var rowName = ExtractRowName(seatDto.Name);
+                    var number = ExtractNumber(seatDto.Name);
+                    var pricingCategory = ConvertCategory(seatDto.Category);
 
-                rows[rowName].Seats.Add(new Seat(rowName, number, pricingCategory,
-                    isReserved ? SeatAvailability.Reserved : SeatAvailability.Available));
+                    var isReserved = reservedSeatsDto.ReservedSeats.Contains(seatDto.Name);
+
+                    if (!rows.ContainsKey(rowName))
+                    {
+                        rows[rowName] = new Row();
+                    }
+
+                    rows[rowName].Seats.Add(new Seat(rowName, number, pricingCategory,
+                        isReserved ? SeatAvailability.Reserved : SeatAvailability.Available));
+                }
             }
 
             return new AuditoriumSeating(rows);

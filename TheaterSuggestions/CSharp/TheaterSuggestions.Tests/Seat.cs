@@ -15,7 +15,10 @@
         public PricingCategory PricingCategory { get; }
         private SeatAvailability SeatAvailability { get; set; }
 
-        public bool IsAvailable() => SeatAvailability == SeatAvailability.Available;
+        public bool IsAvailable()
+        {
+            return SeatAvailability == SeatAvailability.Available;
+        }
 
         public override string ToString()
         {

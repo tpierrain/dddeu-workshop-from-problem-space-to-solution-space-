@@ -6,11 +6,11 @@ namespace SeatsSuggestions.Tests
 {
     public class SeatAllocator
     {
-        private readonly AuditoriumLayoutAdapter _auditoriumLayoutAdapter;
+        private readonly AuditoriumSeatingAdapter _auditoriumSeatingAdapter;
 
-        public SeatAllocator(AuditoriumLayoutAdapter auditoriumLayoutAdapter)
+        public SeatAllocator(AuditoriumSeatingAdapter auditoriumSeatingAdapter)
         {
-            _auditoriumLayoutAdapter = auditoriumLayoutAdapter;
+            _auditoriumSeatingAdapter = auditoriumSeatingAdapter;
         }
 
         private static Suggestion MakeSuggestion(int partyRequested,
@@ -41,7 +41,7 @@ namespace SeatsSuggestions.Tests
         {
             var suggestion = new Suggestion(partyRequested);
 
-            var theaterLayout = _auditoriumLayoutAdapter.GetAuditoriumLayout(showId);
+            var theaterLayout = _auditoriumSeatingAdapter.GetAuditoriumSeating(showId);
 
             foreach (var row in theaterLayout.Rows)
             foreach (var seat in row.Value.Seats)
@@ -62,46 +62,17 @@ namespace SeatsSuggestions.Tests
 
         public Suggestions MakeSuggestions(string showId, int partyRequested)
         {
-            AuditoriumSeating auditoriumSeating = _auditoriumLayoutAdapter.GetAuditoriumLayout(showId);
+            var auditoriumSeating = _auditoriumSeatingAdapter.GetAuditoriumSeating(showId);
 
             var suggestions = new Suggestions(showId);
 
             foreach (var pricingCategory in Enum.GetValues(typeof(PricingCategory)).Cast<PricingCategory>())
             {
-                suggestions.AddSuggestion(pricingCategory, suggestion: MakeSuggestion(partyRequested, pricingCategory, auditoriumSeating.Rows));
+                suggestions.AddSuggestion(pricingCategory,
+                    MakeSuggestion(partyRequested, pricingCategory, auditoriumSeating.Rows));
             }
 
             return suggestions;
-        }
-    }
-
-    internal class AllocationNotAvailable : Suggestion
-    {
-        public AllocationNotAvailable(int partyRequested) : base(partyRequested)
-        {
-        }
-    }
-
-    public class Suggestions
-    {
-        public string ShowId { get; }
-
-        public Dictionary<PricingCategory, List<Suggestion>> ProposalsPerCategory { get; } =
-            new Dictionary<PricingCategory, List<Suggestion>>();
-
-        public Suggestions(string showId)
-        {
-            ShowId = showId;
-        }
-
-        public void AddSuggestion(PricingCategory pricingCategory, Suggestion suggestion)
-        {
-            if (!ProposalsPerCategory.ContainsKey(pricingCategory))
-            {
-                ProposalsPerCategory[pricingCategory] = new List<Suggestion>();
-            }
-
-            ProposalsPerCategory[pricingCategory].Add(suggestion);
         }
     }
 }

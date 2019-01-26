@@ -8,7 +8,7 @@ namespace SeatsSuggestions.Tests
 
         public AuditoriumSeating(Dictionary<string, Row> rows)
         {
-            this.Rows = rows;
+            Rows = rows;
         }
     }
 }
