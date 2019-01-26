@@ -35,4 +35,13 @@ public class AuditoriumLayoutRepository {
         }
         return new AuditoriumDto();
     }
+
+    public AuditoriumDto getAuditoriumSeatingFor(String showId) {
+        if (repository.containsKey(showId))
+        {
+            return repository.get(showId);
+        }
+
+        return new AuditoriumDto();
+    }
 }

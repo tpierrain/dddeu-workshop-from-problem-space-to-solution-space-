@@ -30,7 +30,7 @@ public class ReservationsProvider {
         }
     }
 
-    public ReservedSeatsDto GetReservedSeats(String showId) {
+    public ReservedSeatsDto getReservedSeats(String showId) {
         if (repository.containsKey(showId)) {
             return repository.get(showId);
         }
