@@ -31,21 +31,23 @@ namespace SeatsSuggestions.Tests
             var rows = new Dictionary<string, Row>();
 
             foreach (var rowDto in auditoriumDto.Rows)
-            foreach (var seatDto in rowDto.Value)
             {
-                var rowName = ExtractRowName(seatDto.Name);
-                var number = ExtractNumber(seatDto.Name);
-                var pricingCategory = ConvertCategory(seatDto.Category);
-
-                var isReserved = reservedSeatsDto.ReservedSeats.Contains(seatDto.Name);
-
-                if (!rows.ContainsKey(rowName))
+                foreach (var seatDto in rowDto.Value)
                 {
-                    rows[rowName] = new Row();
-                }
+                    var rowName = ExtractRowName(seatDto.Name);
+                    var number = ExtractNumber(seatDto.Name);
+                    var pricingCategory = ConvertCategory(seatDto.Category);
 
-                rows[rowName].Seats.Add(new Seat(rowName, number, pricingCategory,
-                    isReserved ? SeatAvailability.Reserved : SeatAvailability.Available));
+                    var isReserved = reservedSeatsDto.ReservedSeats.Contains(seatDto.Name);
+
+                    if (!rows.ContainsKey(rowName))
+                    {
+                        rows[rowName] = new Row();
+                    }
+
+                    rows[rowName].Seats.Add(new Seat(rowName, number, pricingCategory,
+                        isReserved ? SeatAvailability.Reserved : SeatAvailability.Available));
+                }
             }
 
             return new AuditoriumSeating(rows);
