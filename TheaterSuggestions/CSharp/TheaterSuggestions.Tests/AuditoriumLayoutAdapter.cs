@@ -34,7 +34,7 @@ namespace SeatsSuggestions.Tests
             {
                 var rowName = ExtractRowName(seatDto.Name);
                 var number = ExtractNumber(seatDto.Name);
-                var priceCategory = ConvertCategory(seatDto.Category);
+                var pricingCategory = ConvertCategory(seatDto.Category);
 
                 var isReserved = reservedSeatsDto.ReservedSeats.Contains(seatDto.Name);
 
@@ -43,7 +43,7 @@ namespace SeatsSuggestions.Tests
                     rows[rowName] = new Row();
                 }
 
-                rows[rowName].Seats.Add(new Seat(rowName, number, priceCategory,
+                rows[rowName].Seats.Add(new Seat(rowName, number, pricingCategory,
                     isReserved ? SeatAvailability.Reserved : SeatAvailability.Available));
             }
 

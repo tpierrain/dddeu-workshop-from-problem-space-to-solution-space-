@@ -2,8 +2,10 @@
 
 ## Auditorium Layout
 
-*Each example contains an event name and an event id __[name-id]__.
-All examples describe __10__ colunms and few rows from __A__ to __F__. Inside the Auditorium-each number represents a price category __[1-3]__*. A seat is reserved  when his nummer is surround with parenthesis.
+*Each example contains a showt name followed by a show id __[showName-showId]__.
+All examples describe __10__ columns and a few rows from __A__ to __F__. Inside the Auditorium, each number represents a pricing category __[1-3]__*.
+
+A seat is reserved when his number is surrounded with parenthesis.
 
 ### Ford Auditorium-1
 

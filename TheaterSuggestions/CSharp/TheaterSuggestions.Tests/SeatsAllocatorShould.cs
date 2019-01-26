@@ -14,9 +14,9 @@ namespace SeatsSuggestions.Tests
             const string showId = "5";
             const int partyRequested = 1;
 
-            var theaterLayoutProvider = new AuditoriumLayoutAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
+            var auditoriumLayoutAdapter = new AuditoriumLayoutAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
 
-            var seatAllocator = new SeatAllocator(theaterLayoutProvider);
+            var seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
 
             var suggestionMade = seatAllocator.MakeSuggestion(showId, partyRequested);
 
@@ -30,9 +30,9 @@ namespace SeatsSuggestions.Tests
             const string showId = "1";
             const int partyRequested = 1;
 
-            var theaterLayoutProvider = new AuditoriumLayoutAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
+            var auditoriumLayoutAdapter = new AuditoriumLayoutAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
 
-            var seatAllocator = new SeatAllocator(theaterLayoutProvider);
+            var seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
 
             var suggestionMade = seatAllocator.MakeSuggestion(showId, partyRequested);
 
