@@ -5,7 +5,8 @@ using ExternalDependencies.ReservationsProvider;
 namespace SeatsSuggestions.Tests
 {
     /// <summary>
-    /// Adapt Dtos coming from the external dependencies (ReservationsProvider, AuditoriumLayoutRepository) to AuditoriumSeating instances.
+    ///     Adapt Dtos coming from the external dependencies (ReservationsProvider, AuditoriumLayoutRepository) to
+    ///     AuditoriumSeating instances.
     /// </summary>
     public class AuditoriumLayoutAdapter
     {

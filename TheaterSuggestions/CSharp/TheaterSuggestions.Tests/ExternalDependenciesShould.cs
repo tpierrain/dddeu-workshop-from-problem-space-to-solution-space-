@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace SeatsSuggestions.Tests
 {
     /// <summary>
-    /// Tests suite for the External dependencies/services.
+    ///     Tests suite for the External dependencies/services.
     /// </summary>
     [TestFixture]
     public class ExternalDependenciesShould
