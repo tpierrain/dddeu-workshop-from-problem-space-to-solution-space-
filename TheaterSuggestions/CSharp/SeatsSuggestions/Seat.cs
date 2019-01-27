@@ -1,4 +1,4 @@
-﻿namespace SeatsSuggestions.Tests
+﻿namespace SeatsSuggestions
 {
     public class Seat
     {

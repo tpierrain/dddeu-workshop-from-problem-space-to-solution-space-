@@ -66,6 +66,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ExternalDependencies\ExternalDependencies.csproj" />
+    <ProjectReference Include="..\SeatsSuggestions\SeatsSuggestions.csproj" />
   </ItemGroup>
 
   <ItemGroup>

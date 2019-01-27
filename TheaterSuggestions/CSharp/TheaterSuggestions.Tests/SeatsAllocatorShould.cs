@@ -54,11 +54,11 @@ namespace SeatsSuggestions.Tests
             var seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
 
             var suggestionsMade = seatAllocator.MakeSuggestions(eventId, partyRequested);
-            
+
             Check.That(suggestionsMade.SeatNames(PricingCategory.First)).ContainsExactly("A3", "A4", "A5");
             Check.That(suggestionsMade.SeatNames(PricingCategory.Second)).ContainsExactly("A1", "A2", "A9");
             Check.That(suggestionsMade.SeatNames(PricingCategory.Third)).ContainsExactly("E1", "E2", "E3");
-            
+
             // BUG!!! => return A6, A7, A8 instead of the expected A1, A2, A3
             Check.That(suggestionsMade.SeatNames(PricingCategory.Mixed)).ContainsExactly("A1", "A2", "A3");
         }

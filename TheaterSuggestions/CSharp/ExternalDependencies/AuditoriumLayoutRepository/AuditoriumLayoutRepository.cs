@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using ExternalDependencies.Interfaces;
 
 namespace ExternalDependencies.AuditoriumLayoutRepository
 {
-    public class AuditoriumLayoutRepository
+    public class AuditoriumLayoutRepository : IProvideAuditoriumLayouts
     {
         private readonly Dictionary<string, AuditoriumDto> _repository = new Dictionary<string, AuditoriumDto>();
 

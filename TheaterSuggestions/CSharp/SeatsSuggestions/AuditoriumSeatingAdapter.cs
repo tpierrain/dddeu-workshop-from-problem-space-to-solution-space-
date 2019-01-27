@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using ExternalDependencies.AuditoriumLayoutRepository;
-using ExternalDependencies.ReservationsProvider;
+using ExternalDependencies.Interfaces;
 
-namespace SeatsSuggestions.Tests
+namespace SeatsSuggestions
 {
     /// <summary>
     ///     Adapt Dtos coming from the external dependencies (ReservationsProvider, AuditoriumLayoutRepository) to
@@ -10,11 +9,11 @@ namespace SeatsSuggestions.Tests
     /// </summary>
     public class AuditoriumSeatingAdapter
     {
-        private readonly ReservationsProvider _reservedSeatsRepository;
-        private readonly AuditoriumLayoutRepository _auditoriumLayoutRepository;
+        private readonly IProvideCurrentReservations _reservedSeatsRepository;
+        private readonly IProvideAuditoriumLayouts _auditoriumLayoutRepository;
 
-        public AuditoriumSeatingAdapter(AuditoriumLayoutRepository auditoriumLayoutRepository,
-            ReservationsProvider reservationsProvider)
+        public AuditoriumSeatingAdapter(IProvideAuditoriumLayouts auditoriumLayoutRepository,
+            IProvideCurrentReservations reservationsProvider)
         {
             _auditoriumLayoutRepository = auditoriumLayoutRepository;
             _reservedSeatsRepository = reservationsProvider;

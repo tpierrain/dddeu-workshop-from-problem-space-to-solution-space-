@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace SeatsSuggestions.Tests
+namespace SeatsSuggestions
 {
     /// <summary>
     ///     Occurs when a Suggestion is made.
