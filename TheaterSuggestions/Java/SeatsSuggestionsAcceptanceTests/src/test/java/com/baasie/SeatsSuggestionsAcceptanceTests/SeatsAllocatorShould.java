@@ -1,7 +1,8 @@
-package com.baasie.SeatsSuggestionsTests;
+package com.baasie.SeatsSuggestionsAcceptanceTests;
 
 import com.baasie.ExternalDependencies.auditoriumlayoutrepository.AuditoriumLayoutRepository;
 import com.baasie.ExternalDependencies.reservationsprovider.ReservationsProvider;
+import com.baasie.SeatsSuggestions.*;
 import org.junit.Test;
 
 import java.io.IOException;

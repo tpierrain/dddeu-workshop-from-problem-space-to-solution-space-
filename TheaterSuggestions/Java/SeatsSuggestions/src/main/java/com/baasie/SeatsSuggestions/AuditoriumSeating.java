@@ -1,4 +1,4 @@
-package com.baasie.SeatsSuggestionsTests;
+package com.baasie.SeatsSuggestions;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -12,16 +12,16 @@ public class AuditoriumSeating {
         this.rows = ImmutableMap.copyOf(rows);
     }
 
-    public SuggestionMade makeSuggestionFor(int partyRequested, PricingCategory pricingCategory) {
+    public SeatAllocation makeAllocationFor(int partyRequested, PricingCategory pricingCategory) {
         for (Row row : rows.values()) {
             SeatAllocation seatAllocation = row.findAllocation(partyRequested, pricingCategory);
 
             if (seatAllocation.matchExpectation()) {
                 // Cool, we mark the seat as Suggested (that we turns into a SuggestionMode)
-                return seatAllocation.confirmInterest();
+                return seatAllocation;
             }
         }
 
-        return new NotSuggestionMatchedExpectation(partyRequested, pricingCategory);
+        return new AllocationNotAvailable(partyRequested, pricingCategory);
     }
 }

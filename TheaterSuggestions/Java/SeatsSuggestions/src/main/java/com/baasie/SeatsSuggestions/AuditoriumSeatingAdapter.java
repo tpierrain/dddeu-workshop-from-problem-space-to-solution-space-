@@ -1,4 +1,4 @@
-package com.baasie.SeatsSuggestionsTests;
+package com.baasie.SeatsSuggestions;
 
 import com.baasie.ExternalDependencies.auditoriumlayoutrepository.AuditoriumDto;
 import com.baasie.ExternalDependencies.auditoriumlayoutrepository.AuditoriumLayoutRepository;

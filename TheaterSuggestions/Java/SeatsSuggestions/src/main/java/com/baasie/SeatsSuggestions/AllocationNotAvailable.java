@@ -1,4 +1,4 @@
-package com.baasie.SeatsSuggestionsTests;
+package com.baasie.SeatsSuggestions;
 
 public class AllocationNotAvailable extends SeatAllocation {
     public AllocationNotAvailable(int partyRequested, PricingCategory pricingCategory) {
