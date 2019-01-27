@@ -49,7 +49,6 @@ namespace ExternalDependencies.AuditoriumLayoutRepository
 
             if (directoryName.StartsWith(@"file:\"))
             {
-                if()
                 directoryName = directoryName.Substring(6);
             }
 
