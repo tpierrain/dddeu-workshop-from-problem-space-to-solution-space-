@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.baasie</groupId>
-    <artifactId>SeatsSuggestions</artifactId>
+    <artifactId>SeatsSuggestionsParent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     
@@ -15,7 +15,7 @@
 
     <modules>
         <module>ExternalDependencies</module>
-        <module>SeatsSuggestionsTests</module>
+        <module>SeatsSuggestionsAcceptanceTests</module>
     </modules>
 
     <dependencyManagement>

@@ -1,4 +1,4 @@
-package com.baasie.SeatsSuggestionsTests;
+package com.baasie.SeatsSuggestionsAcceptanceTests;
 
 public enum SeatAvailability {
     Reserved,
