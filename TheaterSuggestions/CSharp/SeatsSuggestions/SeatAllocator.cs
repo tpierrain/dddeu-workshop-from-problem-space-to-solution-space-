@@ -40,13 +40,13 @@ namespace SeatsSuggestions
 
             for (var i = 0; i < NumberOfSuggestions; i++)
             {
-                var seatAllocation = auditoriumSeating.MakeAllocationFor(partyRequested, pricingCategory);
+                var seatAllocation = auditoriumSeating.SuggestSeatingOptionFor(partyRequested, pricingCategory);
 
                 if (seatAllocation.MatchExpectation())
                 {
                     foreach (var seat in seatAllocation.Seats)
                     {
-                        seat.MarkAsAlreadySuggested();
+                        seat.Allocate();
                     }
 
                     foundedSuggestions.Add(new SuggestionMade(partyRequested, pricingCategory, seatAllocation.Seats));

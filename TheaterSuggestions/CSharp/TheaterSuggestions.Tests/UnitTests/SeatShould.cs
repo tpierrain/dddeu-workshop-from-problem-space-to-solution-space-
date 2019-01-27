@@ -16,7 +16,7 @@ namespace SeatsSuggestions.Tests.UnitTests
             Check.That(secondInstance).IsEqualTo(firstInstance);
 
             // Should not mutate existing instance 
-            secondInstance.MarkAsAlreadySuggested();
+            secondInstance.Allocate();
             Check.That(secondInstance).IsEqualTo(firstInstance);
         }
     }

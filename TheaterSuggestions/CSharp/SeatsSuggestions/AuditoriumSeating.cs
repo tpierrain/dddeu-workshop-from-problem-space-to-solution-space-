@@ -13,19 +13,19 @@ namespace SeatsSuggestions
             _rows = rows;
         }
 
-        public SeatAllocation MakeAllocationFor(int partyRequested, PricingCategory pricingCategory)
+        public SeatingOptionSuggested SuggestSeatingOptionFor(int partyRequested, PricingCategory pricingCategory)
         {
             foreach (var row in _rows.Values)
             {
-                var seatAllocation = row.FindAllocation(partyRequested, pricingCategory);
+                var seatOptionsSuggested = row.SuggestSeatingOption(partyRequested, pricingCategory);
 
-                if (seatAllocation.MatchExpectation())
+                if (seatOptionsSuggested.MatchExpectation())
                 {
-                    return seatAllocation;
+                    return seatOptionsSuggested;
                 }
             }
 
-            return new AllocationNotAvailable(partyRequested, pricingCategory);
+            return new SeatingOptionNotAvailable(partyRequested, pricingCategory);
         }
     }
 }

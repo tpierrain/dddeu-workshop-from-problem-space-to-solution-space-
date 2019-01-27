@@ -18,13 +18,13 @@ namespace SeatsSuggestions
             Seats.Add(seat);
         }
 
-        public SeatAllocation FindAllocation(int partyRequested, PricingCategory pricingCategory)
+        public SeatingOptionSuggested SuggestSeatingOption(int partyRequested, PricingCategory pricingCategory)
         {
             foreach (var seat in Seats)
             {
                 if (seat.IsAvailable() && seat.MatchCategory(pricingCategory))
                 {
-                    var seatAllocation = new SeatAllocation(partyRequested, pricingCategory);
+                    var seatAllocation = new SeatingOptionSuggested(partyRequested, pricingCategory);
 
                     seatAllocation.AddSeat(seat);
 
@@ -35,7 +35,7 @@ namespace SeatsSuggestions
                 }
             }
 
-            return new AllocationNotAvailable(partyRequested, pricingCategory);
+            return new SeatingOptionNotAvailable(partyRequested, pricingCategory);
         }
     }
 }

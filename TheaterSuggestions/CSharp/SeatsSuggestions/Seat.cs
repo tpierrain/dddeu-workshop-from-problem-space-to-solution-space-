@@ -35,11 +35,11 @@
             return PricingCategory == pricingCategory;
         }
 
-        public void MarkAsAlreadySuggested()
+        public void Allocate()
         {
             if (SeatAvailability == SeatAvailability.Available)
             {
-                SeatAvailability = SeatAvailability.Suggested;
+                SeatAvailability = SeatAvailability.Allocated;
             }
         }
     }
