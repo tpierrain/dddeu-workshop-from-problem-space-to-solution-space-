@@ -5,16 +5,20 @@
 
 	<parent>
 		<groupId>com.baasie</groupId>
-		<artifactId>SeatsSuggestions</artifactId>
+		<artifactId>SeatsSuggestionsParent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
     <packaging>jar</packaging>
-	<artifactId>SeatsSuggestionsTests</artifactId>
+	<artifactId>SeatsSuggestionsAcceptanceTests</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>SeatsSuggestionsTests</name>
+	<name>SeatsSuggestionsAcceptanceTests</name>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.baasie</groupId>
+			<artifactId>SeatsSuggestions</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>com.baasie</groupId>
 			<artifactId>ExternalDependencies</artifactId>

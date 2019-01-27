@@ -1,4 +1,4 @@
-package com.baasie.SeatsSuggestionsTests;
+package com.baasie.SeatsSuggestions;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.baasie.SeatsSuggestionsTests;
+package com.baasie.SeatsSuggestions;
 
 import java.util.ArrayList;
 import java.util.List;
