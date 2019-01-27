@@ -12,7 +12,7 @@ namespace SeatsSuggestions.Tests
         public string ShowId { get; }
         public int PartyRequested { get; }
 
-        public Dictionary<PricingCategory, List<SuggestionMade>> ForCategory { get; } =
+        private Dictionary<PricingCategory, List<SuggestionMade>> ForCategory { get; } =
             new Dictionary<PricingCategory, List<SuggestionMade>>();
 
         public SuggestionsMade(string showId, int partyRequested)
@@ -21,11 +21,6 @@ namespace SeatsSuggestions.Tests
             PartyRequested = partyRequested;
 
             InstantiateAnEmptyListForEveryPricingCategory();
-        }
-
-        public IReadOnlyList<SuggestionMade> GetSuggestionsFor(PricingCategory pricingCategory)
-        {
-            return ForCategory[pricingCategory];
         }
 
         public IEnumerable<string> SeatNames(PricingCategory pricingCategory)

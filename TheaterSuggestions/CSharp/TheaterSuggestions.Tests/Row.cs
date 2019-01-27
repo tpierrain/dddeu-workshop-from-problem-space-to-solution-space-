@@ -4,8 +4,14 @@ namespace SeatsSuggestions.Tests
 {
     public class Row
     {
-        public string Name { get; set; }
-        public List<Seat> Seats { get; set; } = new List<Seat>();
+        public string Name { get; }
+        public List<Seat> Seats { get; }
+
+        public Row(string name, List<Seat> seats)
+        {
+            Name = name;
+            Seats = seats;
+        }
 
         public SeatAllocation FindAllocation(int partyRequested, PricingCategory pricingCategory)
         {
@@ -14,6 +20,7 @@ namespace SeatsSuggestions.Tests
                 if (seat.IsAvailable() && seat.MatchCategory(pricingCategory))
                 {
                     var seatAllocation = new SeatAllocation(partyRequested, pricingCategory);
+
                     seatAllocation.AddSeat(seat);
 
                     if (seatAllocation.MatchExpectation())

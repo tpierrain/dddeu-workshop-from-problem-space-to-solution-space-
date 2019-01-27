@@ -25,11 +25,6 @@
             return $"{RowName}{Number}";
         }
 
-        public void UpdateCategory(SeatAvailability seatAvailability)
-        {
-            SeatAvailability = seatAvailability;
-        }
-
         public bool MatchCategory(PricingCategory pricingCategory)
         {
             if (pricingCategory == PricingCategory.Mixed)

@@ -4,6 +4,7 @@ namespace SeatsSuggestions.Tests
 {
     public class SeatAllocator
     {
+        private const int NumberOfSuggestions = 3;
         private readonly AuditoriumSeatingAdapter _auditoriumSeatingAdapter;
 
         public SeatAllocator(AuditoriumSeatingAdapter auditoriumSeatingAdapter)
@@ -17,30 +18,27 @@ namespace SeatsSuggestions.Tests
 
             var suggestionsMade = new SuggestionsMade(showId, partyRequested);
 
-            var numberOfSuggestions = 3;
+            suggestionsMade.Add(GiveMeSuggestionsFor(auditoriumSeating, partyRequested, PricingCategory.First));
+            suggestionsMade.Add(GiveMeSuggestionsFor(auditoriumSeating, partyRequested, PricingCategory.Second));
+            suggestionsMade.Add(GiveMeSuggestionsFor(auditoriumSeating, partyRequested, PricingCategory.Third));
+            suggestionsMade.Add(GiveMeSuggestionsFor(auditoriumSeating, partyRequested, PricingCategory.Mixed));
 
-            suggestionsMade.Add(GiveMeSeveralSuggestionFor(partyRequested, auditoriumSeating, numberOfSuggestions,
-                PricingCategory.First));
-            suggestionsMade.Add(GiveMeSeveralSuggestionFor(partyRequested, auditoriumSeating, numberOfSuggestions,
-                PricingCategory.Second));
-            suggestionsMade.Add(GiveMeSeveralSuggestionFor(partyRequested, auditoriumSeating, numberOfSuggestions,
-                PricingCategory.Third));
-            suggestionsMade.Add(GiveMeSeveralSuggestionFor(partyRequested, auditoriumSeating, numberOfSuggestions,
-                PricingCategory.Mixed));
-
-            if (!suggestionsMade.MatchExpectations())
+            if (suggestionsMade.MatchExpectations())
             {
-                return new SuggestionNotAvailable(showId, partyRequested);
+                return suggestionsMade;
             }
 
-            return suggestionsMade;
+            return new SuggestionNotAvailable(showId, partyRequested);
         }
 
-        private static IReadOnlyCollection<SuggestionMade> GiveMeSeveralSuggestionFor(int partyRequested,
-            AuditoriumSeating auditoriumSeating, int numberOfSuggestions, PricingCategory pricingCategory)
+        private static IEnumerable<SuggestionMade> GiveMeSuggestionsFor(
+            AuditoriumSeating auditoriumSeating,
+            int partyRequested,
+            PricingCategory pricingCategory)
         {
             var foundedSuggestions = new List<SuggestionMade>();
-            for (var i = 0; i < numberOfSuggestions; i++)
+
+            for (var i = 0; i < NumberOfSuggestions; i++)
             {
                 var seatAllocation = auditoriumSeating.MakeAllocationFor(partyRequested, pricingCategory);
 

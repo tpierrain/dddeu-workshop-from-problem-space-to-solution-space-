@@ -20,6 +20,8 @@ namespace SeatsSuggestions.Tests
             var seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
 
             var suggestionsMade = seatAllocator.MakeSuggestions(showId, partyRequested);
+            Check.That(suggestionsMade.PartyRequested).IsEqualTo(partyRequested);
+            Check.That(suggestionsMade.ShowId).IsEqualTo(showId);
 
             Check.That(suggestionsMade).IsInstanceOf<SuggestionNotAvailable>();
         }

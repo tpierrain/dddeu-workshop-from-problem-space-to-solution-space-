@@ -4,7 +4,7 @@ namespace SeatsSuggestions.Tests
 {
     public class AuditoriumSeating
     {
-        public readonly Dictionary<string, Row> Rows;
+        private Dictionary<string, Row> Rows { get; }
 
         public AuditoriumSeating(Dictionary<string, Row> rows)
         {
