@@ -22,13 +22,13 @@ namespace SeatsSuggestions
             return new Row(Name, updatedList);
         }
 
-        public SeatingOptionSuggested SuggestSeatingOption(int partyRequested, PricingCategory pricingCategory)
+        public SeatingOptionSuggested SuggestSeatingOption(SuggestionRequest suggestionRequest)
         {
             foreach (var seat in Seats)
             {
-                if (seat.IsAvailable() && seat.MatchCategory(pricingCategory))
+                if (seat.IsAvailable() && seat.MatchCategory(suggestionRequest.PricingCategory))
                 {
-                    var seatingOptionSuggested = new SeatingOptionSuggested(partyRequested, pricingCategory);
+                    var seatingOptionSuggested = new SeatingOptionSuggested(suggestionRequest);
 
                     seatingOptionSuggested.AddSeat(seat);
 
@@ -39,7 +39,7 @@ namespace SeatsSuggestions
                 }
             }
 
-            return new SeatingOptionNotAvailable(partyRequested, pricingCategory);
+            return new SeatingOptionNotAvailable(suggestionRequest);
         }
 
         public Row Allocate(Seat seat)
