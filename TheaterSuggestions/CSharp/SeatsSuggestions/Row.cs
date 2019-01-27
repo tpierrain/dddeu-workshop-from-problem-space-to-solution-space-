@@ -13,6 +13,11 @@ namespace SeatsSuggestions
             Seats = seats;
         }
 
+        public void AddSeat(Seat seat)
+        {
+            this.Seats.Add(seat);
+        }
+
         public SeatAllocation FindAllocation(int partyRequested, PricingCategory pricingCategory)
         {
             foreach (var seat in Seats)

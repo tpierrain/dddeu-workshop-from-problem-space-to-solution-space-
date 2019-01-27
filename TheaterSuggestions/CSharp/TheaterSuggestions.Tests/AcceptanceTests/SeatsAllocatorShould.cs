@@ -3,7 +3,7 @@ using ExternalDependencies.ReservationsProvider;
 using NFluent;
 using NUnit.Framework;
 
-namespace SeatsSuggestions.Tests
+namespace SeatsSuggestions.Tests.AcceptanceTests
 {
     [TestFixture]
     public class SeatsAllocatorShould

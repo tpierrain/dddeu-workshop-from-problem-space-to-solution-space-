@@ -4,16 +4,18 @@ namespace SeatsSuggestions
 {
     public class AuditoriumSeating
     {
-        private Dictionary<string, Row> Rows { get; }
+        public IReadOnlyDictionary<string, Row> Rows => _rows;
+
+        private readonly Dictionary<string, Row> _rows;
 
         public AuditoriumSeating(Dictionary<string, Row> rows)
         {
-            Rows = rows;
+            _rows = rows;
         }
 
         public SeatAllocation MakeAllocationFor(int partyRequested, PricingCategory pricingCategory)
         {
-            foreach (var row in Rows.Values)
+            foreach (var row in _rows.Values)
             {
                 var seatAllocation = row.FindAllocation(partyRequested, pricingCategory);
 
