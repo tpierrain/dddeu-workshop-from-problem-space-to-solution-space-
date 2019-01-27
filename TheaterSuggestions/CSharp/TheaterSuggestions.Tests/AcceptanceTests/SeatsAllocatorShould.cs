@@ -59,13 +59,13 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
             Check.That(suggestionsMade.SeatNames(PricingCategory.Second)).ContainsExactly("A1", "A2", "A9");
             Check.That(suggestionsMade.SeatNames(PricingCategory.Third)).ContainsExactly("E1", "E2", "E3");
 
-            // BUG!!! => return A6, A7, A8 instead of the expected A1, A2, A3
             Check.That(suggestionsMade.SeatNames(PricingCategory.Mixed)).ContainsExactly("A1", "A2", "A3");
         }
 
         [Test]
         public void Offer_adjacent_seats_nearer_the_middle_of_a_row()
         {
+            // FIX ME
             const string showId = "9";
             const int partyRequested = 1;
 
@@ -82,6 +82,7 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
         [Test]
         public void Offer_adjacent_seats_nearer_the_middle_of_a_row_when_it_is_possible()
         {
+            // FIX ME
             const string showId = "3";
             const int partyRequested = 4;
 
@@ -93,9 +94,12 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
             var suggestionsMade = seatAllocator.MakeSuggestions(showId, partyRequested);
 
             Check.That(suggestionsMade.SeatNames(PricingCategory.First)).IsEmpty();
-            Check.That(suggestionsMade.SeatNames(PricingCategory.Second)).ContainsExactly("C4", "C5", "C6", "C7");
-            Check.That(suggestionsMade.SeatNames(PricingCategory.Third)).ContainsExactly("E4", "E5", "E6", "E7");
-            Check.That(suggestionsMade.SeatNames(PricingCategory.Mixed)).ContainsExactly("A6", "A7", "A8", "A9");
+            Check.That(suggestionsMade.SeatNames(PricingCategory.Second))
+                .ContainsExactly("C5-C6-C7-C8", "C1-C2-C3-C4", "D5-D6-D7-D8");
+            Check.That(suggestionsMade.SeatNames(PricingCategory.Third))
+                .ContainsExactly("E5-E6-E7-E8", "E1-E2-E3-E4", "F5-F6-F7-F8");
+            Check.That(suggestionsMade.SeatNames(PricingCategory.Mixed))
+                .ContainsExactly("A6-A7-A8-A9", "B1-B2-B3-B4", "C5-C6-C7-C8");
         }
     }
 }
