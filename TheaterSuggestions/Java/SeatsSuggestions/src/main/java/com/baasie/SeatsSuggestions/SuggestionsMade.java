@@ -38,4 +38,12 @@ public class SuggestionsMade {
     public boolean matchExpectations() {
         return forCategory.values().stream().flatMap(List::stream).anyMatch(SuggestionMade::MatchExpectation);
     }
+
+    public String showId() {
+        return showId;
+    }
+
+    public int partyRequested() {
+        return partyRequested;
+    }
 }

@@ -23,6 +23,8 @@ public class SeatsAllocatorShould {
         SeatAllocator seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
 
         SuggestionsMade suggestionsMade = seatAllocator.makeSuggestion(showId, partyRequested);
+        assertThat(suggestionsMade.partyRequested()).isEqualTo(partyRequested);
+        assertThat(suggestionsMade.showId()).isEqualTo(showId);
 
         assertThat(suggestionsMade).isInstanceOf(SuggestionNotAvailable.class);
     }

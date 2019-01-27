@@ -24,4 +24,8 @@ public class AuditoriumSeating {
 
         return new AllocationNotAvailable(partyRequested, pricingCategory);
     }
+
+    public ImmutableMap<String, Row> rows() {
+        return this.rows;
+    }
 }
