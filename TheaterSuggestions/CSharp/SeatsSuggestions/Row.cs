@@ -15,7 +15,7 @@ namespace SeatsSuggestions
 
         public void AddSeat(Seat seat)
         {
-            this.Seats.Add(seat);
+            Seats.Add(seat);
         }
 
         public SeatAllocation FindAllocation(int partyRequested, PricingCategory pricingCategory)

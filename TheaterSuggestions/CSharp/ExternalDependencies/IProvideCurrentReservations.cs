@@ -1,4 +1,4 @@
-﻿namespace ExternalDependencies.Interfaces
+﻿namespace ExternalDependencies
 {
     public interface IProvideCurrentReservations
     {
