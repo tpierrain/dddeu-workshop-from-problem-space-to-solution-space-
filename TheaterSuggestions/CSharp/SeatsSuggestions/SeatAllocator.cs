@@ -31,7 +31,7 @@ namespace SeatsSuggestions
             return new SuggestionNotAvailable(showId, partyRequested);
         }
 
-        private static IEnumerable<SuggestionMade> GiveMeSuggestionsFor(
+        private IEnumerable<SuggestionMade> GiveMeSuggestionsFor(
             AuditoriumSeating auditoriumSeating,
             int partyRequested,
             PricingCategory pricingCategory)
@@ -44,10 +44,7 @@ namespace SeatsSuggestions
 
                 if (seatAllocation.MatchExpectation())
                 {
-                    foreach (var seat in seatAllocation.Seats)
-                    {
-                        seat.MarkAsAlreadySuggested();
-                    }
+                    auditoriumSeating = auditoriumSeating.MarkSeatsAsSuggested(seatAllocation);
 
                     foundedSuggestions.Add(new SuggestionMade(partyRequested, pricingCategory, seatAllocation.Seats));
                 }

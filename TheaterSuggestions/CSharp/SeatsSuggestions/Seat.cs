@@ -1,6 +1,9 @@
-﻿namespace SeatsSuggestions
+﻿using System.Collections.Generic;
+using Value;
+
+namespace SeatsSuggestions
 {
-    public class Seat
+    public class Seat : ValueType<Seat>
     {
         public Seat(string rowName, uint number, PricingCategory pricingCategory, SeatAvailability seatAvailability)
         {
@@ -13,7 +16,7 @@
         public string RowName { get; }
         public uint Number { get; }
         public PricingCategory PricingCategory { get; }
-        private SeatAvailability SeatAvailability { get; set; }
+        public SeatAvailability SeatAvailability { get; }
 
         public bool IsAvailable()
         {
@@ -35,12 +38,24 @@
             return PricingCategory == pricingCategory;
         }
 
-        public void MarkAsAlreadySuggested()
+        public Seat MarkAsAlreadySuggested()
         {
             if (SeatAvailability == SeatAvailability.Available)
             {
-                SeatAvailability = SeatAvailability.Suggested;
+                return new Seat(RowName, Number, PricingCategory, SeatAvailability.Suggested);
             }
+
+            return this;
+        }
+
+        protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
+        {
+            return new object[] {RowName, Number, PricingCategory, SeatAvailability};
+        }
+
+        public bool SameSeatLocation(Seat seat)
+        {
+            return RowName == seat.RowName && Number == seat.Number;
         }
     }
 }
