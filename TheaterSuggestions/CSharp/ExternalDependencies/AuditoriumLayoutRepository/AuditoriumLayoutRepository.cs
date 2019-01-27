@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace ExternalDependencies.AuditoriumLayoutRepository
 {
@@ -11,7 +13,14 @@ namespace ExternalDependencies.AuditoriumLayoutRepository
         public AuditoriumLayoutRepository()
         {
             var directoryName = $"{GetExecutingAssemblyDirectoryFullPath()}\\AuditoriumLayouts\\";
+            
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                directoryName = $"{GetExecutingAssemblyDirectoryFullPath()}/AuditoriumLayouts/";
+            }
 
+            Console.WriteLine(directoryName);
+            
             foreach (var fileFullName in Directory.EnumerateFiles($"{directoryName}"))
             {
                 if (fileFullName.Contains("_theater.json"))
@@ -41,6 +50,11 @@ namespace ExternalDependencies.AuditoriumLayoutRepository
             if (directoryName.StartsWith(@"file:\"))
             {
                 directoryName = directoryName.Substring(6);
+            }
+
+            if (directoryName.StartsWith(@"file:/"))
+            {
+                directoryName = directoryName.Substring(5);
             }
 
             return directoryName;

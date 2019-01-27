@@ -37,8 +37,9 @@ public class SeatAllocator {
         return suggestionsMade;
     }
 
-    private static ImmutableList<SuggestionMade> giveMeSeveralSuggestionFor(int partyRequested,
-                                                                            AuditoriumSeating auditoriumSeating, int numberOfSuggestions, PricingCategory pricingCategory) {
+    private static ImmutableList<SuggestionMade> giveMeSeveralSuggestionFor(
+            int partyRequested, AuditoriumSeating auditoriumSeating, int numberOfSuggestions, PricingCategory pricingCategory) {
+
         List<SuggestionMade> foundedSuggestions = new ArrayList<>();
         for (int i = 0; i < numberOfSuggestions; i++) {
             SeatAllocation seatAllocation = auditoriumSeating.makeAllocationFor(partyRequested, pricingCategory);
