@@ -38,24 +38,24 @@ namespace SeatsSuggestions
             return PricingCategory == pricingCategory;
         }
 
-        public Seat MarkAsAlreadySuggested()
+        public Seat Allocate()
         {
             if (SeatAvailability == SeatAvailability.Available)
             {
-                return new Seat(RowName, Number, PricingCategory, SeatAvailability.Suggested);
+                return new Seat(RowName, Number, PricingCategory, SeatAvailability.Allocated);
             }
 
             return this;
         }
 
-        protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
-        {
-            return new object[] {RowName, Number, PricingCategory, SeatAvailability};
-        }
-
         public bool SameSeatLocation(Seat seat)
         {
             return RowName == seat.RowName && Number == seat.Number;
+        }
+
+        protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
+        {
+            return new object[] {RowName, Number, PricingCategory, SeatAvailability};
         }
     }
 }

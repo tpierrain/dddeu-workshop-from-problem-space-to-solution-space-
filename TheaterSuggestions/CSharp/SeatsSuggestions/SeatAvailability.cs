@@ -4,6 +4,6 @@
     {
         Reserved,
         Available,
-        Suggested
+        Allocated
     }
 }

@@ -22,13 +22,13 @@ namespace SeatsSuggestions
             return new Row(Name, updatedList);
         }
 
-        public SeatAllocation FindAllocation(int partyRequested, PricingCategory pricingCategory)
+        public SeatOptionsSuggested SuggestSeatingOption(int partyRequested, PricingCategory pricingCategory)
         {
             foreach (var seat in Seats)
             {
                 if (seat.IsAvailable() && seat.MatchCategory(pricingCategory))
                 {
-                    var seatAllocation = new SeatAllocation(partyRequested, pricingCategory);
+                    var seatAllocation = new SeatOptionsSuggested(partyRequested, pricingCategory);
 
                     seatAllocation.AddSeat(seat);
 
@@ -39,24 +39,19 @@ namespace SeatsSuggestions
                 }
             }
 
-            return new AllocationNotAvailable(partyRequested, pricingCategory);
+            return new SeatingOptionNotAvailable(partyRequested, pricingCategory);
         }
 
-        protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
-        {
-            return new object[] {Name, new ListByValue<Seat>(Seats)};
-        }
-
-        public Row UpdateSeat(Seat updatedSeat)
+        public Row Allocate(Seat seat)
         {
             var newVersionOfSeats = new List<Seat>();
 
             foreach (var currentSeat in Seats)
             {
-                if (currentSeat.SameSeatLocation(updatedSeat))
+                if (currentSeat.SameSeatLocation(seat))
                 {
-                    newVersionOfSeats.Add(new Seat(updatedSeat.RowName, updatedSeat.Number, updatedSeat.PricingCategory,
-                        updatedSeat.SeatAvailability));
+                    newVersionOfSeats.Add(new Seat(seat.RowName, seat.Number, seat.PricingCategory,
+                        SeatAvailability.Allocated));
                 }
                 else
                 {
@@ -64,7 +59,12 @@ namespace SeatsSuggestions
                 }
             }
 
-            return new Row(updatedSeat.RowName, newVersionOfSeats);
+            return new Row(seat.RowName, newVersionOfSeats);
+        }
+
+        protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
+        {
+            return new object[] {Name, new ListByValue<Seat>(Seats)};
         }
     }
 }

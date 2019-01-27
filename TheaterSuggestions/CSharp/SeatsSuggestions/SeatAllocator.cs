@@ -4,7 +4,7 @@ namespace SeatsSuggestions
 {
     public class SeatAllocator
     {
-        private const int NumberOfSuggestions = 3;
+        private const int NumberOfSuggestionsPerPricingCategory = 3;
         private readonly AuditoriumSeatingAdapter _auditoriumSeatingAdapter;
 
         public SeatAllocator(AuditoriumSeatingAdapter auditoriumSeatingAdapter)
@@ -31,22 +31,24 @@ namespace SeatsSuggestions
             return new SuggestionNotAvailable(showId, partyRequested);
         }
 
-        private IEnumerable<SuggestionMade> GiveMeSuggestionsFor(
+        private static IEnumerable<SuggestionMade> GiveMeSuggestionsFor(
             AuditoriumSeating auditoriumSeating,
             int partyRequested,
             PricingCategory pricingCategory)
         {
             var foundedSuggestions = new List<SuggestionMade>();
 
-            for (var i = 0; i < NumberOfSuggestions; i++)
+            for (var i = 0; i < NumberOfSuggestionsPerPricingCategory; i++)
             {
-                var seatAllocation = auditoriumSeating.MakeAllocationFor(partyRequested, pricingCategory);
+                var seatOptionsSuggested = auditoriumSeating.SuggestSeatingOptionFor(partyRequested, pricingCategory);
 
-                if (seatAllocation.MatchExpectation())
+                if (seatOptionsSuggested.MatchExpectation())
                 {
-                    auditoriumSeating = auditoriumSeating.MarkSeatsAsSuggested(seatAllocation);
+                    // We get the new version of the Auditorium after the allocation
+                    auditoriumSeating = auditoriumSeating.Allocate(seatOptionsSuggested);
 
-                    foundedSuggestions.Add(new SuggestionMade(partyRequested, pricingCategory, seatAllocation.Seats));
+                    foundedSuggestions.Add(new SuggestionMade(partyRequested, pricingCategory,
+                        seatOptionsSuggested.Seats));
                 }
             }
 
