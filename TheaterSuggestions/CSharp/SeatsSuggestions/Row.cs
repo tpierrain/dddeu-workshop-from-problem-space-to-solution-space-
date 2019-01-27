@@ -26,9 +26,16 @@ namespace SeatsSuggestions
         {
             var seatingOptionSuggested = new SeatingOptionSuggested(suggestionRequest);
 
-            foreach (var seat in SelectAvailableSeatsCompliantWith(suggestionRequest.PricingCategory))
+            var availableSeatsCompliant = Seats.SelectAvailableSeatsCompliant(suggestionRequest.PricingCategory);
+
+            var adjacentSeatsOfExpectedSize =
+                availableSeatsCompliant.SelectAdjacentSeats(suggestionRequest.PartyRequested);
+
+            var adjacentSeatsOrdered = adjacentSeatsOfExpectedSize.OrderByMiddleOfTheRow(Seats.Count);
+
+            foreach (var adjacentSeats in adjacentSeatsOrdered)
             {
-                seatingOptionSuggested.AddSeat(seat);
+                seatingOptionSuggested.AddSeats(adjacentSeats);
 
                 if (seatingOptionSuggested.MatchExpectation())
                 {
@@ -37,11 +44,6 @@ namespace SeatsSuggestions
             }
 
             return new SeatingOptionNotAvailable(suggestionRequest);
-        }
-
-        private IEnumerable<Seat> SelectAvailableSeatsCompliantWith(PricingCategory pricingCategory)
-        {
-            return Seats.Where(s => s.IsAvailable() && s.MatchCategory(pricingCategory));
         }
 
         public Row Allocate(Seat seat)

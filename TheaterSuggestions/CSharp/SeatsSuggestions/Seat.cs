@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Value;
 
 namespace SeatsSuggestions
@@ -56,6 +57,36 @@ namespace SeatsSuggestions
         protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
         {
             return new object[] {RowName, Number, PricingCategory, SeatAvailability};
+        }
+
+        public bool IsAdjacentWith(uint number)
+        {
+            return Number + 1 == number || Number - 1 == number;
+        }
+
+        public int ComputeDistanceFromRowCentroid(int rowSize)
+        {
+            var distance = 0;
+            var centroidIndex = Math.Abs(rowSize / 2);
+
+            if (rowSize % 2 == 0)
+            {
+                if (Number == centroidIndex || Number == centroidIndex + 1) return 0;
+                if (Number < centroidIndex)
+                {
+                    distance = (int) Math.Abs(Number - centroidIndex);
+                }
+                else
+                {
+                    distance = (int) Math.Abs(Number - centroidIndex) - 1;
+                }
+            }
+            else
+            {
+                distance = (int) Math.Abs(Number - centroidIndex);
+            }
+
+            return distance;
         }
     }
 }
