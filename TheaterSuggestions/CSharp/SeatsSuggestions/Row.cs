@@ -24,22 +24,24 @@ namespace SeatsSuggestions
 
         public SeatingOptionSuggested SuggestSeatingOption(SuggestionRequest suggestionRequest)
         {
-            foreach (var seat in Seats)
+            var seatingOptionSuggested = new SeatingOptionSuggested(suggestionRequest);
+
+            foreach (var seat in SelectAvailableSeatsCompliantWith(suggestionRequest.PricingCategory))
             {
-                if (seat.IsAvailable() && seat.MatchCategory(suggestionRequest.PricingCategory))
+                seatingOptionSuggested.AddSeat(seat);
+
+                if (seatingOptionSuggested.MatchExpectation())
                 {
-                    var seatingOptionSuggested = new SeatingOptionSuggested(suggestionRequest);
-
-                    seatingOptionSuggested.AddSeat(seat);
-
-                    if (seatingOptionSuggested.MatchExpectation())
-                    {
-                        return seatingOptionSuggested;
-                    }
+                    return seatingOptionSuggested;
                 }
             }
 
             return new SeatingOptionNotAvailable(suggestionRequest);
+        }
+
+        private IEnumerable<Seat> SelectAvailableSeatsCompliantWith(PricingCategory pricingCategory)
+        {
+            return Seats.Where(s => s.IsAvailable() && s.MatchCategory(pricingCategory));
         }
 
         public Row Allocate(Seat seat)
