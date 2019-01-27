@@ -22,19 +22,19 @@ namespace SeatsSuggestions
             return new Row(Name, updatedList);
         }
 
-        public SeatOptionsSuggested SuggestSeatingOption(int partyRequested, PricingCategory pricingCategory)
+        public SeatingOptionSuggested SuggestSeatingOption(int partyRequested, PricingCategory pricingCategory)
         {
             foreach (var seat in Seats)
             {
                 if (seat.IsAvailable() && seat.MatchCategory(pricingCategory))
                 {
-                    var seatAllocation = new SeatOptionsSuggested(partyRequested, pricingCategory);
+                    var seatingOptionSuggested = new SeatingOptionSuggested(partyRequested, pricingCategory);
 
-                    seatAllocation.AddSeat(seat);
+                    seatingOptionSuggested.AddSeat(seat);
 
-                    if (seatAllocation.MatchExpectation())
+                    if (seatingOptionSuggested.MatchExpectation())
                     {
-                        return seatAllocation;
+                        return seatingOptionSuggested;
                     }
                 }
             }
