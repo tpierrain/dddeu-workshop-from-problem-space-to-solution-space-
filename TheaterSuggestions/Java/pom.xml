@@ -23,7 +23,8 @@
 
     <modules>
         <module>ExternalApis</module>
-        <module>SeatsSuggestions</module>
+        <module>SeatsSuggestionsDomain</module>
+        <module>SeatsSuggestionsInfra</module>
         <module>SeatsSuggestionsAcceptanceTests</module>
     </modules>
 
