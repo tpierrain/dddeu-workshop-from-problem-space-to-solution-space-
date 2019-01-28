@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SeatsSuggestions
+namespace SeatsSuggestions.Domain
 {
     public class SeatingOptionSuggested
     {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using NFluent;
 using NUnit.Framework;
+using SeatsSuggestions.Domain;
 
 namespace SeatsSuggestions.Tests.UnitTests
 {

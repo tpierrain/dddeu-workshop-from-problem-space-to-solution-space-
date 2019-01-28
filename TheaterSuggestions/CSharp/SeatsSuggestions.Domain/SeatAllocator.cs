@@ -1,20 +1,21 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace SeatsSuggestions
+namespace SeatsSuggestions.Domain
 {
     public class SeatAllocator
     {
         private const int NumberOfSuggestionsPerPricingCategory = 3;
-        private readonly AuditoriumSeatingAdapter _auditoriumSeatingAdapter;
+        private readonly IAdaptAuditoriumSeating _auditoriumSeatingAdapter;
 
-        public SeatAllocator(AuditoriumSeatingAdapter auditoriumSeatingAdapter)
+        public SeatAllocator(IAdaptAuditoriumSeating auditoriumSeatingAdapter)
         {
             _auditoriumSeatingAdapter = auditoriumSeatingAdapter;
         }
 
-        public SuggestionsMade MakeSuggestions(string showId, int partyRequested)
+        public async Task<SuggestionsMade> MakeSuggestions(string showId, int partyRequested)
         {
-            var auditoriumSeating = _auditoriumSeatingAdapter.GetAuditoriumSeating(showId);
+            var auditoriumSeating = await _auditoriumSeatingAdapter.GetAuditoriumSeating(showId);
 
             var suggestionsMade = new SuggestionsMade(showId, partyRequested);
 

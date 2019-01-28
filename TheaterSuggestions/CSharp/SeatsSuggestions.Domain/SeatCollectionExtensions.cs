@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SeatsSuggestions
+namespace SeatsSuggestions.Domain
 {
     public static class SeatCollectionExtensions
     {
@@ -86,7 +86,7 @@ namespace SeatsSuggestions
 
         internal static int ComputeDistanceFromCentroid(this uint seatLocation, int rowSize)
         {
-            return (int)Math.Abs(seatLocation - rowSize.CentroidIndex());
+            return (int) Math.Abs(seatLocation - rowSize.CentroidIndex());
         }
 
         internal static bool IsCentroid(this uint seatLocation, int rowSize)

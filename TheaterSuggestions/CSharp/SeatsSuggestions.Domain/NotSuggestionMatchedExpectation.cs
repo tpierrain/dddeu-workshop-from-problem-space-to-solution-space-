@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SeatsSuggestions
+namespace SeatsSuggestions.Domain
 {
     internal class NotSuggestionMatchedExpectation : SuggestionMade
     {

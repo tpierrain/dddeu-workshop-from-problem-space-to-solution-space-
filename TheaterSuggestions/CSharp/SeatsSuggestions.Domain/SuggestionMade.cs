@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace SeatsSuggestions
+namespace SeatsSuggestions.Domain
 {
     /// <summary>
     ///     Occurs when a Suggestion is made.

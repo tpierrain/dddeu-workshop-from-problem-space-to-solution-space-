@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace ExternalDependencies.AuditoriumLayoutRepository
 {
@@ -13,14 +14,14 @@ namespace ExternalDependencies.AuditoriumLayoutRepository
         public AuditoriumLayoutRepository()
         {
             var directoryName = $"{GetExecutingAssemblyDirectoryFullPath()}\\AuditoriumLayouts\\";
-            
+
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 directoryName = $"{GetExecutingAssemblyDirectoryFullPath()}/AuditoriumLayouts/";
             }
 
             Console.WriteLine(directoryName);
-            
+
             foreach (var fileFullName in Directory.EnumerateFiles($"{directoryName}"))
             {
                 if (fileFullName.Contains("_theater.json"))
@@ -33,14 +34,14 @@ namespace ExternalDependencies.AuditoriumLayoutRepository
             }
         }
 
-        public AuditoriumDto GetAuditoriumSeatingFor(string showId)
+        public Task<AuditoriumDto> GetAuditoriumSeatingFor(string showId)
         {
             if (_repository.ContainsKey(showId))
             {
-                return _repository[showId];
+                return Task.FromResult(_repository[showId]);
             }
 
-            return new AuditoriumDto();
+            return Task.FromResult(new AuditoriumDto());
         }
 
         private static string GetExecutingAssemblyDirectoryFullPath()

@@ -1,4 +1,4 @@
-﻿namespace SeatsSuggestions
+﻿namespace SeatsSuggestions.Domain
 {
     /// <summary>
     ///     Occurs when a Suggestion that does not meet expectation is made.

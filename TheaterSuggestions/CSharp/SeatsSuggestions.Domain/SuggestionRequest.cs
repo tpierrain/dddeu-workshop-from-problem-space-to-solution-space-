@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Value;
 
-namespace SeatsSuggestions
+namespace SeatsSuggestions.Domain
 {
     public class SuggestionRequest : ValueType<SuggestionRequest>
     {
