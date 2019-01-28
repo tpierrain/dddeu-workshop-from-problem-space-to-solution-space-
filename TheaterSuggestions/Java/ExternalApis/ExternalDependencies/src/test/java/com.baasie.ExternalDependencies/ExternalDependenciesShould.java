@@ -9,11 +9,12 @@ import org.hamcrest.collection.IsCollectionWithSize;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class ExternalDependenciesShould {
 
     @Test
-    public void allow_us_to_retrieve_reserved_seats_for_a_given_ShowId() throws IOException {
+    public void allow_us_to_retrieve_reserved_seats_for_a_given_ShowId() throws IOException, URISyntaxException {
         ReservationsProvider seatsRepository = new ReservationsProvider();
         ReservedSeatsDto reservedSeatsDto = seatsRepository.getReservedSeats("1");
 
@@ -28,7 +29,7 @@ public class ExternalDependenciesShould {
     }
 
     @Test
-    public void allow_us_to_retrieve_AuditoriumLayout_for_a_given_ShowId() throws IOException {
+    public void allow_us_to_retrieve_AuditoriumLayout_for_a_given_ShowId() throws IOException, URISyntaxException {
 
         AuditoriumLayoutRepository eventRepository = new AuditoriumLayoutRepository();
         AuditoriumDto theaterDto = eventRepository.GetAuditoriumLayoutFor("2");

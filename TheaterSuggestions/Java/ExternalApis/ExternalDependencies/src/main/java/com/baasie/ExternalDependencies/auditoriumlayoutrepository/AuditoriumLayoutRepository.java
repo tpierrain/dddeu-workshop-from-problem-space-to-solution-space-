@@ -1,9 +1,12 @@
 package com.baasie.ExternalDependencies.auditoriumlayoutrepository;
 
+import com.baasie.ExternalDependencies.IProvideAuditoriumLayouts;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,13 +14,13 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AuditoriumLayoutRepository {
+@Service
+public class AuditoriumLayoutRepository implements IProvideAuditoriumLayouts {
 
     private Map<String, AuditoriumDto> repository = new HashMap<>();
 
-    public AuditoriumLayoutRepository() throws IOException {
-        String jsonDirectory = Paths.get(System.getProperty("user.dir")).getParent().getParent().getParent().toString() + "/Stubs/AuditoriumLayouts";
-
+    public AuditoriumLayoutRepository() throws IOException, URISyntaxException {
+        String jsonDirectory = Paths.get(ClassLoader.getSystemResource("AuditoriumLayouts").toURI()).toString();
         DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get(jsonDirectory));
 
         for (Path path : directoryStream) {
@@ -37,8 +40,7 @@ public class AuditoriumLayoutRepository {
     }
 
     public AuditoriumDto getAuditoriumSeatingFor(String showId) {
-        if (repository.containsKey(showId))
-        {
+        if (repository.containsKey(showId)) {
             return repository.get(showId);
         }
 

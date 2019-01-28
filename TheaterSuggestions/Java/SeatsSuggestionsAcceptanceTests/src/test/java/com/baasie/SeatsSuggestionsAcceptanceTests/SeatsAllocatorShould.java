@@ -6,6 +6,7 @@ import com.baasie.SeatsSuggestions.*;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -13,7 +14,7 @@ public class SeatsAllocatorShould {
 
 
     @Test
-    public void Return_SeatsNotAvailable_when_Auditorium_has_all_its_seats_already_reserved() throws IOException {
+    public void Return_SeatsNotAvailable_when_Auditorium_has_all_its_seats_already_reserved() throws IOException, URISyntaxException {
         final String showId = "5";
         final int partyRequested = 1;
 
@@ -28,7 +29,7 @@ public class SeatsAllocatorShould {
     }
 
     @Test
-    public void Suggest_one_seat_when_Auditorium_contains_one_available_seat_only() throws IOException {
+    public void Suggest_one_seat_when_Auditorium_contains_one_available_seat_only() throws IOException, URISyntaxException {
         final String showId = "1";
         final int partyRequested = 1;
 
@@ -43,7 +44,7 @@ public class SeatsAllocatorShould {
     }
 
     @Test
-    public void Offer_several_suggestions_ie_1_per_PricingCategory_and_other_one_without_category_affinity() throws IOException {
+    public void Offer_several_suggestions_ie_1_per_PricingCategory_and_other_one_without_category_affinity() throws IOException, URISyntaxException {
         final String showId = "18";
         final int partyRequested = 1;
 
@@ -62,7 +63,7 @@ public class SeatsAllocatorShould {
     }
 
     @Test
-    public void Offer_adjacent_seats_nearer_the_middle_of_a_row() throws IOException {
+    public void Offer_adjacent_seats_nearer_the_middle_of_a_row() throws IOException, URISyntaxException {
         // FIX ME
         final String showId = "9";
         final int partyRequested = 1;
@@ -78,7 +79,7 @@ public class SeatsAllocatorShould {
     }
 
     @Test
-    public void Offer_adjacent_seats_nearer_the_middle_of_a_row_when_it_is_possible() throws IOException {
+    public void Offer_adjacent_seats_nearer_the_middle_of_a_row_when_it_is_possible() throws IOException, URISyntaxException {
         // FIX ME
         final String showId = "3";
         final int partyRequested = 4;

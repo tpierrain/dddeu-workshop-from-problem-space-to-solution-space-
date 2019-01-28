@@ -5,13 +5,14 @@ import com.baasie.ExternalDependencies.reservationsprovider.ReservationsProvider
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import static com.google.common.truth.Truth.assertThat;
 
 public class AuditoriumSeatingTest {
 
     @Test
-    public void be_a_Value_Type() throws IOException {
+    public void be_a_Value_Type() throws IOException, URISyntaxException {
         AuditoriumSeatingAdapter auditoriumLayoutAdapter =
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
 

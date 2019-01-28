@@ -4,15 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.2.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <groupId>com.baasie</groupId>
+        <artifactId>SeatsSuggestionsParent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-
-    <groupId>com.baasie</groupId>
-    <artifactId>SeatsSuggestionsParent</artifactId>
+    <artifactId>ExternalApis</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -22,24 +19,18 @@
     </properties>
 
     <modules>
-        <module>ExternalApis</module>
-        <module>SeatsSuggestions</module>
-        <module>SeatsSuggestionsAcceptanceTests</module>
+        <module>ExternalDependencies</module>
+        <module>AuditoriumLayoutApi</module>
+        <module>SeatReservationsApi</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.baasie</groupId>
-                <artifactId>SeatsSuggestions</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.baasie</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>ExternalDependencies</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
 
             <dependency>
                 <groupId>com.google.guava</groupId>
@@ -48,7 +39,18 @@
             </dependency>
 
             <!-- TEST dependencies -->
-
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>3.11.1</version>
+                <scope>test</scope>
+            </dependency>
             <dependency>
                 <groupId>org.hamcrest</groupId>
                 <artifactId>hamcrest-all</artifactId>
@@ -69,18 +71,5 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>8</source>
-                    <target>8</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>
