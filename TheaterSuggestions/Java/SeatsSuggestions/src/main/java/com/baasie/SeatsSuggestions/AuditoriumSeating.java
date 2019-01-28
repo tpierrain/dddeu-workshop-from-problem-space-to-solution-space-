@@ -12,17 +12,17 @@ public class AuditoriumSeating {
         this.rows = ImmutableMap.copyOf(rows);
     }
 
-    public SeatAllocation makeAllocationFor(int partyRequested, PricingCategory pricingCategory) {
+    public SeatingOptionSuggested suggestSeatingOptionFor(int partyRequested, PricingCategory pricingCategory) {
         for (Row row : rows.values()) {
-            SeatAllocation seatAllocation = row.findAllocation(partyRequested, pricingCategory);
+            SeatingOptionSuggested seatingOptionSuggested = row.suggestSeatingOption(partyRequested, pricingCategory);
 
-            if (seatAllocation.matchExpectation()) {
-                // Cool, we mark the seat as Suggested (that we turns into a SuggestionMode)
-                return seatAllocation;
+            if (seatingOptionSuggested.matchExpectation()) {
+                // Cool, we mark the seat as Allocated (that we turns into a SuggestionMode)
+                return seatingOptionSuggested;
             }
         }
 
-        return new AllocationNotAvailable(partyRequested, pricingCategory);
+        return new SeatingOptionNotAvailable(partyRequested, pricingCategory);
     }
 
     public ImmutableMap<String, Row> rows() {

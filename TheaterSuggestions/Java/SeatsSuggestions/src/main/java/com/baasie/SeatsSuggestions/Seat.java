@@ -26,9 +26,9 @@ public class Seat {
         return this.pricingCategory == pricingCategory;
     }
 
-    public void markAsAlreadySuggested() {
+    public void allocate() {
         if (seatAvailability == SeatAvailability.Available) {
-            seatAvailability = SeatAvailability.Suggested;
+            seatAvailability = SeatAvailability.Allocated;
         }
     }
 

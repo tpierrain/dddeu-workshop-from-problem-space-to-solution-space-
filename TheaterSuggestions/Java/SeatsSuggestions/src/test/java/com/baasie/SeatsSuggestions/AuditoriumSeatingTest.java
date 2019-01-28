@@ -24,7 +24,7 @@ public class AuditoriumSeatingTest {
         assertThat(auditoriumSeatingSecondInstance).isEqualTo(auditoriumSeatingFirstInstance);
 
         // Should not mutate existing instance
-        auditoriumSeatingSecondInstance.rows().values().iterator().next().seats().iterator().next().markAsAlreadySuggested();
+        auditoriumSeatingSecondInstance.rows().values().iterator().next().seats().iterator().next().allocate();
         assertThat(auditoriumSeatingSecondInstance).isEqualTo(auditoriumSeatingFirstInstance);
     }
 

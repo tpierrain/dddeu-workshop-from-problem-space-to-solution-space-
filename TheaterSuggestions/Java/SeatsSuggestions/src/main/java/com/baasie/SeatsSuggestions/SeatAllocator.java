@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SeatAllocator {
-
+    private static final int NUMBER_OF_SUGGESTIONS = 3;
     private final AuditoriumSeatingAdapter auditoriumSeatingAdapter;
 
     public SeatAllocator(AuditoriumSeatingAdapter auditoriumLayoutAdapter) {
@@ -21,13 +21,13 @@ public class SeatAllocator {
 
         int numberOfSuggestions = 3;
 
-        suggestionsMade.add(giveMeSeveralSuggestionFor(partyRequested, auditoriumSeating, numberOfSuggestions,
+        suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating, partyRequested,
                 PricingCategory.First));
-        suggestionsMade.add(giveMeSeveralSuggestionFor(partyRequested, auditoriumSeating, numberOfSuggestions,
+        suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating,partyRequested,
                 PricingCategory.Second));
-        suggestionsMade.add(giveMeSeveralSuggestionFor(partyRequested, auditoriumSeating, numberOfSuggestions,
+        suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating,partyRequested,
                 PricingCategory.Third));
-        suggestionsMade.add(giveMeSeveralSuggestionFor(partyRequested, auditoriumSeating, numberOfSuggestions,
+        suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating,partyRequested,
                 PricingCategory.Mixed));
 
         if (!suggestionsMade.matchExpectations()) {
@@ -37,16 +37,16 @@ public class SeatAllocator {
         return suggestionsMade;
     }
 
-    private static ImmutableList<SuggestionMade> giveMeSeveralSuggestionFor(
-            int partyRequested, AuditoriumSeating auditoriumSeating, int numberOfSuggestions, PricingCategory pricingCategory) {
+    private static ImmutableList<SuggestionMade> giveMeSuggestionsFor(
+            AuditoriumSeating auditoriumSeating, int partyRequested,  PricingCategory pricingCategory) {
 
         List<SuggestionMade> foundedSuggestions = new ArrayList<>();
-        for (int i = 0; i < numberOfSuggestions; i++) {
-            SeatAllocation seatAllocation = auditoriumSeating.makeAllocationFor(partyRequested, pricingCategory);
+        for (int i = 0; i < NUMBER_OF_SUGGESTIONS; i++) {
+            SeatingOptionSuggested seatingOptionSuggested = auditoriumSeating.suggestSeatingOptionFor(partyRequested, pricingCategory);
 
-            if (seatAllocation.matchExpectation()) {
-                seatAllocation.seats().forEach(Seat::markAsAlreadySuggested);
-                foundedSuggestions.add(new SuggestionMade(seatAllocation.seats(), partyRequested, pricingCategory));
+            if (seatingOptionSuggested.matchExpectation()) {
+                seatingOptionSuggested.seats().forEach(Seat::allocate);
+                foundedSuggestions.add(new SuggestionMade(seatingOptionSuggested.seats(), partyRequested, pricingCategory));
             }
         }
 

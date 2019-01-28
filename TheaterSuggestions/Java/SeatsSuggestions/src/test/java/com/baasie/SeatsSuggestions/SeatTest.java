@@ -16,7 +16,7 @@ public class SeatTest {
         assertThat(secondInstance).isEqualTo(firstInstance);
 
         // Should not mutate existing instance
-        secondInstance.markAsAlreadySuggested();
+        secondInstance.allocate();
         assertThat(secondInstance).isEqualTo(firstInstance);
     }
 }

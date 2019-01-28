@@ -15,19 +15,19 @@ public class Row {
         seats.add(seat);
     }
 
-    public SeatAllocation findAllocation(int partyRequested, PricingCategory pricingCategory) {
+    public SeatingOptionSuggested suggestSeatingOption(int partyRequested, PricingCategory pricingCategory) {
         for (Seat seat : seats) {
             if (seat.isAvailable() && seat.matchCategory(pricingCategory)) {
-                SeatAllocation seatAllocation = new SeatAllocation(partyRequested, pricingCategory);
-                seatAllocation.addSeat(seat);
+                SeatingOptionSuggested seatingOptionSuggested = new SeatingOptionSuggested(partyRequested, pricingCategory);
+                seatingOptionSuggested.addSeat(seat);
 
-                if (seatAllocation.matchExpectation()) {
-                    return seatAllocation;
+                if (seatingOptionSuggested.matchExpectation()) {
+                    return seatingOptionSuggested;
                 }
             }
         }
 
-        return new AllocationNotAvailable(partyRequested, pricingCategory);
+        return new SeatingOptionNotAvailable(partyRequested, pricingCategory);
     }
 
     public List<Seat> seats() {
