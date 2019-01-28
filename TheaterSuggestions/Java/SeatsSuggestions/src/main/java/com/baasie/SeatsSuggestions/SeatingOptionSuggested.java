@@ -3,13 +3,13 @@ package com.baasie.SeatsSuggestions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SeatAllocation {
+public class SeatingOptionSuggested {
 
     private PricingCategory pricingCategory;
     private List<Seat> seats = new ArrayList<>();
     private int partyRequested;
 
-    public SeatAllocation(int partyRequested, PricingCategory pricingCategory) {
+    public SeatingOptionSuggested(int partyRequested, PricingCategory pricingCategory) {
         this.pricingCategory = pricingCategory;
         this.partyRequested = partyRequested;
     }
