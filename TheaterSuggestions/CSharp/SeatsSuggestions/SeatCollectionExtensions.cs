@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SeatsSuggestions
@@ -76,6 +77,28 @@ namespace SeatsSuggestions
             var orderByMiddleOfTheRow = sortedAdjacentSeatsGroups.Values.SelectMany(l => l);
 
             return orderByMiddleOfTheRow;
+        }
+
+        internal static int CentroidIndex(this int rowSize)
+        {
+            return Math.Abs(rowSize / 2);
+        }
+
+        internal static int ComputeDistanceFromCentroid(this uint seatLocation, int rowSize)
+        {
+            return (int)Math.Abs(seatLocation - rowSize.CentroidIndex());
+        }
+
+        internal static bool IsCentroid(this uint seatLocation, int rowSize)
+        {
+            var centroidIndex = rowSize.CentroidIndex();
+
+            return seatLocation == centroidIndex || seatLocation == centroidIndex + 1;
+        }
+
+        internal static bool IsOdd(this int rowSize)
+        {
+            return rowSize % 2 != 0;
         }
     }
 }

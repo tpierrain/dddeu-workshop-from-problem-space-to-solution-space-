@@ -36,12 +36,12 @@ namespace SeatsSuggestions
             int partyRequested,
             PricingCategory pricingCategory)
         {
-            var suggestionRequest = new SuggestionRequest(partyRequested, pricingCategory);
             var foundedSuggestions = new List<SuggestionMade>();
 
             for (var i = 0; i < NumberOfSuggestionsPerPricingCategory; i++)
             {
-                var seatOptionsSuggested = auditoriumSeating.SuggestSeatingOptionFor(suggestionRequest);
+                var seatOptionsSuggested = auditoriumSeating
+                    .SuggestSeatingOptionFor(new SuggestionRequest(partyRequested, pricingCategory));
 
                 if (seatOptionsSuggested.MatchExpectation())
                 {

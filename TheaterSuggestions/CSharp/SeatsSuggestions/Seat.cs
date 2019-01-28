@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Value;
 
 namespace SeatsSuggestions
@@ -22,11 +21,6 @@ namespace SeatsSuggestions
         public bool IsAvailable()
         {
             return SeatAvailability == SeatAvailability.Available;
-        }
-
-        public override string ToString()
-        {
-            return $"{RowName}{Number}";
         }
 
         public bool MatchCategory(PricingCategory pricingCategory)
@@ -54,11 +48,6 @@ namespace SeatsSuggestions
             return RowName == seat.RowName && Number == seat.Number;
         }
 
-        protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
-        {
-            return new object[] {RowName, Number, PricingCategory, SeatAvailability};
-        }
-
         public bool IsAdjacentWith(uint number)
         {
             return Number + 1 == number || Number - 1 == number;
@@ -66,27 +55,34 @@ namespace SeatsSuggestions
 
         public int ComputeDistanceFromRowCentroid(int rowSize)
         {
-            var distance = 0;
-            var centroidIndex = Math.Abs(rowSize / 2);
+            var seatLocation = Number;
 
-            if (rowSize % 2 == 0)
+            if (rowSize.IsOdd())
             {
-                if (Number == centroidIndex || Number == centroidIndex + 1) return 0;
-                if (Number < centroidIndex)
-                {
-                    distance = (int) Math.Abs(Number - centroidIndex);
-                }
-                else
-                {
-                    distance = (int) Math.Abs(Number - centroidIndex) - 1;
-                }
-            }
-            else
-            {
-                distance = (int) Math.Abs(Number - centroidIndex);
+                return seatLocation.ComputeDistanceFromCentroid(rowSize);
             }
 
-            return distance;
+            if (seatLocation.IsCentroid(rowSize))
+            {
+                return 0;
+            }
+
+            if (seatLocation < rowSize.CentroidIndex())
+            {
+                return seatLocation.ComputeDistanceFromCentroid(rowSize);
+            }
+
+            return seatLocation.ComputeDistanceFromCentroid(rowSize) - 1;
+        }
+
+        protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
+        {
+            return new object[] {RowName, Number, PricingCategory, SeatAvailability};
+        }
+
+        public override string ToString()
+        {
+            return $"{RowName}{Number}";
         }
     }
 }
