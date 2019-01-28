@@ -13,7 +13,7 @@ public class SeatAllocator {
         this.auditoriumSeatingAdapter = auditoriumLayoutAdapter;
     }
 
-    public SuggestionsMade makeSuggestion(String showId, int partyRequested) {
+    public SuggestionsMade makeSuggestions(String showId, int partyRequested) {
 
         AuditoriumSeating auditoriumSeating = auditoriumSeatingAdapter.getAuditoriumSeating(showId);
 

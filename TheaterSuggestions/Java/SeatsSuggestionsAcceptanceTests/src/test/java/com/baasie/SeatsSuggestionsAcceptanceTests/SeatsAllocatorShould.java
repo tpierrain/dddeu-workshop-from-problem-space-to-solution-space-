@@ -22,7 +22,7 @@ public class SeatsAllocatorShould {
 
         SeatAllocator seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
 
-        SuggestionsMade suggestionsMade = seatAllocator.makeSuggestion(showId, partyRequested);
+        SuggestionsMade suggestionsMade = seatAllocator.makeSuggestions(showId, partyRequested);
 
         assertThat(suggestionsMade).isInstanceOf(SuggestionNotAvailable.class);
     }
@@ -37,7 +37,7 @@ public class SeatsAllocatorShould {
 
         SeatAllocator seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
 
-        SuggestionsMade suggestionsMade = seatAllocator.makeSuggestion(showId, partyRequested);
+        SuggestionsMade suggestionsMade = seatAllocator.makeSuggestions(showId, partyRequested);
 
         assertThat(suggestionsMade.seatNames(PricingCategory.First)).containsExactly("A3");
     }
@@ -52,14 +52,51 @@ public class SeatsAllocatorShould {
 
         SeatAllocator seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
 
-        SuggestionsMade suggestionsMade = seatAllocator.makeSuggestion(showId, partyRequested);
+        SuggestionsMade suggestionsMade = seatAllocator.makeSuggestions(showId, partyRequested);
 
         assertThat(suggestionsMade.seatNames(PricingCategory.First)).containsExactly("A3", "A4", "A5");
         assertThat(suggestionsMade.seatNames(PricingCategory.Second)).containsExactly("A1", "A2", "A9");
         assertThat(suggestionsMade.seatNames(PricingCategory.Third)).containsExactly("E1", "E2", "E3");
 
-        // BUG!!! => return A6, A7, A8 instead of the expected A1, A2, A3
         assertThat(suggestionsMade.seatNames(PricingCategory.Mixed)).containsExactly("A1", "A2", "A3");
+    }
+
+    @Test
+    public void Offer_adjacent_seats_nearer_the_middle_of_a_row() throws IOException {
+        // FIX ME
+        final String showId = "9";
+        final int partyRequested = 1;
+
+        AuditoriumSeatingAdapter auditoriumLayoutAdapter =
+                new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
+
+        SeatAllocator seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
+
+        SuggestionsMade suggestionsMade = seatAllocator.makeSuggestions(showId, partyRequested);
+
+        assertThat(suggestionsMade.seatNames(PricingCategory.First)).containsExactly("A4", "A3", "B5");
+    }
+
+    @Test
+    public void Offer_adjacent_seats_nearer_the_middle_of_a_row_when_it_is_possible() throws IOException {
+        // FIX ME
+        final String showId = "3";
+        final int partyRequested = 4;
+
+        AuditoriumSeatingAdapter auditoriumLayoutAdapter =
+                new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
+
+        SeatAllocator seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
+
+        SuggestionsMade suggestionsMade = seatAllocator.makeSuggestions(showId, partyRequested);
+
+        assertThat(suggestionsMade.seatNames(PricingCategory.First)).isEmpty();
+        assertThat(suggestionsMade.seatNames(PricingCategory.Second))
+                .containsExactly("C5-C6-C7-C8", "C1-C2-C3-C4", "D5-D6-D7-D8");
+        assertThat(suggestionsMade.seatNames(PricingCategory.Third))
+                .containsExactly("E5-E6-E7-E8", "E1-E2-E3-E4", "F5-F6-F7-F8");
+        assertThat(suggestionsMade.seatNames(PricingCategory.Mixed))
+                .containsExactly("A6-A7-A8-A9", "B1-B2-B3-B4", "C5-C6-C7-C8");
     }
 
 }
