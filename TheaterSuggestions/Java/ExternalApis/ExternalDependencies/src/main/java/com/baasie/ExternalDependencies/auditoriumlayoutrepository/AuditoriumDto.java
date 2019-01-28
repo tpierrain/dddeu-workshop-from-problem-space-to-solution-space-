@@ -7,10 +7,12 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @NoArgsConstructor
 @Getter
 @EqualsAndHashCode
-public class AuditoriumDto {
+public class AuditoriumDto extends Serializable {
 
     @JsonProperty("Rows")
     private ImmutableMap<String, ImmutableList<SeatDto>> rows;

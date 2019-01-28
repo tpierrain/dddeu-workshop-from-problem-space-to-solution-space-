@@ -1,31 +1,36 @@
 package com.baasie.SeatsSuggestionsDomain;
 
+import com.baasie.ExternalDependencies.IProvideAuditoriumLayouts;
+import com.baasie.ExternalDependencies.IProvideCurrentReservations;
 import com.baasie.ExternalDependencies.auditoriumlayoutrepository.AuditoriumDto;
 import com.baasie.ExternalDependencies.auditoriumlayoutrepository.AuditoriumLayoutRepository;
 import com.baasie.ExternalDependencies.auditoriumlayoutrepository.SeatDto;
 import com.baasie.ExternalDependencies.reservationsprovider.ReservationsProvider;
 import com.baasie.ExternalDependencies.reservationsprovider.ReservedSeatsDto;
 import com.google.common.collect.ImmutableList;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AuditoriumSeatingAdapter {
+@Service
+public class AuditoriumSeatingAdapter implements IAdaptAuditoriumSeating {
 
-    private final ReservationsProvider reservedSeatsRepository;
-    private final AuditoriumLayoutRepository auditoriumLayoutRepository;
+    private final IProvideCurrentReservations reservationsProvider;
+    private final IProvideAuditoriumLayouts auditoriumSeatingRepository;
 
 
-    public AuditoriumSeatingAdapter(AuditoriumLayoutRepository auditoriumLayoutRepository, ReservationsProvider reservationsProvider) {
-        this.auditoriumLayoutRepository = auditoriumLayoutRepository;
-        this.reservedSeatsRepository = reservationsProvider;
+    public AuditoriumSeatingAdapter(IProvideAuditoriumLayouts auditoriumSeatingRepository,
+                                    IProvideCurrentReservations reservationsProvider) {
+        this.auditoriumSeatingRepository = auditoriumSeatingRepository;
+        this.reservationsProvider = reservationsProvider;
     }
 
     public AuditoriumSeating getAuditoriumSeating(String showId) {
-        return adapt(auditoriumLayoutRepository.getAuditoriumSeatingFor(showId),
-                reservedSeatsRepository.getReservedSeats(showId));
+        return adapt(auditoriumSeatingRepository.getAuditoriumSeatingFor(showId),
+                reservationsProvider.getReservedSeats(showId));
 
     }
 

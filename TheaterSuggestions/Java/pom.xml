@@ -23,6 +23,7 @@
 
     <modules>
         <module>ExternalApis</module>
+        <module>SeatsSuggestionsApi</module>
         <module>SeatsSuggestionsDomain</module>
         <module>SeatsSuggestionsInfra</module>
         <module>SeatsSuggestionsAcceptanceTests</module>
@@ -38,6 +39,16 @@
             <dependency>
                 <groupId>com.baasie</groupId>
                 <artifactId>ExternalDependencies</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baasie</groupId>
+                <artifactId>SeatsSuggestionsDomain</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baasie</groupId>
+                <artifactId>SeatsSuggestionsInfra</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
