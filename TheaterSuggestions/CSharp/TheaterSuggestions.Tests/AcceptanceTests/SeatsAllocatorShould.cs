@@ -4,7 +4,6 @@ using ExternalDependencies.ReservationsProvider;
 using NFluent;
 using NUnit.Framework;
 using SeatsSuggestions.Domain;
-using SeatsSuggestions.Infra;
 
 namespace SeatsSuggestions.Tests.AcceptanceTests
 {

@@ -4,7 +4,7 @@ using ExternalDependencies.AuditoriumLayoutRepository;
 using ExternalDependencies.ReservationsProvider;
 using NFluent;
 using NUnit.Framework;
-using SeatsSuggestions.Infra;
+using SeatsSuggestions.Domain;
 
 namespace SeatsSuggestions.Tests.UnitTests
 {

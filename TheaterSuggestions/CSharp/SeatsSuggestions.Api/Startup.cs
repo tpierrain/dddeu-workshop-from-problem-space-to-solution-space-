@@ -12,7 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using SeatsSuggestions.Infra;
+using SeatsSuggestions.Domain;
 
 namespace SeatsSuggestions.Api
 {
@@ -33,7 +33,7 @@ namespace SeatsSuggestions.Api
             IProvideAuditoriumLayouts auditoriumSeatingRepository = new AuditoriumWebRepository("http://localhost:6000/");
             // api/data_for_auditoriumSeating/
 
-            IProvideCurrentReservations seatReservationsProvider = new SeatReservationsWebAdapter("http://localhost:5000/"); 
+            IProvideCurrentReservations seatReservationsProvider = new SeatReservationsWebRepository("http://localhost:5000/"); 
             // data_for_reservation_seats/
 
             services.AddSingleton<IProvideAuditoriumLayouts>(auditoriumSeatingRepository);
