@@ -35,7 +35,7 @@ public class SeatAllocator {
         return new SuggestionNotAvailable(showId, partyRequested);
     }
 
-    private static Iterable<SuggestionMade> giveMeSuggestionsFor(
+    private static List<SuggestionMade> giveMeSuggestionsFor(
             AuditoriumSeating auditoriumSeating, int partyRequested, PricingCategory pricingCategory) {
 
         List<SuggestionMade> foundedSuggestions = new ArrayList<>();
