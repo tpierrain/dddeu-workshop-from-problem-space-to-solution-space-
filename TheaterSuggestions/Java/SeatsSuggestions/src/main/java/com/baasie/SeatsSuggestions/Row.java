@@ -27,18 +27,23 @@ public class Row {
     }
 
     public SeatingOptionSuggested suggestSeatingOption(SuggestionRequest suggestionRequest) {
-        for (Seat seat : seats) {
-            if (seat.isAvailable() && seat.matchCategory(suggestionRequest.pricingCategory())) {
-                SeatingOptionSuggested seatingOptionSuggested = new SeatingOptionSuggested(suggestionRequest);
-                seatingOptionSuggested.addSeat(seat);
 
-                if (seatingOptionSuggested.matchExpectation()) {
-                    return seatingOptionSuggested;
-                }
+        SeatingOptionSuggested seatingOptionSuggested = new SeatingOptionSuggested(suggestionRequest);
+
+        for (Seat seat : selectAvailableSeatsCompliantWith(suggestionRequest.pricingCategory())) {
+            seatingOptionSuggested.addSeat(seat);
+
+            if (seatingOptionSuggested.matchExpectation())
+            {
+                return seatingOptionSuggested;
             }
         }
 
         return new SeatingOptionNotAvailable(suggestionRequest);
+    }
+
+    private Iterable<Seat> selectAvailableSeatsCompliantWith(PricingCategory pricingCategory) {
+        return seats.stream().filter(seat -> seat.isAvailable() && seat.matchCategory(pricingCategory)).collect(Collectors.toList());
     }
 
     public Row allocate(Seat seat) {
