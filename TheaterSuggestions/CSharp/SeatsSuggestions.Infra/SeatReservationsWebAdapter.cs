@@ -39,7 +39,7 @@ namespace SeatsSuggestions.Infra
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                var response = await client.GetAsync($"api/data_for_reservations_seats/{showId}");
+                var response = await client.GetAsync($"api/data_for_reservation_seats/{showId}");
 
                 response.EnsureSuccessStatusCode();
 

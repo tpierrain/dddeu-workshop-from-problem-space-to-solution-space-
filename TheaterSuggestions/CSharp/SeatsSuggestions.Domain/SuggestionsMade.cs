@@ -23,6 +23,11 @@ namespace SeatsSuggestions.Domain
             InstantiateAnEmptyListForEveryPricingCategory();
         }
 
+        public IEnumerable<string> SeatsInFirstPricingCategory => SeatNames(PricingCategory.First);
+        public IEnumerable<string> SeatsInSecondPricingCategory => SeatNames(PricingCategory.Second);
+        public IEnumerable<string> SeatsInThirdPricingCategory => SeatNames(PricingCategory.Third);
+        public IEnumerable<string> SeatsInMixedPricingCategory => SeatNames(PricingCategory.Mixed);
+
         public IEnumerable<string> SeatNames(PricingCategory pricingCategory)
         {
             var suggestionsMade = ForCategory[pricingCategory];
