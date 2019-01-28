@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.baasie.SeatsSuggestions.SeatCollectionExtensions.*;
+
 @EqualsAndHashCode
 public class Row {
     private String name;
@@ -30,8 +32,15 @@ public class Row {
 
         SeatingOptionSuggested seatingOptionSuggested = new SeatingOptionSuggested(suggestionRequest);
 
-        for (Seat seat : selectAvailableSeatsCompliantWith(suggestionRequest.pricingCategory())) {
-            seatingOptionSuggested.addSeat(seat);
+        List<Seat> availableSeatsCompliant = selectAvailableSeatsCompliant(seats, suggestionRequest.pricingCategory());
+
+        List<AdjacentSeats> adjacentSeatsOfExpectedSize =
+                selectAdjacentSeats(availableSeatsCompliant, suggestionRequest.partyRequested());
+
+        List<AdjacentSeats> adjacentSeatsOrdered = orderByMiddleOfTheRow(adjacentSeatsOfExpectedSize, seats.size());
+
+        for (AdjacentSeats adjacentSeats : adjacentSeatsOrdered) {
+            seatingOptionSuggested.addSeats(adjacentSeats);
 
             if (seatingOptionSuggested.matchExpectation())
             {
@@ -40,10 +49,6 @@ public class Row {
         }
 
         return new SeatingOptionNotAvailable(suggestionRequest);
-    }
-
-    private Iterable<Seat> selectAvailableSeatsCompliantWith(PricingCategory pricingCategory) {
-        return seats.stream().filter(seat -> seat.isAvailable() && seat.matchCategory(pricingCategory)).collect(Collectors.toList());
     }
 
     public Row allocate(Seat seat) {

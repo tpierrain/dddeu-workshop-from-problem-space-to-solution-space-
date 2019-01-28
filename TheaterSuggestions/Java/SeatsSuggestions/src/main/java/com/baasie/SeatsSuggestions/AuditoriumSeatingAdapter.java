@@ -32,7 +32,7 @@ public class AuditoriumSeatingAdapter {
     private AuditoriumSeating adapt(AuditoriumDto auditoriumDto, ReservedSeatsDto reservedSeatsDto) {
 
         Map<String, Row> rows = new HashMap<>();
-        
+
         for (Map.Entry<String, ImmutableList<SeatDto>> rowDto : auditoriumDto.rows().entrySet()) {
             List<Seat> seats = new ArrayList<>();
 

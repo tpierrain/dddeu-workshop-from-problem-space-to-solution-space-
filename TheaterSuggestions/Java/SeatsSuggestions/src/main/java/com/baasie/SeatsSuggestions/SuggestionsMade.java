@@ -1,7 +1,5 @@
 package com.baasie.SeatsSuggestions;
 
-import com.google.common.collect.Iterables;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +20,8 @@ public class SuggestionsMade {
     }
 
     public Iterable<String> seatNames(PricingCategory pricingCategory) {
-        return Iterables.concat(forCategory.get(pricingCategory).stream().map(SuggestionMade::seatNames).collect(Collectors.toList()));
+        List<SuggestionMade> suggestionsMade = forCategory.get(pricingCategory);
+        return suggestionsMade.stream().map(s -> String.join("-", s.seatNames())).collect(Collectors.toList());
     }
 
     private void instantiateAnEmptyListForEveryPricingCategory() {

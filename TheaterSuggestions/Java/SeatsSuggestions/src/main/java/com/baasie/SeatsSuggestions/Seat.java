@@ -2,6 +2,8 @@ package com.baasie.SeatsSuggestions;
 
 import lombok.EqualsAndHashCode;
 
+import static com.baasie.SeatsSuggestions.SeatCollectionExtensions.*;
+
 @EqualsAndHashCode
 public class Seat {
 
@@ -38,6 +40,28 @@ public class Seat {
 
     public boolean sameSeatLocation(Seat seat) {
         return rowName.equals(seat.rowName) && number == seat.number;
+    }
+
+    public boolean isAdjacentWith(int number) {
+        return this.number + 1 == number || this.number - 1 == number;
+    }
+
+    public int computeDistanceFromRowCentroid(int rowSize) {
+        int seatLocation = number;
+
+        if (isOdd(rowSize)) {
+            return computeDistanceFromCentroid(seatLocation, rowSize);
+        }
+
+        if (isCentroid(seatLocation, rowSize)) {
+            return 0;
+        }
+
+        if (seatLocation < centroidIndex(rowSize)) {
+            return computeDistanceFromCentroid(seatLocation, rowSize);
+        }
+
+        return computeDistanceFromCentroid(seatLocation, rowSize) - 1;
     }
 
     public String rowName() {

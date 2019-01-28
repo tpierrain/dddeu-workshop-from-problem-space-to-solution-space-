@@ -1,5 +1,7 @@
 package com.baasie.SeatsSuggestions;
 
+import com.google.common.collect.Lists;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +16,8 @@ public class SeatingOptionSuggested {
         this.partyRequested = suggestionRequest.partyRequested();
     }
 
-    public void addSeat(Seat seat) {
-        seats.add(seat);
+    public void addSeats(AdjacentSeats adjacentSeats) {
+        seats.addAll(Lists.newArrayList(adjacentSeats));
     }
 
     public boolean matchExpectation() {

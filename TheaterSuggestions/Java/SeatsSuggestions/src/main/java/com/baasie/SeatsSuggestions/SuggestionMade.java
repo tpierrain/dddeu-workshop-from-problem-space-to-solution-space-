@@ -17,7 +17,7 @@ public class SuggestionMade {
         this.pricingCategory = pricingCategory;
     }
 
-    public Iterable<String> seatNames() {
+    public List<String> seatNames() {
         return suggestedSeats.stream().map(Seat::toString).collect(Collectors.toList());
     }
 
