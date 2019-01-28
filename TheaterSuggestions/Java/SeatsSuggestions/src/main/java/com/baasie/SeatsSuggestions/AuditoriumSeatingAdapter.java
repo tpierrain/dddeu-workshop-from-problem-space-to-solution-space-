@@ -7,7 +7,9 @@ import com.baasie.ExternalDependencies.reservationsprovider.ReservationsProvider
 import com.baasie.ExternalDependencies.reservationsprovider.ReservedSeatsDto;
 import com.google.common.collect.ImmutableList;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AuditoriumSeatingAdapter {
@@ -30,22 +32,21 @@ public class AuditoriumSeatingAdapter {
     private AuditoriumSeating adapt(AuditoriumDto auditoriumDto, ReservedSeatsDto reservedSeatsDto) {
 
         Map<String, Row> rows = new HashMap<>();
+        
+        for (Map.Entry<String, ImmutableList<SeatDto>> rowDto : auditoriumDto.rows().entrySet()) {
+            List<Seat> seats = new ArrayList<>();
 
-        for (Map.Entry<String, ImmutableList<SeatDto>> entry : auditoriumDto.rows().entrySet()) {
-            entry.getValue().forEach(seatDto -> {
-                String rowName = extractRowName(seatDto.name());
+            rowDto.getValue().forEach(seatDto -> {
+                String rowName = rowDto.getKey();
                 int number = extractNumber(seatDto.name());
                 PricingCategory pricingCategory = convertCategory(seatDto.category());
 
                 boolean isReserved = reservedSeatsDto.reservedSeats().contains(seatDto.name());
 
-                if (!rows.containsKey(rowName)) {
-                    rows.put(rowName, new Row());
-                }
-
-                rows.get(rowName).seats().add(new Seat(rowName, number, pricingCategory,
-                        isReserved ? SeatAvailability.Reserved : SeatAvailability.Available));
+                seats.add(new Seat(rowName, number, pricingCategory, isReserved ? SeatAvailability.Reserved : SeatAvailability.Available));
             });
+
+            rows.put(rowDto.getKey(), new Row(rowDto.getKey(), seats));
         }
 
         return new AuditoriumSeating(rows);
@@ -57,9 +58,5 @@ public class AuditoriumSeatingAdapter {
 
     private static int extractNumber(String name) {
         return Integer.parseUnsignedInt(name.substring(1));
-    }
-
-    private static String extractRowName(String name) {
-        return Character.toString(name.charAt(0));
     }
 }

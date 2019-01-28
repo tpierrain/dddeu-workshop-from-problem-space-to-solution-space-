@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SeatAllocator {
-
+    private static final int NUMBER_OF_SUGGESTIONS = 3;
     private final AuditoriumSeatingAdapter auditoriumSeatingAdapter;
 
     public SeatAllocator(AuditoriumSeatingAdapter auditoriumLayoutAdapter) {
@@ -19,33 +19,33 @@ public class SeatAllocator {
 
         SuggestionsMade suggestionsMade = new SuggestionsMade(showId, partyRequested);
 
-        int numberOfSuggestions = 3;
-
-        suggestionsMade.add(giveMeSeveralSuggestionFor(partyRequested, auditoriumSeating, numberOfSuggestions,
+        suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating, partyRequested,
                 PricingCategory.First));
-        suggestionsMade.add(giveMeSeveralSuggestionFor(partyRequested, auditoriumSeating, numberOfSuggestions,
+        suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating, partyRequested,
                 PricingCategory.Second));
-        suggestionsMade.add(giveMeSeveralSuggestionFor(partyRequested, auditoriumSeating, numberOfSuggestions,
+        suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating, partyRequested,
                 PricingCategory.Third));
-        suggestionsMade.add(giveMeSeveralSuggestionFor(partyRequested, auditoriumSeating, numberOfSuggestions,
+        suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating, partyRequested,
                 PricingCategory.Mixed));
 
-        if (!suggestionsMade.matchExpectations()) {
-            return new SuggestionNotAvailable(showId, partyRequested);
+        if (suggestionsMade.matchExpectations()) {
+            return suggestionsMade;
         }
 
-        return suggestionsMade;
+        return new SuggestionNotAvailable(showId, partyRequested);
     }
 
-    private static ImmutableList<SuggestionMade> giveMeSeveralSuggestionFor(int partyRequested,
-                                                                            AuditoriumSeating auditoriumSeating, int numberOfSuggestions, PricingCategory pricingCategory) {
-        List<SuggestionMade> foundedSuggestions = new ArrayList<>();
-        for (int i = 0; i < numberOfSuggestions; i++) {
-            SeatAllocation seatAllocation = auditoriumSeating.makeAllocationFor(partyRequested, pricingCategory);
+    private static Iterable<SuggestionMade> giveMeSuggestionsFor(
+            AuditoriumSeating auditoriumSeating, int partyRequested, PricingCategory pricingCategory) {
 
-            if (seatAllocation.matchExpectation()) {
-                seatAllocation.seats().forEach(Seat::markAsAlreadySuggested);
-                foundedSuggestions.add(new SuggestionMade(seatAllocation.seats(), partyRequested, pricingCategory));
+        List<SuggestionMade> foundedSuggestions = new ArrayList<>();
+        for (int i = 0; i < NUMBER_OF_SUGGESTIONS; i++) {
+            SeatingOptionSuggested seatingOptionSuggested = auditoriumSeating.suggestSeatingOptionFor(partyRequested, pricingCategory);
+
+            if (seatingOptionSuggested.matchExpectation()) {
+                // We get the new version of the Auditorium after the allocation
+                auditoriumSeating = auditoriumSeating.allocate(seatingOptionSuggested);
+                foundedSuggestions.add(new SuggestionMade(seatingOptionSuggested.seats(), partyRequested, pricingCategory));
             }
         }
 
