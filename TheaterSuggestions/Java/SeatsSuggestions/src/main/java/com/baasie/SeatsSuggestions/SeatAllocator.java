@@ -18,9 +18,7 @@ public class SeatAllocator {
         AuditoriumSeating auditoriumSeating = auditoriumSeatingAdapter.getAuditoriumSeating(showId);
 
         SuggestionsMade suggestionsMade = new SuggestionsMade(showId, partyRequested);
-
-        int numberOfSuggestions = 3;
-
+        
         suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating, partyRequested,
                 PricingCategory.First));
         suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating,partyRequested,
