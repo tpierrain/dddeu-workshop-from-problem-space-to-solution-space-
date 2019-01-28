@@ -1,5 +1,8 @@
 package com.baasie.SeatsSuggestions;
 
+import lombok.EqualsAndHashCode;
+
+@EqualsAndHashCode
 public class Seat {
 
     private String rowName;
@@ -26,10 +29,27 @@ public class Seat {
         return this.pricingCategory == pricingCategory;
     }
 
-    public void markAsAlreadySuggested() {
+    public Seat allocate() {
         if (seatAvailability == SeatAvailability.Available) {
-            seatAvailability = SeatAvailability.Suggested;
+            return new Seat(rowName, number, pricingCategory, SeatAvailability.Allocated);
         }
+        return this;
+    }
+
+    public boolean sameSeatLocation(Seat seat) {
+        return rowName.equals(seat.rowName) && number == seat.number;
+    }
+
+    public String rowName() {
+        return rowName;
+    }
+
+    public int number() {
+        return number;
+    }
+
+    public PricingCategory pricingCategory() {
+        return pricingCategory;
     }
 
     @Override
