@@ -9,9 +9,9 @@ public class SeatingOptionSuggested {
     private List<Seat> seats = new ArrayList<>();
     private int partyRequested;
 
-    public SeatingOptionSuggested(int partyRequested, PricingCategory pricingCategory) {
-        this.pricingCategory = pricingCategory;
-        this.partyRequested = partyRequested;
+    public SeatingOptionSuggested(SuggestionRequest suggestionRequest) {
+        this.pricingCategory = suggestionRequest.pricingCategory();
+        this.partyRequested = suggestionRequest.partyRequested();
     }
 
     public void addSeat(Seat seat) {

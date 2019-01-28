@@ -26,10 +26,10 @@ public class Row {
         return new Row(name, updatedList);
     }
 
-    public SeatingOptionSuggested suggestSeatingOption(int partyRequested, PricingCategory pricingCategory) {
+    public SeatingOptionSuggested suggestSeatingOption(SuggestionRequest suggestionRequest) {
         for (Seat seat : seats) {
-            if (seat.isAvailable() && seat.matchCategory(pricingCategory)) {
-                SeatingOptionSuggested seatingOptionSuggested = new SeatingOptionSuggested(partyRequested, pricingCategory);
+            if (seat.isAvailable() && seat.matchCategory(suggestionRequest.pricingCategory())) {
+                SeatingOptionSuggested seatingOptionSuggested = new SeatingOptionSuggested(suggestionRequest);
                 seatingOptionSuggested.addSeat(seat);
 
                 if (seatingOptionSuggested.matchExpectation()) {
@@ -38,7 +38,7 @@ public class Row {
             }
         }
 
-        return new SeatingOptionNotAvailable(partyRequested, pricingCategory);
+        return new SeatingOptionNotAvailable(suggestionRequest);
     }
 
     public Row allocate(Seat seat) {
