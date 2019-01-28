@@ -15,9 +15,9 @@ public class AuditoriumSeating {
         this.rows = ImmutableMap.copyOf(rows);
     }
 
-    public SeatingOptionSuggested suggestSeatingOptionFor(int partyRequested, PricingCategory pricingCategory) {
+    public SeatingOptionSuggested suggestSeatingOptionFor(SuggestionRequest suggestionRequest) {
         for (Row row : rows.values()) {
-            SeatingOptionSuggested seatingOptionSuggested = row.suggestSeatingOption(partyRequested, pricingCategory);
+            SeatingOptionSuggested seatingOptionSuggested = row.suggestSeatingOption(suggestionRequest);
 
             if (seatingOptionSuggested.matchExpectation()) {
                 // Cool, we mark the seat as Allocated (that we turns into a SuggestionMode)
@@ -25,7 +25,7 @@ public class AuditoriumSeating {
             }
         }
 
-        return new SeatingOptionNotAvailable(partyRequested, pricingCategory);
+        return new SeatingOptionNotAvailable(suggestionRequest);
     }
 
     public AuditoriumSeating allocate(SeatingOptionSuggested seatingOptionSuggested) {

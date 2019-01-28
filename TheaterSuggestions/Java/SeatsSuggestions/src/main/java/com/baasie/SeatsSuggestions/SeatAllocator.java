@@ -38,9 +38,10 @@ public class SeatAllocator {
     private static Iterable<SuggestionMade> giveMeSuggestionsFor(
             AuditoriumSeating auditoriumSeating, int partyRequested, PricingCategory pricingCategory) {
 
+        SuggestionRequest suggestionRequest = new SuggestionRequest(partyRequested, pricingCategory);
         List<SuggestionMade> foundedSuggestions = new ArrayList<>();
         for (int i = 0; i < NUMBER_OF_SUGGESTIONS; i++) {
-            SeatingOptionSuggested seatingOptionSuggested = auditoriumSeating.suggestSeatingOptionFor(partyRequested, pricingCategory);
+            SeatingOptionSuggested seatingOptionSuggested = auditoriumSeating.suggestSeatingOptionFor(suggestionRequest);
 
             if (seatingOptionSuggested.matchExpectation()) {
                 // We get the new version of the Auditorium after the allocation
