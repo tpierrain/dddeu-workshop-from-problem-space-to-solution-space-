@@ -1,9 +1,7 @@
-package com.baasie.AuditoriumLayoutApi.controllers;
+package com.baasie.SeatReservationsApi.controllers;
 
 
-import com.baasie.ExternalDependencies.IProvideAuditoriumLayouts;
 import com.baasie.ExternalDependencies.IProvideCurrentReservations;
-import com.baasie.ExternalDependencies.auditoriumlayoutrepository.AuditoriumDto;
 import com.baasie.ExternalDependencies.reservationsprovider.ReservedSeatsDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
