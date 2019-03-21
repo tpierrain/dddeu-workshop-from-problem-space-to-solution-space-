@@ -12,48 +12,42 @@ namespace SeatsSuggestions.Domain
             return seats.Where(s => s.IsAvailable() && s.MatchCategory(pricingCategory));
         }
 
-        public static IEnumerable<AdjacentSeats> SelectAdjacentSeats(this IEnumerable<Seat> seats, int size)
+        public static IEnumerable<AdjacentSeats> SelectAdjacentSeats(this IEnumerable<Seat> seats, int partyRequested)
         {
             var adjacentSeatsGroups = new List<AdjacentSeats>();
             var adjacentSeats = new List<Seat>();
 
-            if (size == 1) return seats.Select(s => new AdjacentSeats(new List<Seat> {s}));
+            if (partyRequested == 1) return seats.Select(s => new AdjacentSeats(new List<Seat> { s }));
 
-            foreach (var candidateSeat in seats)
+            foreach (var candidateSeat in seats.OrderBy(s => s.DistanceFromRowCentroid))
             {
-                if (adjacentSeats.Count == 0)
+                if (!adjacentSeats.Any())
                 {
                     adjacentSeats.Add(candidateSeat);
                     continue;
                 }
 
-                if (candidateSeat.IsAdjacentWith(adjacentSeats.Last().Number))
+                adjacentSeats = adjacentSeats.OrderBy(s => s.Number).ToList();
+
+                if (DoesNotExceedPartyRequestedAndCandidateSeatIsAdjacent(candidateSeat, adjacentSeats, partyRequested))
                 {
                     adjacentSeats.Add(candidateSeat);
                 }
                 else
                 {
-                    if (adjacentSeats.Count == 1)
-                    {
-                        adjacentSeats = new List<Seat> {candidateSeat};
-                    }
-                    else
-                    {
-                        adjacentSeatsGroups.Add(new AdjacentSeats(adjacentSeats));
-                        adjacentSeats = new List<Seat> {candidateSeat};
-                    }
+                    if (adjacentSeats.Any()) adjacentSeatsGroups.Add(new AdjacentSeats(adjacentSeats));
+                    adjacentSeats = new List<Seat> { candidateSeat };
                 }
             }
 
-            if (adjacentSeats.Count > 1)
-            {
-                adjacentSeatsGroups.Add(new AdjacentSeats(adjacentSeats));
-            }
+            return adjacentSeatsGroups.Where(adjacent => adjacent.Count() == partyRequested);
+        }
 
-            if (adjacentSeatsGroups.Count == 0) adjacentSeatsGroups.Add(new AdjacentSeats(adjacentSeats));
-
-            var groupsGreaterOrEqualThanSize = adjacentSeatsGroups.Where(a => a.Count() >= size);
-            return groupsGreaterOrEqualThanSize.SelectMany(a => a.SplitInto(size));
+        private static bool DoesNotExceedPartyRequestedAndCandidateSeatIsAdjacent(Seat candidateSeat,
+            List<Seat> adjacentSeats,
+            int partySize)
+        {
+            return candidateSeat.IsAdjacentWith(adjacentSeats) && adjacentSeats.Count < partySize;
         }
 
         public static IEnumerable<AdjacentSeats> OrderByMiddleOfTheRow(this IEnumerable<AdjacentSeats> adjacentSeats,
@@ -63,37 +57,31 @@ namespace SeatsSuggestions.Domain
 
             foreach (var adjacentSeat in adjacentSeats)
             {
-                var distance = adjacentSeat.ComputeDistanceFromRowCentroid(rowSize);
+                var distanceFromRowCentroid = adjacentSeat.ComputeDistanceFromRowCentroid(rowSize);
 
+                if (!sortedAdjacentSeatsGroups.ContainsKey(distanceFromRowCentroid))
+                    sortedAdjacentSeatsGroups.Add(distanceFromRowCentroid, new List<AdjacentSeats>());
 
-                if (!sortedAdjacentSeatsGroups.ContainsKey(distance))
-                {
-                    sortedAdjacentSeatsGroups.Add(distance, new List<AdjacentSeats>());
-                }
-
-                sortedAdjacentSeatsGroups[distance].Add(adjacentSeat);
+                sortedAdjacentSeatsGroups[distanceFromRowCentroid].Add(adjacentSeat);
             }
 
-            var orderByMiddleOfTheRow = sortedAdjacentSeatsGroups.Values.SelectMany(l => l);
-
-            return orderByMiddleOfTheRow;
+            return sortedAdjacentSeatsGroups.Values.SelectMany(_ => _);
         }
 
         internal static int CentroidIndex(this int rowSize)
         {
-            return Math.Abs(rowSize / 2);
+            return (int)Math.Ceiling((decimal)rowSize / 2);
         }
 
         internal static int ComputeDistanceFromCentroid(this uint seatLocation, int rowSize)
         {
-            return (int) Math.Abs(seatLocation - rowSize.CentroidIndex());
+            return (int)Math.Abs(seatLocation - rowSize.CentroidIndex());
         }
 
         internal static bool IsCentroid(this uint seatLocation, int rowSize)
         {
             var centroidIndex = rowSize.CentroidIndex();
-
-            return seatLocation == centroidIndex || seatLocation == centroidIndex + 1;
+            return seatLocation == centroidIndex;
         }
 
         internal static bool IsOdd(this int rowSize)

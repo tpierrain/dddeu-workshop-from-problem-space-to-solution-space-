@@ -4,29 +4,32 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SeatsSuggestions.Domain;
 
-[ApiController]
-public class SeatsSuggestionsController : ControllerBase
+namespace SeatsSuggestions.Api.Controllers
 {
-    private readonly IProvideAuditoriumLayouts _auditoriumSeatingRepository;
-    private readonly IProvideCurrentReservations _seatReservationsProvider;
-
-    public SeatsSuggestionsController(IProvideAuditoriumLayouts auditoriumSeatingRepository,
-        IProvideCurrentReservations seatReservationsProvider)
+    [ApiController]
+    public class SeatsSuggestionsController : ControllerBase
     {
-        _auditoriumSeatingRepository = auditoriumSeatingRepository;
-        _seatReservationsProvider = seatReservationsProvider;
-    }
+        private readonly IProvideAuditoriumLayouts _auditoriumSeatingRepository;
+        private readonly IProvideCurrentReservations _seatReservationsProvider;
 
-    // GET api/SeatsSuggestions?showId=5&party=3
-    [HttpGet]
-    public async Task<ActionResult<string>> Get([FromQuery(Name = "showId")] string showId,
-        [FromQuery(Name = "party")] int party)
-    {
-        var seatAllocator =
-            new SeatAllocator(new AuditoriumSeatingAdapter(_auditoriumSeatingRepository, _seatReservationsProvider));
-        var suggestions = await seatAllocator.MakeSuggestions(showId, party);
+        public SeatsSuggestionsController(IProvideAuditoriumLayouts auditoriumSeatingRepository,
+            IProvideCurrentReservations seatReservationsProvider)
+        {
+            _auditoriumSeatingRepository = auditoriumSeatingRepository;
+            _seatReservationsProvider = seatReservationsProvider;
+        }
 
-        var jsonSuggestions = JsonConvert.SerializeObject(suggestions, Formatting.Indented);
-        return jsonSuggestions;
+        // GET api/SeatsSuggestions?showId=5&party=3
+        [HttpGet]
+        public async Task<ActionResult<string>> Get([FromQuery(Name = "showId")] string showId,
+            [FromQuery(Name = "party")] int party)
+        {
+            var seatAllocator =
+                new SeatAllocator(new AuditoriumSeatingAdapter(_auditoriumSeatingRepository, _seatReservationsProvider));
+            var suggestions = await seatAllocator.MakeSuggestions(showId, party);
+
+            var jsonSuggestions = JsonConvert.SerializeObject(suggestions, Formatting.Indented);
+            return jsonSuggestions;
+        }
     }
 }
