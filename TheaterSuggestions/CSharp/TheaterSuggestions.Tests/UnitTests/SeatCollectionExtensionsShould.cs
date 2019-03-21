@@ -98,7 +98,7 @@ namespace SeatsSuggestions.Tests.UnitTests
 
             seats = ComputeDistances(seats, seats.Count);
 
-            var adjacentSeats = seats.SelectAdjacentSeats(4).ToList();
+            var adjacentSeats = seats.SelectAdjacentSeats(new PartyRequested(4)).ToList();
             var orderByMiddleOfTheRow = adjacentSeats.OrderByMiddleOfTheRow(10);
             Check.That(orderByMiddleOfTheRow.Select(a => a.ToString())).ContainsExactly("A4-A5-A6-A7");
         }
@@ -122,7 +122,7 @@ namespace SeatsSuggestions.Tests.UnitTests
 
             seats = ComputeDistances(seats, seats.Count);
 
-            var adjacentSeats = seats.SelectAdjacentSeats(1);
+            var adjacentSeats = seats.SelectAdjacentSeats(new PartyRequested(1));
             var orderByMiddleOfTheRow = adjacentSeats.OrderByMiddleOfTheRow(10);
             Check.That(orderByMiddleOfTheRow.Select(a => a.ToString()))
                 .ContainsExactly("A5", "A6", "A4", "A7", "A3", "A8", "A2", "A9", "A1", "A10");
@@ -145,7 +145,7 @@ namespace SeatsSuggestions.Tests.UnitTests
                 new Seat("A", 10, PricingCategory.First, SeatAvailability.Available)
             };
             seats = ComputeDistances(seats, 10);
-            var adjacentSeats = seats.SelectAdjacentSeats(2);
+            var adjacentSeats = seats.SelectAdjacentSeats(new PartyRequested(2));
             Check.That(adjacentSeats.Select(s => s.ToString())).ContainsExactly("A5-A6", "A3-A4", "A8-A9");
         }
 
@@ -161,7 +161,7 @@ namespace SeatsSuggestions.Tests.UnitTests
                 new Seat("A", 9, PricingCategory.First, SeatAvailability.Available)
             };
 
-            var adjacentSeats = seats.SelectAdjacentSeats(2);
+            var adjacentSeats = seats.SelectAdjacentSeats(new PartyRequested(2));
             Check.That(adjacentSeats).IsEmpty();
         }
 

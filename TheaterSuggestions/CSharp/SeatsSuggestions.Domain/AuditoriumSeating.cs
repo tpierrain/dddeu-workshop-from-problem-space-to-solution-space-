@@ -6,9 +6,8 @@ namespace SeatsSuggestions.Domain
 {
     public class AuditoriumSeating : ValueType<AuditoriumSeating>
     {
-        public IReadOnlyDictionary<string, Row> Rows => _rows;
-
         private readonly Dictionary<string, Row> _rows;
+        public IReadOnlyDictionary<string, Row> Rows => _rows;
 
         public AuditoriumSeating(Dictionary<string, Row> rows)
         {
@@ -21,10 +20,7 @@ namespace SeatsSuggestions.Domain
             {
                 var seatingOption = row.SuggestSeatingOption(suggestionRequest);
 
-                if (seatingOption.MatchExpectation())
-                {
-                    return seatingOption;
-                }
+                if (seatingOption.MatchExpectation()) return seatingOption;
             }
 
             return new SeatingOptionNotAvailable(suggestionRequest);

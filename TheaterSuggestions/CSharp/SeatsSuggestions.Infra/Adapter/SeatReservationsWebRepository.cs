@@ -6,7 +6,7 @@ using ExternalDependencies;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace SeatsSuggestions.Domain
+namespace SeatsSuggestions.Infra.Adapter
 {
     /// <summary>
     ///     Get via a web api and adapt reservations and return <see cref="ReservedSeatsDto" />.

@@ -63,7 +63,7 @@ namespace SeatsSuggestions.Domain
 
         protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
         {
-            return new object[] { RowName, Number, PricingCategory, SeatAvailability, DistanceFromRowCentroid };
+            return new object[] {RowName, Number, PricingCategory, SeatAvailability, DistanceFromRowCentroid};
         }
 
         public override string ToString()

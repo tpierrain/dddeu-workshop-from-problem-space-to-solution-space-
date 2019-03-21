@@ -5,6 +5,7 @@ using ExternalDependencies.ReservationsProvider;
 using NFluent;
 using NUnit.Framework;
 using SeatsSuggestions.Domain;
+using SeatsSuggestions.Infra.Adapter;
 
 namespace SeatsSuggestions.Tests.UnitTests
 {
@@ -16,7 +17,7 @@ namespace SeatsSuggestions.Tests.UnitTests
         {
             var auditoriumLayoutAdapter =
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
-            var showIdWithoutReservationYet = "18";
+            var showIdWithoutReservationYet = new ShowId("18");
             var auditoriumSeatingFirstInstance =
                 await auditoriumLayoutAdapter.GetAuditoriumSeating(showIdWithoutReservationYet);
             var auditoriumSeatingSecondInstance =

@@ -6,7 +6,7 @@ namespace SeatsSuggestions.Domain
     {
         public PricingCategory PricingCategory { get; }
         public List<Seat> Seats { get; } = new List<Seat>();
-        public int PartyRequested { get; }
+        public PartyRequested PartyRequested { get; }
 
         public SeatingOptionSuggested(SuggestionRequest suggestionRequest)
         {
@@ -16,7 +16,7 @@ namespace SeatsSuggestions.Domain
 
         public bool MatchExpectation()
         {
-            return Seats.Count == PartyRequested;
+            return Seats.Count == PartyRequested.PartySize;
         }
 
         public void AddSeats(AdjacentSeats adjacentSeats)

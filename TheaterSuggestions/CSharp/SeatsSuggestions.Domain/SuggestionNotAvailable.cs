@@ -5,7 +5,7 @@
     /// </summary>
     public class SuggestionNotAvailable : SuggestionsMade
     {
-        public SuggestionNotAvailable(string showId, int partyRequested) : base(showId, partyRequested)
+        public SuggestionNotAvailable(ShowId showId, PartyRequested partyRequested) : base(showId, partyRequested)
         {
         }
     }

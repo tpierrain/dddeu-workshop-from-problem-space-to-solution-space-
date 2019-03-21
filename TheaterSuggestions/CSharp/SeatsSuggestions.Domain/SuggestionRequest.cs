@@ -5,10 +5,10 @@ namespace SeatsSuggestions.Domain
 {
     public class SuggestionRequest : ValueType<SuggestionRequest>
     {
-        public int PartyRequested { get; }
+        public PartyRequested PartyRequested { get; }
         public PricingCategory PricingCategory { get; }
 
-        public SuggestionRequest(int partyRequested, PricingCategory pricingCategory)
+        public SuggestionRequest(PartyRequested partyRequested, PricingCategory pricingCategory)
         {
             PartyRequested = partyRequested;
             PricingCategory = pricingCategory;

@@ -12,12 +12,13 @@ namespace SeatsSuggestions.Domain
             return seats.Where(s => s.IsAvailable() && s.MatchCategory(pricingCategory));
         }
 
-        public static IEnumerable<AdjacentSeats> SelectAdjacentSeats(this IEnumerable<Seat> seats, int partyRequested)
+        public static IEnumerable<AdjacentSeats> SelectAdjacentSeats(this IEnumerable<Seat> seats,
+            PartyRequested partyRequested)
         {
             var adjacentSeatsGroups = new List<AdjacentSeats>();
             var adjacentSeats = new List<Seat>();
 
-            if (partyRequested == 1) return seats.Select(s => new AdjacentSeats(new List<Seat> { s }));
+            if (partyRequested.PartySize == 1) return seats.Select(s => new AdjacentSeats(new List<Seat> {s}));
 
             foreach (var candidateSeat in seats.OrderBy(s => s.DistanceFromRowCentroid))
             {
@@ -36,18 +37,18 @@ namespace SeatsSuggestions.Domain
                 else
                 {
                     if (adjacentSeats.Any()) adjacentSeatsGroups.Add(new AdjacentSeats(adjacentSeats));
-                    adjacentSeats = new List<Seat> { candidateSeat };
+                    adjacentSeats = new List<Seat> {candidateSeat};
                 }
             }
 
-            return adjacentSeatsGroups.Where(adjacent => adjacent.Count() == partyRequested);
+            return adjacentSeatsGroups.Where(adjacent => adjacent.Count() == partyRequested.PartySize);
         }
 
         private static bool DoesNotExceedPartyRequestedAndCandidateSeatIsAdjacent(Seat candidateSeat,
             List<Seat> adjacentSeats,
-            int partySize)
+            PartyRequested partyRequested)
         {
-            return candidateSeat.IsAdjacentWith(adjacentSeats) && adjacentSeats.Count < partySize;
+            return candidateSeat.IsAdjacentWith(adjacentSeats) && adjacentSeats.Count < partyRequested.PartySize;
         }
 
         public static IEnumerable<AdjacentSeats> OrderByMiddleOfTheRow(this IEnumerable<AdjacentSeats> adjacentSeats,
@@ -70,12 +71,12 @@ namespace SeatsSuggestions.Domain
 
         internal static int CentroidIndex(this int rowSize)
         {
-            return (int)Math.Ceiling((decimal)rowSize / 2);
+            return (int) Math.Ceiling((decimal) rowSize / 2);
         }
 
         internal static int ComputeDistanceFromCentroid(this uint seatLocation, int rowSize)
         {
-            return (int)Math.Abs(seatLocation - rowSize.CentroidIndex());
+            return (int) Math.Abs(seatLocation - rowSize.CentroidIndex());
         }
 
         internal static bool IsCentroid(this uint seatLocation, int rowSize)

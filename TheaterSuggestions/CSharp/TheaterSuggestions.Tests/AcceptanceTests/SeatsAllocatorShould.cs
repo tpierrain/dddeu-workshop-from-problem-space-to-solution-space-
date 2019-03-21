@@ -4,6 +4,7 @@ using ExternalDependencies.ReservationsProvider;
 using NFluent;
 using NUnit.Framework;
 using SeatsSuggestions.Domain;
+using SeatsSuggestions.Infra.Adapter;
 
 namespace SeatsSuggestions.Tests.AcceptanceTests
 {
@@ -13,8 +14,8 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
         [Test]
         public async Task Return_SeatsNotAvailable_when_Auditorium_has_all_its_seats_already_reserved()
         {
-            const string showId = "5";
-            const int partyRequested = 1;
+            var showId = new ShowId("5");
+            var partyRequested = new PartyRequested(1);
 
             var auditoriumLayoutAdapter =
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
@@ -31,8 +32,8 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
         [Test]
         public async Task Suggest_one_seat_when_Auditorium_contains_one_available_seat_only()
         {
-            const string showId = "1";
-            const int partyRequested = 1;
+            var showId = new ShowId("1");
+            var partyRequested = new PartyRequested(1);
 
             var auditoriumLayoutAdapter =
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
@@ -47,8 +48,8 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
         [Test]
         public async Task Offer_several_suggestions_ie_1_per_PricingCategory_and_other_one_without_category_affinity()
         {
-            const string showId = "18";
-            const int partyRequested = 1;
+            var showId = new ShowId("18");
+            var partyRequested = new PartyRequested(1);
 
             var auditoriumLayoutAdapter =
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
@@ -67,8 +68,8 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
         [Test]
         public async Task Offer_adjacent_seats_nearer_the_middle_of_a_row()
         {
-            const string showId = "9";
-            const int partyRequested = 1;
+            var showId = new ShowId("9");
+            var partyRequested = new PartyRequested(1);
 
             var auditoriumLayoutAdapter =
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
@@ -83,8 +84,8 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
         [Test]
         public async Task Offer_adjacent_seats_nearer_the_middle_of_a_row_when_it_is_possible()
         {
-            const string showId = "3";
-            const int partyRequested = 4;
+            var showId = new ShowId("3");
+            PartyRequested partyRequested = new PartyRequested(4);
 
             var auditoriumLayoutAdapter =
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());

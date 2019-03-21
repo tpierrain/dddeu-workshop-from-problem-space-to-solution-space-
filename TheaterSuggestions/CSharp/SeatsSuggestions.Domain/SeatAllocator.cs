@@ -1,19 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using SeatsSuggestions.Domain.Port;
 
 namespace SeatsSuggestions.Domain
 {
-    public class SeatAllocator
+    public class SeatAllocator : IProvideAuditoriumSeating
     {
         private const int NumberOfSuggestionsPerPricingCategory = 3;
         private readonly IAdaptAuditoriumSeating _auditoriumSeatingAdapter;
 
-        public SeatAllocator(IAdaptAuditoriumSeating auditoriumSeatingAdapter)
-        {
-            _auditoriumSeatingAdapter = auditoriumSeatingAdapter;
-        }
-
-        public async Task<SuggestionsMade> MakeSuggestions(string showId, int partyRequested)
+        public async Task<SuggestionsMade> MakeSuggestions(ShowId showId, PartyRequested partyRequested)
         {
             var auditoriumSeating = await _auditoriumSeatingAdapter.GetAuditoriumSeating(showId);
 
@@ -24,17 +20,19 @@ namespace SeatsSuggestions.Domain
             suggestionsMade.Add(GiveMeSuggestionsFor(auditoriumSeating, partyRequested, PricingCategory.Third));
             suggestionsMade.Add(GiveMeSuggestionsFor(auditoriumSeating, partyRequested, PricingCategory.Mixed));
 
-            if (suggestionsMade.MatchExpectations())
-            {
-                return suggestionsMade;
-            }
+            if (suggestionsMade.MatchExpectations()) return suggestionsMade;
 
             return new SuggestionNotAvailable(showId, partyRequested);
         }
 
+        public SeatAllocator(IAdaptAuditoriumSeating auditoriumSeatingAdapter)
+        {
+            _auditoriumSeatingAdapter = auditoriumSeatingAdapter;
+        }
+
         private static IEnumerable<SuggestionMade> GiveMeSuggestionsFor(
             AuditoriumSeating auditoriumSeating,
-            int partyRequested,
+            PartyRequested partyRequested,
             PricingCategory pricingCategory)
         {
             var foundedSuggestions = new List<SuggestionMade>();

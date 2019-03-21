@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ExternalDependencies;
+using SeatsSuggestions.Domain;
+using SeatsSuggestions.Domain.Port;
 
-namespace SeatsSuggestions.Domain
+namespace SeatsSuggestions.Infra.Adapter
 {
     /// <summary>
     ///     Adapt Dtos coming from the external dependencies (ReservationsProvider, AuditoriumLayoutRepository) to
@@ -13,10 +15,10 @@ namespace SeatsSuggestions.Domain
         private readonly IProvideCurrentReservations _reservationsProvider;
         private readonly IProvideAuditoriumLayouts _auditoriumSeatingRepository;
 
-        public async Task<AuditoriumSeating> GetAuditoriumSeating(string showId)
+        public async Task<AuditoriumSeating> GetAuditoriumSeating(ShowId showId)
         {
-            var auditoriumDto = await _auditoriumSeatingRepository.GetAuditoriumSeatingFor(showId);
-            var reservedSeatsDto = await _reservationsProvider.GetReservedSeats(showId);
+            var auditoriumDto = await _auditoriumSeatingRepository.GetAuditoriumSeatingFor(showId.Id);
+            var reservedSeatsDto = await _reservationsProvider.GetReservedSeats(showId.Id);
             return AdaptAuditoriumSeatingDto(auditoriumDto, reservedSeatsDto);
         }
 

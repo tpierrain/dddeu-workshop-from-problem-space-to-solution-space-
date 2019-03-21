@@ -1,43 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ExternalDependencies;
-using ExternalDependencies.AuditoriumLayoutRepository;
-using ExternalDependencies.ReservationsProvider;
+﻿using ExternalDependencies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using SeatsSuggestions.Domain;
+using SeatsSuggestions.Domain.Port;
+using SeatsSuggestions.Infra.Adapter;
 
 namespace SeatsSuggestions.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        public IConfiguration Configuration { get; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            IProvideAuditoriumLayouts auditoriumSeatingRepository = new AuditoriumWebRepository("http://localhost:6000/");
             // api/data_for_auditoriumSeating/
+            IProvideAuditoriumLayouts auditoriumSeatingRepository = new AuditoriumWebRepository("http://localhost:6000/");
 
-            IProvideCurrentReservations seatReservationsProvider = new SeatReservationsWebRepository("http://localhost:5000/"); 
             // data_for_reservation_seats/
-
-            services.AddSingleton<IProvideAuditoriumLayouts>(auditoriumSeatingRepository);
-            services.AddSingleton<IProvideCurrentReservations>(seatReservationsProvider);
+            IProvideCurrentReservations seatReservationsProvider = new SeatReservationsWebRepository("http://localhost:5000/");
+            var seatAllocator =
+                new SeatAllocator(new AuditoriumSeatingAdapter(auditoriumSeatingRepository, seatReservationsProvider));
+            services.AddSingleton<IProvideAuditoriumSeating>(seatAllocator);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

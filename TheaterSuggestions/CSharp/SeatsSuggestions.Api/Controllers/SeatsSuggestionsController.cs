@@ -1,35 +1,34 @@
 ﻿using System.Threading.Tasks;
-using ExternalDependencies;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SeatsSuggestions.Domain;
+using SeatsSuggestions.Domain.Port;
 
 namespace SeatsSuggestions.Api.Controllers
 {
     [ApiController]
     public class SeatsSuggestionsController : ControllerBase
     {
-        private readonly IProvideAuditoriumLayouts _auditoriumSeatingRepository;
-        private readonly IProvideCurrentReservations _seatReservationsProvider;
+        private readonly IProvideAuditoriumSeating _auditoriumSeating;
 
-        public SeatsSuggestionsController(IProvideAuditoriumLayouts auditoriumSeatingRepository,
-            IProvideCurrentReservations seatReservationsProvider)
+        public SeatsSuggestionsController(IProvideAuditoriumSeating auditoriumSeating)
         {
-            _auditoriumSeatingRepository = auditoriumSeatingRepository;
-            _seatReservationsProvider = seatReservationsProvider;
+            _auditoriumSeating = auditoriumSeating;
         }
 
         // GET api/SeatsSuggestions?showId=5&party=3
         [HttpGet]
         public async Task<ActionResult<string>> Get([FromQuery(Name = "showId")] string showId,
             [FromQuery(Name = "party")] int party)
-        {
-            var seatAllocator =
-                new SeatAllocator(new AuditoriumSeatingAdapter(_auditoriumSeatingRepository, _seatReservationsProvider));
-            var suggestions = await seatAllocator.MakeSuggestions(showId, party);
+        {           
+            // Infra => Domain
+            var id = new ShowId(showId);
+            var partyRequested = new PartyRequested(party);
 
-            var jsonSuggestions = JsonConvert.SerializeObject(suggestions, Formatting.Indented);
-            return jsonSuggestions;
+            var suggestions = await _auditoriumSeating.MakeSuggestions(id, partyRequested);
+
+            // Domain => Infra
+            return JsonConvert.SerializeObject(suggestions, Formatting.Indented);
         }
     }
 }
