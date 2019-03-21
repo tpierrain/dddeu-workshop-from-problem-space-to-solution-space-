@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using SeatsSuggestions.Domain;
 using Value;
 
-namespace SeatsSuggestions
+namespace SeatsSuggestions.Domain
 {
     public class Seat : ValueType<Seat>
     {

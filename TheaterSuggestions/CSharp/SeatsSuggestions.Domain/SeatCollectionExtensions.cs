@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using SeatsSuggestions.Domain;
 
-namespace SeatsSuggestions
+namespace SeatsSuggestions.Domain
 {
     public static class SeatCollectionExtensions
     {
