@@ -1,4 +1,4 @@
-﻿namespace SeatsSuggestions.Domain
+﻿namespace SeatsSuggestions
 {
     public enum PricingCategory
     {

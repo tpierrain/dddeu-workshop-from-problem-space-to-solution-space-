@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ExternalDependencies;
-using SeatsSuggestions.Domain;
 
-namespace SeatsSuggestions.Infra
+namespace SeatsSuggestions
 {
     /// <summary>
     ///     Adapt Dtos coming from the external dependencies (ReservationsProvider, AuditoriumLayoutRepository) to

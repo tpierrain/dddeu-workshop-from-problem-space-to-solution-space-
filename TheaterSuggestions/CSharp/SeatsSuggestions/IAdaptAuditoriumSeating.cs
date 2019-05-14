@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace SeatsSuggestions.Domain
+namespace SeatsSuggestions
 {
     public interface IAdaptAuditoriumSeating
     {

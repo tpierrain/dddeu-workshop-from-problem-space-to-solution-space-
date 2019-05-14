@@ -2,7 +2,7 @@
 using System.Linq;
 using Value;
 
-namespace SeatsSuggestions.Domain
+namespace SeatsSuggestions
 {
     public class Seat : ValueType<Seat>
     {

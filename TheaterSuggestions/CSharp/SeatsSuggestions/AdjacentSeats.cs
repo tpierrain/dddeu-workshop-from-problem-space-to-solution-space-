@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SeatsSuggestions.Domain
+namespace SeatsSuggestions
 {
     public class AdjacentSeats : IEnumerable<Seat>
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SeatsSuggestions.Domain
+namespace SeatsSuggestions
 {
     /// <summary>
     ///     Occurs when a bunch of Suggestion are made.
@@ -31,7 +31,7 @@ namespace SeatsSuggestions.Domain
         public IEnumerable<string> SeatNames(PricingCategory pricingCategory)
         {
             var suggestionsMade = ForCategory[pricingCategory];
-            return suggestionsMade.Select(s => string.Join("-", s.SeatNames()));
+            return suggestionsMade.Select(s => string.Join((string) "-", (IEnumerable<string>) s.SeatNames()));
         }
 
         private void InstantiateAnEmptyListForEveryPricingCategory()

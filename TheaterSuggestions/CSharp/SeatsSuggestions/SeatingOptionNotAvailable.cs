@@ -1,4 +1,4 @@
-﻿namespace SeatsSuggestions.Domain
+﻿namespace SeatsSuggestions
 {
     internal class SeatingOptionNotAvailable : SeatingOptionSuggested
     {

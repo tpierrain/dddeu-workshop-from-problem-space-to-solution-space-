@@ -2,7 +2,7 @@
 using Value;
 using Value.Shared;
 
-namespace SeatsSuggestions.Domain
+namespace SeatsSuggestions
 {
     public class AuditoriumSeating : ValueType<AuditoriumSeating>
     {

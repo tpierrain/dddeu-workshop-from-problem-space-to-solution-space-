@@ -2,8 +2,6 @@
 using ExternalDependencies;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using SeatsSuggestions.Domain;
-using SeatsSuggestions.Infra;
 
 namespace SeatsSuggestions.Api.Controllers
 {
