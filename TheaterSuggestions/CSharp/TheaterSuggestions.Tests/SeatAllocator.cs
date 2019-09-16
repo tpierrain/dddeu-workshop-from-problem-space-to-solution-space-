@@ -13,9 +13,9 @@
         {
             var suggestion = new Suggestion(partyRequested);
 
-            var theaterLayout = _auditoriumSeatingAdapter.GetAuditoriumSeating(showId);
+            var auditoriumSeating = _auditoriumSeatingAdapter.GetAuditoriumSeating(showId);
 
-            foreach (var row in theaterLayout.Rows)
+            foreach (var row in auditoriumSeating.Rows)
             foreach (var seat in row.Value.Seats)
             {
                 if (seat.IsAvailable)
