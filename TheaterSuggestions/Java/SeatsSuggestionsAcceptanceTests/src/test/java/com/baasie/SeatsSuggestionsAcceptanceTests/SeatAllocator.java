@@ -13,9 +13,9 @@ public class SeatAllocator {
     public SuggestionMade makeSuggestion(String showId, int partyRequested) {
         Suggestion suggestion = new Suggestion(partyRequested);
 
-        AuditoriumSeating theaterLayout = auditoriumSeatingAdapter.getAuditoriumSeating(showId);
+        AuditoriumSeating auditoriumSeating = auditoriumSeatingAdapter.getAuditoriumSeating(showId);
 
-        for (Map.Entry<String, Row> entry : theaterLayout.rows().entrySet()) {
+        for (Map.Entry<String, Row> entry : auditoriumSeating.rows().entrySet()) {
             for (Seat seat : entry.getValue().seats()) {
                 if (seat.isAvailable()) {
                     suggestion.addSeat(seat);
