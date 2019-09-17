@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using ExternalDependencies;
 using SeatsSuggestions.Domain;
-using SeatsSuggestions.Domain.Port;
+using SeatsSuggestions.Domain.Ports;
 
 namespace SeatsSuggestions.Infra.Adapter
 {

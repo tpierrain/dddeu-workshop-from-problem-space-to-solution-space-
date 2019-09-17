@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using SeatsSuggestions.Domain.Port;
+using SeatsSuggestions.Domain.Ports;
 
 namespace SeatsSuggestions.Domain
 {
-    public class SeatAllocator : IProvideAuditoriumSeating
+    public class SeatAllocator : IRequestSuggestions
     {
         private const int NumberOfSuggestionsPerPricingCategory = 3;
         private readonly IAdaptAuditoriumSeating _auditoriumSeatingAdapter;

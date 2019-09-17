@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace SeatsSuggestions.Domain.Port
+namespace SeatsSuggestions.Domain.Ports
 {
-    public interface IProvideAuditoriumSeating
+    public interface IRequestSuggestions
     {
         Task<SuggestionsMade> MakeSuggestions(ShowId showId, PartyRequested partyRequested);
     }

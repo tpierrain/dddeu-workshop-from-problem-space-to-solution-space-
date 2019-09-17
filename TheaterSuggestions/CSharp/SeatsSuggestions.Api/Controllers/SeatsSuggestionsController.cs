@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SeatsSuggestions.Domain;
-using SeatsSuggestions.Domain.Port;
+using SeatsSuggestions.Domain.Ports;
 
 namespace SeatsSuggestions.Api.Controllers
 {
@@ -10,9 +10,9 @@ namespace SeatsSuggestions.Api.Controllers
     [ApiController]
     public class SeatsSuggestionsController : ControllerBase
     {
-        private readonly IProvideAuditoriumSeating _auditoriumSeating;
+        private readonly IRequestSuggestions _auditoriumSeating;
 
-        public SeatsSuggestionsController(IProvideAuditoriumSeating auditoriumSeating)
+        public SeatsSuggestionsController(IRequestSuggestions auditoriumSeating)
         {
             _auditoriumSeating = auditoriumSeating;
         }

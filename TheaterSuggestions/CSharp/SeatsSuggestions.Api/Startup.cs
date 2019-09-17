@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using SeatsSuggestions.Domain;
-using SeatsSuggestions.Domain.Port;
+using SeatsSuggestions.Domain.Ports;
 using SeatsSuggestions.Infra.Adapter;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -17,14 +17,15 @@ namespace SeatsSuggestions.Api
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            // api/data_for_auditoriumSeating/
+            // Step1: Instantiate the "I want to go out" adapters
             IProvideAuditoriumLayouts auditoriumSeatingRepository = new AuditoriumWebRepository("http://localhost:50950/");
-
-            // data_for_reservation_seats/
             IProvideCurrentReservations seatReservationsProvider = new SeatReservationsWebRepository("http://localhost:50951/");
-            var seatAllocator =
-                new SeatAllocator(new AuditoriumSeatingAdapter(auditoriumSeatingRepository, seatReservationsProvider));
-            services.AddSingleton<IProvideAuditoriumSeating>(seatAllocator);
+
+            var auditoriumSeatingAdapter = new AuditoriumSeatingAdapter(auditoriumSeatingRepository, seatReservationsProvider);
+
+            // Step2: Instantiate the hexagon
+            var hexagon = new SeatAllocator(auditoriumSeatingAdapter);
+            services.AddSingleton<IRequestSuggestions>(hexagon);
 
             services.AddSwaggerGen(c =>
             {
