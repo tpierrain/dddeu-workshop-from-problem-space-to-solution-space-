@@ -6,6 +6,7 @@ using SeatsSuggestions.Domain.Port;
 
 namespace SeatsSuggestions.Api.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
     public class SeatsSuggestionsController : ControllerBase
     {
