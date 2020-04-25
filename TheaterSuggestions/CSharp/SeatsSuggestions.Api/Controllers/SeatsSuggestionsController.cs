@@ -10,23 +10,23 @@ namespace SeatsSuggestions.Api.Controllers
     [ApiController]
     public class SeatsSuggestionsController : ControllerBase
     {
-        private readonly IRequestSuggestions _auditoriumSeating;
+        private readonly IRequestSuggestions _hexagon;
 
-        public SeatsSuggestionsController(IRequestSuggestions auditoriumSeating)
+        public SeatsSuggestionsController(IRequestSuggestions hexagon)
         {
-            _auditoriumSeating = auditoriumSeating;
+            _hexagon = hexagon;
         }
 
         // GET api/SeatsSuggestions?showId=5&party=3
         [HttpGet]
-        public async Task<ActionResult<string>> Get([FromQuery(Name = "showId")] string showId,
-            [FromQuery(Name = "party")] int party)
+        public async Task<ActionResult<string>> Get([FromQuery(Name = "showId")] string showId, [FromQuery(Name = "party")] int party)
         {           
             // Infra => Domain
             var id = new ShowId(showId);
             var partyRequested = new PartyRequested(party);
 
-            var suggestions = await _auditoriumSeating.MakeSuggestions(id, partyRequested);
+            // Call the Domain
+            var suggestions = await _hexagon.MakeSuggestions(id, partyRequested);
 
             // Domain => Infra
             return JsonConvert.SerializeObject(suggestions, Formatting.Indented);

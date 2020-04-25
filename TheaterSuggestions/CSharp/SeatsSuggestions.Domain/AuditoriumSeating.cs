@@ -4,6 +4,9 @@ using Value.Shared;
 
 namespace SeatsSuggestions.Domain
 {
+    /// <summary>
+    /// The topology of an Auditorium with seats availability mapped.
+    /// </summary>
     public class AuditoriumSeating : ValueType<AuditoriumSeating>
     {
         private readonly Dictionary<string, Row> _rows;

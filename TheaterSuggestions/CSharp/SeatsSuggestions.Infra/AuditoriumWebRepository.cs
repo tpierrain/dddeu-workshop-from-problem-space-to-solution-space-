@@ -6,7 +6,7 @@ using ExternalDependencies;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace SeatsSuggestions.Infra.Adapter
+namespace SeatsSuggestions.Infra
 {
     /// <summary>
     ///     Get via a web api and adapt auditorium and return <see cref="AuditoriumDto" />.
@@ -34,9 +34,7 @@ namespace SeatsSuggestions.Infra.Adapter
 
                 var jsonAuditoriumSeating = await response.Content.ReadAsStringAsync();
 
-                var auditoriumSeatingDto = JsonConvert
-                    .DeserializeObject<AuditoriumDto>(jsonAuditoriumSeating,
-                        new JsonSerializerSettings {ContractResolver = new CamelCasePropertyNamesContractResolver()});
+                var auditoriumSeatingDto = JsonConvert.DeserializeObject<AuditoriumDto>(jsonAuditoriumSeating, new JsonSerializerSettings {ContractResolver = new CamelCasePropertyNamesContractResolver()});
 
                 return auditoriumSeatingDto;
             }

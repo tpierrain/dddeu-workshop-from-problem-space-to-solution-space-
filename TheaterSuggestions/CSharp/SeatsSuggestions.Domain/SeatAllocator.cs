@@ -7,11 +7,11 @@ namespace SeatsSuggestions.Domain
     public class SeatAllocator : IRequestSuggestions
     {
         private const int NumberOfSuggestionsPerPricingCategory = 3;
-        private readonly IAdaptAuditoriumSeating _auditoriumSeatingAdapter;
+        private readonly IProvideUpToDateAuditoriumSeating _auditoriumSeatingProvider;
 
         public async Task<SuggestionsMade> MakeSuggestions(ShowId showId, PartyRequested partyRequested)
         {
-            var auditoriumSeating = await _auditoriumSeatingAdapter.GetAuditoriumSeating(showId);
+            var auditoriumSeating = await _auditoriumSeatingProvider.GetAuditoriumSeating(showId);
 
             var suggestionsMade = new SuggestionsMade(showId, partyRequested);
 
@@ -25,9 +25,9 @@ namespace SeatsSuggestions.Domain
             return new SuggestionNotAvailable(showId, partyRequested);
         }
 
-        public SeatAllocator(IAdaptAuditoriumSeating auditoriumSeatingAdapter)
+        public SeatAllocator(IProvideUpToDateAuditoriumSeating auditoriumSeatingProvider)
         {
-            _auditoriumSeatingAdapter = auditoriumSeatingAdapter;
+            _auditoriumSeatingProvider = auditoriumSeatingProvider;
         }
 
         private static IEnumerable<SuggestionMade> GiveMeSuggestionsFor(

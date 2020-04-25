@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using SeatsSuggestions.Domain;
 using SeatsSuggestions.Domain.Ports;
+using SeatsSuggestions.Infra;
 using SeatsSuggestions.Infra.Adapter;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -17,7 +18,8 @@ namespace SeatsSuggestions.Api
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            // Step1: Instantiate the "I want to go out" adapters
+            // The 3 steps initialization of the Hexagonal Architecture 
+            // Step1: Instantiate the "I want to go out" (i.e. right-side) adapters
             IProvideAuditoriumLayouts auditoriumSeatingRepository = new AuditoriumWebRepository("http://localhost:50950/");
             IProvideCurrentReservations seatReservationsProvider = new SeatReservationsWebRepository("http://localhost:50951/");
 
@@ -31,6 +33,10 @@ namespace SeatsSuggestions.Api
             {
                 c.SwaggerDoc("v1", new Info { Title = "SeatsSuggestions API", Version = "v1" });
             });
+
+            // Step3: Instantiate the "I want to go in" (i.e. left-side) adapters
+            // ... actually, this will be done everytime the Left Adapter (SeatsSuggestionsController) will be instantiated by ASP.NET.
+            // It will receive the Hexagon (i.e. the SeatAllocator instance)
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
