@@ -11,8 +11,7 @@ namespace SeatsSuggestions.Tests.UnitTests
     {
         private static List<Seat> ComputeDistances(IEnumerable<Seat> seats, int rowSize)
         {
-            return seats.Select(s => new Seat(s.RowName, s.Number, s.PricingCategory, s.SeatAvailability,
-                s.ComputeDistanceFromRowCentroid(rowSize))).ToList();
+            return seats.Select(s => new Seat(s.RowName, s.Number, s.PricingCategory, s.SeatAvailability, s.ComputeDistanceFromRowCentroid(rowSize))).ToList();
         }
 
         [Test]
@@ -124,8 +123,7 @@ namespace SeatsSuggestions.Tests.UnitTests
 
             var adjacentSeats = seats.SelectAdjacentSeats(new PartyRequested(1));
             var orderByMiddleOfTheRow = adjacentSeats.OrderByMiddleOfTheRow(10);
-            Check.That(orderByMiddleOfTheRow.Select(a => a.ToString()))
-                .ContainsExactly("A5", "A6", "A4", "A7", "A3", "A8", "A2", "A9", "A1", "A10");
+            Check.That(orderByMiddleOfTheRow.Select(a => a.ToString())).ContainsExactly("A5", "A6", "A4", "A7", "A3", "A8", "A2", "A9", "A1", "A10");
         }
 
         [Test]
@@ -134,12 +132,10 @@ namespace SeatsSuggestions.Tests.UnitTests
             var seats = new List<Seat>
             {
                 new Seat("A", 1, PricingCategory.First, SeatAvailability.Available),
-
                 new Seat("A", 3, PricingCategory.Second, SeatAvailability.Available),
                 new Seat("A", 4, PricingCategory.First, SeatAvailability.Available),
                 new Seat("A", 5, PricingCategory.First, SeatAvailability.Available),
                 new Seat("A", 6, PricingCategory.Second, SeatAvailability.Available),
-
                 new Seat("A", 8, PricingCategory.First, SeatAvailability.Available),
                 new Seat("A", 9, PricingCategory.First, SeatAvailability.Available),
                 new Seat("A", 10, PricingCategory.First, SeatAvailability.Available)
@@ -183,8 +179,7 @@ namespace SeatsSuggestions.Tests.UnitTests
             };
 
             var seatsCompliant = seats.SelectAvailableSeatsCompliant(PricingCategory.First);
-            Check.That(seatsCompliant.Select(s => s.ToString()))
-                .ContainsExactly("A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10");
+            Check.That(seatsCompliant.Select(s => s.ToString())).ContainsExactly("A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10");
         }
 
 

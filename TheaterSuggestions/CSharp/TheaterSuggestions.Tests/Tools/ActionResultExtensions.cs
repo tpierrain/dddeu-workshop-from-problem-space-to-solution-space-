@@ -8,8 +8,8 @@ namespace SeatsSuggestions.Tests.Tools
     {
         public static T ExtractValue<T>(this IActionResult actionResult)
         {
-            var result = (OkObjectResult)actionResult;
-            return (T)result.Value;
+            var result = (OkObjectResult) actionResult;
+            return (T) result.Value;
         }
 
         public static HttpStatusCode GetStatusCode(this IActionResult actionResult)
@@ -23,17 +23,19 @@ namespace SeatsSuggestions.Tests.Tools
             {
                 if (result.StatusCode.HasValue)
                 {
-                    return (HttpStatusCode)result.StatusCode.Value;
+                    return (HttpStatusCode) result.StatusCode.Value;
                 }
+
                 throw new Exception("Result has a null StatusCode");
             }
+
             throw new Exception("Result is neither an ObjectResult nor an OkObjectResult");
         }
 
         public static void CheckIsOk(this IActionResult actionResult)
         {
-            var result = (ObjectResult)actionResult;
-            var isOk = result.StatusCode.HasValue && result.StatusCode.Value == (int)HttpStatusCode.OK;
+            var result = (ObjectResult) actionResult;
+            var isOk = result.StatusCode.HasValue && result.StatusCode.Value == (int) HttpStatusCode.OK;
 
             if (!isOk)
             {
@@ -43,20 +45,20 @@ namespace SeatsSuggestions.Tests.Tools
 
         public static void CheckIsCode(this IActionResult actionResult, HttpStatusCode httpStatusCode)
         {
-            var result = (ObjectResult)actionResult;
-            var isOk = result.StatusCode.HasValue && result.StatusCode.Value == (int)httpStatusCode;
+            var result = (ObjectResult) actionResult;
+            var isOk = result.StatusCode.HasValue && result.StatusCode.Value == (int) httpStatusCode;
 
             if (!isOk)
             {
-                throw new Exception($"The response does not have the expected {(int)httpStatusCode} HttpStatusCode. HttpStatusCode was: '{result.StatusCode.Value}'.");
+                throw new Exception($"The response does not have the expected {(int) httpStatusCode} HttpStatusCode. HttpStatusCode was: '{result.StatusCode.Value}'.");
             }
         }
 
         public static void CheckIsErrorWithCode(this IActionResult actionResult, HttpStatusCode httpStatusCode)
         {
-            var result = (ObjectResult)actionResult;
+            var result = (ObjectResult) actionResult;
 
-            var isErrorWithCode = result.StatusCode.HasValue && result.StatusCode.Value == (int)httpStatusCode;
+            var isErrorWithCode = result.StatusCode.HasValue && result.StatusCode.Value == (int) httpStatusCode;
 
             if (!isErrorWithCode)
             {
@@ -66,9 +68,9 @@ namespace SeatsSuggestions.Tests.Tools
 
         public static void CheckIsErrorWithCodeAndContent(this IActionResult actionResult, HttpStatusCode expectedHttpStatusCode, string expectedContent)
         {
-            var result = (ObjectResult)actionResult;
+            var result = (ObjectResult) actionResult;
 
-            var isErrorWithCode = result.StatusCode.HasValue && result.StatusCode.Value == (int)expectedHttpStatusCode;
+            var isErrorWithCode = result.StatusCode.HasValue && result.StatusCode.Value == (int) expectedHttpStatusCode;
 
             if (!isErrorWithCode)
             {
@@ -77,7 +79,7 @@ namespace SeatsSuggestions.Tests.Tools
 
             if (result.Value.ToString() != expectedContent)
             {
-                throw new Exception($"The response does not have the expected content. Expected content: [{expectedContent}] but was: [{result.Value.ToString()}].");
+                throw new Exception($"The response does not have the expected content. Expected content: [{expectedContent}] but was: [{result.Value}].");
             }
         }
     }
