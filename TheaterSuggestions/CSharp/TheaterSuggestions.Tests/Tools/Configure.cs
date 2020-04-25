@@ -11,7 +11,7 @@ namespace SeatsSuggestions.Tests.Tools
         public static IRequestSuggestions Hexagon(IWebClient webClient)
         {
             // Instantiate the Right-side adapter(s)
-            var rightSideAdapter = new AuditoriumSeatingAdapter(new AuditoriumWebRepository("http://fakehost:50950/", webClient), new SeatReservationsWebRepository("http://fakehost:50951/", webClient));
+            var rightSideAdapter = new AuditoriumSeatingAdapter(new AuditoriumWebClient("http://fakehost:50950/", webClient), new SeatReservationsWebClient("http://fakehost:50951/", webClient));
 
             // Give them to the hexagon
             var hexagon = new SeatAllocator(rightSideAdapter);

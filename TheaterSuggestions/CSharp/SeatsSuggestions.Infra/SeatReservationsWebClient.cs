@@ -9,12 +9,12 @@ namespace SeatsSuggestions.Infra
     /// <summary>
     ///     Get via a web api and adapt reservations and return <see cref="ReservedSeatsDto" />.
     /// </summary>
-    public class SeatReservationsWebRepository : IProvideCurrentReservations
+    public class SeatReservationsWebClient : IProvideCurrentReservations
     {
         private readonly string _uriSeatReservationService;
         private readonly IWebClient _webClient;
 
-        public SeatReservationsWebRepository(string uriSeatReservationService, IWebClient webClient)
+        public SeatReservationsWebClient(string uriSeatReservationService, IWebClient webClient)
         {
             _uriSeatReservationService = uriSeatReservationService;
             _webClient = webClient;

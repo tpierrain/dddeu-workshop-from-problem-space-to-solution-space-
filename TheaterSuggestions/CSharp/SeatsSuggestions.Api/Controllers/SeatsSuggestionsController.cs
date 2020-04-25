@@ -6,8 +6,9 @@ using SeatsSuggestions.Domain.Ports;
 
 namespace SeatsSuggestions.Api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class SeatsSuggestionsController : ControllerBase
     {
         private readonly IRequestSuggestions _hexagon;

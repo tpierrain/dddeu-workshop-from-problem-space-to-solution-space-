@@ -9,12 +9,12 @@ namespace SeatsSuggestions.Infra
     /// <summary>
     ///     Get via a web api and adapt auditorium and return <see cref="AuditoriumDto" />.
     /// </summary>
-    public class AuditoriumWebRepository : IProvideAuditoriumLayouts
+    public class AuditoriumWebClient : IProvideAuditoriumLayouts
     {
         private readonly string _uriAuditoriumSeatingRepository;
         private readonly IWebClient _webClient;
 
-        public AuditoriumWebRepository(string uriAuditoriumSeatingRepository, IWebClient webClient)
+        public AuditoriumWebClient(string uriAuditoriumSeatingRepository, IWebClient webClient)
         {
             _uriAuditoriumSeatingRepository = uriAuditoriumSeatingRepository;
             _webClient = webClient;
