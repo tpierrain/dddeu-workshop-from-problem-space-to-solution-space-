@@ -6,6 +6,9 @@ using SeatsSuggestions.Domain.Ports;
 
 namespace SeatsSuggestions.Api.Controllers
 {
+    /// <summary>
+    /// Web controller acting as a left-side Adapter of a Hexagonal Architecture.
+    /// </summary>
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
