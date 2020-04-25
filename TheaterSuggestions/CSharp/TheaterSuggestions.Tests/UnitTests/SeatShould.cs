@@ -16,7 +16,7 @@ namespace SeatsSuggestions.Tests.UnitTests
             // Two different instances with same values should be equals
             Check.That(secondInstance).IsEqualTo(firstInstance);
 
-            // Should not mutate existing instance 
+            //The Allocate method should not mutate existing instance but return a new one instead
             var thirdInstance = secondInstance.Allocate();
 
             Check.That(secondInstance).IsEqualTo(firstInstance);
