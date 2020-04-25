@@ -29,10 +29,12 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
             var suggestionsMade = response.ExtractValue<SuggestionsMade>();
             Check.That(suggestionsMade.PartyRequested.PartySize).IsEqualTo(partyRequested);
             Check.That(suggestionsMade.ShowId.Id).IsEqualTo(showId);
+            
             Check.That(suggestionsMade).IsInstanceOf<SuggestionNotAvailable>();
             Check.That(suggestionsMade.SeatsInFirstPricingCategory).IsEmpty();
             Check.That(suggestionsMade.SeatsInSecondPricingCategory).IsEmpty();
             Check.That(suggestionsMade.SeatsInThirdPricingCategory).IsEmpty();
+            Check.That(suggestionsMade.SeatsInMixedPricingCategory).IsEmpty();
         }
 
         [Test]
