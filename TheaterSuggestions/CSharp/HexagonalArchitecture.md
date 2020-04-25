@@ -1,6 +1,6 @@
 # Hexagonal Architecture code sample
 
-__Thomas Pierrain
+__Thomas Pierrain__
 
 
 This solution is used to support various hands-on labs built and used for one of our DDD training course with Bruno Boucard (and Kenny Baas-Schwegler)
