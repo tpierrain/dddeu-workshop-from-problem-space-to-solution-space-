@@ -1,6 +1,6 @@
 # Hexagonal Architecture sample
 
-Thomas PIERRAIN
+__Thomas PIERRAIN__
 
 
 This solution is used to support various hands-on labs built and used for one of our DDD training course with Bruno (and Kenny)
