@@ -49,7 +49,7 @@ The solution also contains 2 web APIs supported by other teams / other Bounded C
 
 ## About the testing strategy
 
-This solution also illustrates the testing strategy that I described in my blog post here: "http://tpierrain.blogspot.com/2020/03/hexagonal-architecture-dont-get-lost-on.html".
+This solution also illustrates the testing strategy that I described __[in my blog post here](http://tpierrain.blogspot.com/2020/03/hexagonal-architecture-dont-get-lost-on.html)__.
 
 This testing strategy includes the usage of all the Adapters within the coarse-grained Acceptance tests, stubbing only the last-miles I/Os (here Http calls to external web APIs) so that we are able to catch all the tiny mistakes and bugs one can have within the right-side Adapters (here only one: the __AuditoriumSeatingAdapter__ and all its collaborators:  *SeatReservationsWebClient* and *AuditoriumWebRepository*).
 
