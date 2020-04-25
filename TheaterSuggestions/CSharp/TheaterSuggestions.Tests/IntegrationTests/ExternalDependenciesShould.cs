@@ -4,7 +4,7 @@ using ExternalDependencies.ReservationsProvider;
 using NFluent;
 using NUnit.Framework;
 
-namespace SeatsSuggestions.Tests.IntergrationTests
+namespace SeatsSuggestions.Tests.IntegrationTests
 {
     /// <summary>
     ///     Tests suite for the External dependencies/services.
