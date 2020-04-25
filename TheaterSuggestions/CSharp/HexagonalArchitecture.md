@@ -12,6 +12,15 @@ The "__Hexagonal__" branch of this repo hosts a typical Hexagonal Architecture s
 
 ## Description of the solution
 
+Our Domain is to make the best suggestions of seats for Shows to our customers that want to reserve and buy tickets for a group of people (called a Party in our Domain).
+
+To do so, our Hexagon/Service/API needs to collaborate with 2 others Web APIs managed by 2 other teams. One providing the topology of the auditorium for a given Show id. The other providing the list of already reserved seats for this show. 
+
+After combining those informations into AuditoriumSeating types, our system must suggest seats fiting the requirement of our business (we want every party to be located in adjacent seats, we want to be as much as possible located in the center of a row, etc). 
+
+Our Domain is just to make some suggestions before the customer try to transform a suggestion into a real reservation. 
+
+
 Here are the projects of this solution:
 
  - __SeatsSuggestions.Domain__: the project hosting the core domain of Theater Seat Suggestions with:
