@@ -1,10 +1,8 @@
-﻿using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ExternalDependencies;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using SeatsSuggestions.Infra.Helpers;
 
 namespace SeatsSuggestions.Infra
 {
@@ -14,18 +12,19 @@ namespace SeatsSuggestions.Infra
     public class SeatReservationsWebRepository : IProvideCurrentReservations
     {
         private readonly string _uriSeatReservationService;
+        private readonly WebClient _webClient;
 
-        public SeatReservationsWebRepository(string uriSeatReservationService)
+        public SeatReservationsWebRepository(string uriSeatReservationService, WebClient webClient)
         {
             _uriSeatReservationService = uriSeatReservationService;
+            _webClient = webClient;
         }
 
         public async Task<ReservedSeatsDto> GetReservedSeats(string showId)
         {
             var jsonSeatReservations = await GetDataForReservations(showId);
 
-            var reservationsSeatsDto = JsonConvert
-                .DeserializeObject<ReservedSeatsDto>(jsonSeatReservations,
+            var reservationsSeatsDto = JsonConvert.DeserializeObject<ReservedSeatsDto>(jsonSeatReservations,
                     new JsonSerializerSettings {ContractResolver = new CamelCasePropertyNamesContractResolver()});
 
             return reservationsSeatsDto;
@@ -33,18 +32,11 @@ namespace SeatsSuggestions.Infra
 
         private async Task<string> GetDataForReservations(string showId)
         {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(_uriSeatReservationService);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var response = await _webClient.GetAsync($"{_uriSeatReservationService}api/data_for_reservation_seats/{showId}");
 
-                var response = await client.GetAsync($"api/data_for_reservation_seats/{showId}");
+            response.EnsureSuccessStatusCode();
 
-                response.EnsureSuccessStatusCode();
-
-                return await response.Content.ReadAsStringAsync();
-            }
+            return await response.Content.ReadAsStringAsync();
         }
     }
 }

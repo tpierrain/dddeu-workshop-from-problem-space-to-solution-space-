@@ -1,10 +1,8 @@
-﻿using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ExternalDependencies;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using SeatsSuggestions.Infra.Helpers;
 
 namespace SeatsSuggestions.Infra
 {
@@ -14,30 +12,25 @@ namespace SeatsSuggestions.Infra
     public class AuditoriumWebRepository : IProvideAuditoriumLayouts
     {
         private readonly string _uriAuditoriumSeatingRepository;
+        private readonly IWebClient _webClient;
 
-        public AuditoriumWebRepository(string uriAuditoriumSeatingRepository)
+        public AuditoriumWebRepository(string uriAuditoriumSeatingRepository, IWebClient webClient)
         {
             _uriAuditoriumSeatingRepository = uriAuditoriumSeatingRepository;
+            _webClient = webClient;
         }
 
         public async Task<AuditoriumDto> GetAuditoriumSeatingFor(string showId)
         {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(_uriAuditoriumSeatingRepository);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var response = await _webClient.GetAsync($"{_uriAuditoriumSeatingRepository}api/data_for_auditoriumSeating/{showId}");
 
-                var response = await client.GetAsync($"api/data_for_auditoriumSeating/{showId}");
+            response.EnsureSuccessStatusCode();
 
-                response.EnsureSuccessStatusCode();
+            var jsonAuditoriumSeating = await response.Content.ReadAsStringAsync();
 
-                var jsonAuditoriumSeating = await response.Content.ReadAsStringAsync();
+            var auditoriumSeatingDto = JsonConvert.DeserializeObject<AuditoriumDto>(jsonAuditoriumSeating, new JsonSerializerSettings {ContractResolver = new CamelCasePropertyNamesContractResolver()});
 
-                var auditoriumSeatingDto = JsonConvert.DeserializeObject<AuditoriumDto>(jsonAuditoriumSeating, new JsonSerializerSettings {ContractResolver = new CamelCasePropertyNamesContractResolver()});
-
-                return auditoriumSeatingDto;
-            }
+            return auditoriumSeatingDto;
         }
     }
 }

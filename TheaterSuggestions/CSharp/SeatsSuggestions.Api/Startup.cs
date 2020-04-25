@@ -7,6 +7,7 @@ using SeatsSuggestions.Domain;
 using SeatsSuggestions.Domain.Ports;
 using SeatsSuggestions.Infra;
 using SeatsSuggestions.Infra.Adapter;
+using SeatsSuggestions.Infra.Helpers;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace SeatsSuggestions.Api
@@ -18,21 +19,29 @@ namespace SeatsSuggestions.Api
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            ConfigurePortsAndAdapters(services);
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "SeatsSuggestions API", Version = "v1" });
+            });
+        }
+
+        private static void ConfigurePortsAndAdapters(IServiceCollection services)
+        {
             // The 3 steps initialization of the Hexagonal Architecture 
             // Step1: Instantiate the "I want to go out" (i.e. right-side) adapters
-            IProvideAuditoriumLayouts auditoriumSeatingRepository = new AuditoriumWebRepository("http://localhost:50950/");
-            IProvideCurrentReservations seatReservationsProvider = new SeatReservationsWebRepository("http://localhost:50951/");
+            var webClient = new WebClient();
+            services.AddSingleton<IWebClient>(webClient);
+
+            IProvideAuditoriumLayouts auditoriumSeatingRepository = new AuditoriumWebRepository("http://localhost:50950/", webClient);
+            IProvideCurrentReservations seatReservationsProvider = new SeatReservationsWebRepository("http://localhost:50951/", webClient);
 
             var auditoriumSeatingAdapter = new AuditoriumSeatingAdapter(auditoriumSeatingRepository, seatReservationsProvider);
 
             // Step2: Instantiate the hexagon
             var hexagon = new SeatAllocator(auditoriumSeatingAdapter);
             services.AddSingleton<IRequestSuggestions>(hexagon);
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Info { Title = "SeatsSuggestions API", Version = "v1" });
-            });
 
             // Step3: Instantiate the "I want to go in" (i.e. left-side) adapters
             // ... actually, this will be done everytime the Left Adapter (SeatsSuggestionsController) will be instantiated by ASP.NET.
