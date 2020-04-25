@@ -19,7 +19,7 @@ namespace SeatsSuggestions.Api.Controllers
 
         // GET api/SeatsSuggestions?showId=5&party=3
         [HttpGet]
-        public async Task<ActionResult<string>> Get([FromQuery(Name = "showId")] string showId, [FromQuery(Name = "party")] int party)
+        public async Task<IActionResult> Get([FromQuery(Name = "showId")] string showId, [FromQuery(Name = "party")] int party)
         {           
             // Infra => Domain
             var id = new ShowId(showId);
@@ -29,7 +29,7 @@ namespace SeatsSuggestions.Api.Controllers
             var suggestions = await _hexagon.MakeSuggestions(id, partyRequested);
 
             // Domain => Infra
-            return JsonConvert.SerializeObject(suggestions, Formatting.Indented);
+            return new OkObjectResult(suggestions/*JsonConvert.SerializeObject(suggestions, Formatting.Indented)*/);
         }
     }
 }

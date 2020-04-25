@@ -12,9 +12,9 @@ namespace SeatsSuggestions.Infra
     public class SeatReservationsWebRepository : IProvideCurrentReservations
     {
         private readonly string _uriSeatReservationService;
-        private readonly WebClient _webClient;
+        private readonly IWebClient _webClient;
 
-        public SeatReservationsWebRepository(string uriSeatReservationService, WebClient webClient)
+        public SeatReservationsWebRepository(string uriSeatReservationService, IWebClient webClient)
         {
             _uriSeatReservationService = uriSeatReservationService;
             _webClient = webClient;
