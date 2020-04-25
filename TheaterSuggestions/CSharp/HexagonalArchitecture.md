@@ -1,9 +1,9 @@
 # Hexagonal Architecture code sample
 
-__Thomas PIERRAIN__
+__Thomas Pierrain
 
 
-This solution is used to support various hands-on labs built and used for one of our DDD training course with Bruno (and Kenny)
+This solution is used to support various hands-on labs built and used for one of our DDD training course with Bruno Boucard (and Kenny Baas-Schwegler)
 
 The "__Hexagonal__" branch of this repo hosts a typical Hexagonal Architecture structure. 
 
