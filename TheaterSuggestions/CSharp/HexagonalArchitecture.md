@@ -1,13 +1,40 @@
 # Hexagonal Architecture sample
 
-This solution is used to support various hands-on labs built and used for one of our DDD training course.
+Thomas PIERRAIN
 
 
-The "__Hexagonal__" branch of this repo hosts a typical Hexagonal Architecture structure. It also hosts an example of the testing strategy illustrated in Thomas PIERRAIN's blog post: "http://tpierrain.blogspot.com/2020/03/hexagonal-architecture-dont-get-lost-on.html".
+This solution is used to support various hands-on labs built and used for one of our DDD training course with Bruno (and Kenny)
+
+The "__Hexagonal__" branch of this repo hosts a typical Hexagonal Architecture structure. 
+
+## Description of the solution
+
+Here are the projects of this solution:
+
+ - __SeatsSuggestions.Domain__: the project hosting the core domain of Theater Seat Suggestions.
+ 
+ - __SeatsSuggestions.Infra__: the project hosting some infrastructure-level types such has the "AuditoriumSeatingAdapter" right-side Adapter (implemdenting the IProvideUpToDateAuditoriumSeating port). One can notice that we could have put all this project's content within the __SeatsSuggesion.Api__ one. 
+ 
+ - __SeatsSuggestions.Api__: the ASP.NET core project hosting the web controllers (our left-side adapter here), the swagger doc, etc.
+ 
+ - __SeatsSuggestions.Tests__: the project containing all the tests. The coarse-grained Acceptance tests (the outer loop), the fine-grained unit tests (the inner loop). So far there is some integration tests but they should be more and located in a dedicated project IMO (TBD) 
+ 
+
+The solution also contains 2 web APIs supported by other teams / other Bounded Contexts: 
+
+ - __AuditoriumLayout.Api__: the web API providing the topology of an auditorium giving the identifier of a Show. This web API belongs to the *Auditorium topologies* Bounded Context (the one knowing in relation with all the Theaters involved in Shows). 
+ 
+ - __SeatReservations.Api__: the web API providing the list of already reserved seats for a given Show. This web API belongs to the *Reservation* Bounded Context (the one dealing with the Booking Transactions).
+ 
+ 
+ 
+
 
 ## About the testing strategy
 
-This testing strategy includes all the Adapters in the coarse-grained Acceptance tests, stubbing only the last-miles I/Os (here Http calls to external web APIs) so that we are catching all our mistakes in those right-side Adapters (here only one: the AuditoriumSeatingAdapter and all its collaborators:  SeatReservationsWebClient and AuditoriumWebRepository).
+This solution also illustrates the testing strategy that I described in my blog post here: "http://tpierrain.blogspot.com/2020/03/hexagonal-architecture-dont-get-lost-on.html".
+
+This testing strategy includes the usage of all the Adapters within the coarse-grained Acceptance tests, stubbing only the last-miles I/Os (here Http calls to external web APIs) so that we are able to catch all the tiny mistakes and bugs one can have within the right-side Adapters (here only one: the __AuditoriumSeatingAdapter__ and all its collaborators:  *SeatReservationsWebClient* and *AuditoriumWebRepository*).
 
 
 
