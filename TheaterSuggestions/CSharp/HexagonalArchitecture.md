@@ -19,7 +19,7 @@ Here are the projects of this solution:
    
    - __[SeatAllocator](./SeatsSuggestions.Domain/SeatAllocator.cs)__ the *Hexagon* (implementing the __IRequestSuggestions__ left-side port)
    
-   - __[The rest of our core domain](./SeatsSuggestions.Domain/)__
+   - __[The rest of our core domain](./SeatsSuggestions.Domain/)__ (no technical frameworks involved here. Pure Domain only).
    
  
  - __SeatsSuggestions.Infra__: the project hosting some infrastructure-level types such has the "AuditoriumSeatingAdapter" right-side Adapter (implemdenting the IProvideUpToDateAuditoriumSeating port). One can notice that we could have put all this project's content within the __SeatsSuggesion.Api__ one.
