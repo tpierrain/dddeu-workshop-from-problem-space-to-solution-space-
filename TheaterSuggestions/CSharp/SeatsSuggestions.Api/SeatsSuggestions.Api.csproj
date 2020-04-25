@@ -33,27 +33,11 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="5.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.0.0" />
 
-
-    <!--<PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="4.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.3.3" />-->
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SeatsSuggestions.Domain\SeatsSuggestions.Domain.csproj" />
     <ProjectReference Include="..\SeatsSuggestions.Infra\SeatsSuggestions.Infra.csproj" />
   </ItemGroup>
-
-  <!--<ItemGroup>
-    <None Remove="SeatsSuggestions.Api.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="SeatsSuggestions.Api.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>-->
 
 </Project>

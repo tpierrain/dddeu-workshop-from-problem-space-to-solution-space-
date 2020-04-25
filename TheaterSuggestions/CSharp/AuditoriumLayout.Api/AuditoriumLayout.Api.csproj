@@ -4,6 +4,19 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\Dev\dddeu-workshop-from-problem-space-to-solution-space-\TheaterSuggestions\CSharp\AuditoriumLayout.Api\AuditoriumLayout.Api.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>.\AuditoriumLayout.Api.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>.\AuditoriumLayout.Api.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <Content Include="..\..\..\Stubs\AuditoriumLayouts\1-Ford Theater-(2)(0)_booked_seats.json" />
     <Content Include="..\..\..\Stubs\AuditoriumLayouts\1-Ford Theater-(2)(0)_theater.json" />
@@ -53,6 +66,9 @@
     <Content Include="..\..\..\Stubs\AuditoriumLayouts\8-New Amsterdam Theater-(2)(0)_theater.json" />
     <Content Include="..\..\..\Stubs\AuditoriumLayouts\9-Mogador Theater-(2)(0)_booked_seats.json" />
     <Content Include="..\..\..\Stubs\AuditoriumLayouts\9-Mogador Theater-(2)(0)_theater.json" />
+    <Content Include="AuditoriumLayout.Api.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -61,9 +77,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" />
+
+
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ApiExplorer" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="4.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="4.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="5.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.0.0" />
+
+
+    <!--<PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.3.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.3.3" />-->
   </ItemGroup>
 
   <ItemGroup>

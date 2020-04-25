@@ -4,8 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AuditoriumLayout.Api.Controllers
 {
-    [Route("api/data_for_auditoriumSeating/")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/data_for_auditoriumSeating")]
     public class AuditoriumSeatingController : ControllerBase
     {
         private readonly IProvideAuditoriumLayouts _provideAuditoriumLayouts;
