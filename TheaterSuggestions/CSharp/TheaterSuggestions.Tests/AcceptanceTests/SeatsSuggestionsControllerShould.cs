@@ -25,11 +25,10 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
             var leftSideAdapter = new SeatsSuggestionsController(hexagon);
 
             var response = await leftSideAdapter.Get(showId, partyRequested);
+            
             var suggestionsMade = response.ExtractValue<SuggestionsMade>();
-
             Check.That(suggestionsMade.PartyRequested.PartySize).IsEqualTo(partyRequested);
             Check.That(suggestionsMade.ShowId.Id).IsEqualTo(showId);
-
             Check.That(suggestionsMade).IsInstanceOf<SuggestionNotAvailable>();
             Check.That(suggestionsMade.SeatsInFirstPricingCategory).IsEmpty();
             Check.That(suggestionsMade.SeatsInSecondPricingCategory).IsEmpty();
@@ -47,9 +46,11 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
             var leftSideAdapter = new SeatsSuggestionsController(hexagon);
 
             var response = await leftSideAdapter.Get(showId, partyRequested);
+            
             var suggestionsMade = response.ExtractValue<SuggestionsMade>();
-
-            Check.That(suggestionsMade.SeatNames(PricingCategory.First)).ContainsExactly("A3");
+            Check.That(suggestionsMade.SeatsInFirstPricingCategory).ContainsExactly("A3");
+            Check.That(suggestionsMade.SeatsInSecondPricingCategory).IsEmpty();
+            Check.That(suggestionsMade.SeatsInThirdPricingCategory).IsEmpty();
         }
 
         [Test]
@@ -63,13 +64,12 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
             var leftSideAdapter = new SeatsSuggestionsController(hexagon);
 
             var response = await leftSideAdapter.Get(showId, partyRequested);
+            
             var suggestionsMade = response.ExtractValue<SuggestionsMade>();
-
-            Check.That(suggestionsMade.SeatNames(PricingCategory.First)).ContainsExactly("A5", "A6", "A4");
-            Check.That(suggestionsMade.SeatNames(PricingCategory.Second)).ContainsExactly("A2", "A9", "A1");
-            Check.That(suggestionsMade.SeatNames(PricingCategory.Third)).ContainsExactly("E5", "E6", "E4");
-
-            Check.That(suggestionsMade.SeatNames(PricingCategory.Mixed)).ContainsExactly("A5", "A6", "A4");
+            Check.That(suggestionsMade.SeatsInFirstPricingCategory).ContainsExactly("A5", "A6", "A4");
+            Check.That(suggestionsMade.SeatsInSecondPricingCategory).ContainsExactly("A2", "A9", "A1");
+            Check.That(suggestionsMade.SeatsInThirdPricingCategory).ContainsExactly("E5", "E6", "E4");
+            Check.That(suggestionsMade.SeatsInMixedPricingCategory).ContainsExactly("A5", "A6", "A4");
         }
 
         [Test]
@@ -83,9 +83,9 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
             var leftSideAdapter = new SeatsSuggestionsController(hexagon);
 
             var response = await leftSideAdapter.Get(showId, partyRequested);
+            
             var suggestionsMade = response.ExtractValue<SuggestionsMade>();
-
-            Check.That(suggestionsMade.SeatNames(PricingCategory.First)).ContainsExactly("A4", "A3", "B5");
+            Check.That(suggestionsMade.SeatsInFirstPricingCategory).ContainsExactly("A4", "A3", "B5");
         }
 
         [Test]
@@ -99,13 +99,12 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
             var leftSideAdapter = new SeatsSuggestionsController(hexagon);
 
             var response = await leftSideAdapter.Get(showId, partyRequested);
+            
             var suggestionsMade = response.ExtractValue<SuggestionsMade>();
-
-
-            Check.That(suggestionsMade.SeatNames(PricingCategory.First)).IsEmpty();
-            Check.That(suggestionsMade.SeatNames(PricingCategory.Second)).ContainsExactly("C4-C5-C6-C7", "D4-D5-D6-D7");
-            Check.That(suggestionsMade.SeatNames(PricingCategory.Third)).ContainsExactly("E4-E5-E6-E7", "F4-F5-F6-F7");
-            Check.That(suggestionsMade.SeatNames(PricingCategory.Mixed)).ContainsExactly("A6-A7-A8-A9", "C4-C5-C6-C7", "D4-D5-D6-D7");
+            Check.That(suggestionsMade.SeatsInFirstPricingCategory).IsEmpty();
+            Check.That(suggestionsMade.SeatsInSecondPricingCategory).ContainsExactly("C4-C5-C6-C7", "D4-D5-D6-D7");
+            Check.That(suggestionsMade.SeatsInThirdPricingCategory).ContainsExactly("E4-E5-E6-E7", "F4-F5-F6-F7");
+            Check.That(suggestionsMade.SeatsInMixedPricingCategory).ContainsExactly("A6-A7-A8-A9", "C4-C5-C6-C7", "D4-D5-D6-D7");
         }
     }
 }
