@@ -5,7 +5,7 @@ __Thomas Pierrain__
 
 This solution is used to support various hands-on labs built and used for one of our DDD training course with Bruno Boucard (and Kenny Baas-Schwegler)
 
-The "__Hexagonal__" branch of this repo hosts a typical Hexagonal Architecture structure. 
+__THE "Hexagonal" BRANCH OF THIS REPO__ hosts a typical Hexagonal Architecture structure.
 
 ![](./PortsAndAdapters.JPG) 
 
