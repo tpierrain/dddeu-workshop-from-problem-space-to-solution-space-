@@ -53,7 +53,14 @@ This solution also illustrates the testing strategy that I described __[in my bl
 
 This testing strategy includes the usage of all the Adapters within the coarse-grained Acceptance tests, stubbing only the last-miles I/Os (here Http calls to external web APIs) so that we are able to catch all the tiny mistakes and bugs one can have within the right-side Adapters (here only one: the __AuditoriumSeatingAdapter__ and all its collaborators:  *SeatReservationsWebClient* and *AuditoriumWebRepository*).
 
+Here is a typical test fixture for blazing-fast Coarse-grained Acceptance tests but involving the Adapters:
+ 
+ - __[SeatsSuggestionsControllerShould.cs](./TheaterSuggestions.Tests/AcceptanceTests/SeatsSuggestionsControllerShould.cs)__
+ 
+Here is a typical fine-grained unit test:
+ - __[SeatShould.cs](./TheaterSuggestions.Tests/UnitTests/SeatShould.cs)__
 
+---
 
 My old testing strategy for the coarse-grained Acceptance tests :
 
