@@ -38,6 +38,20 @@ This testing strategy includes the usage of all the Adapters within the coarse-g
 
 
 
+My old testing strategy for the coarse-grained Acceptance tests :
+
+![](./OldTestingStrategy.png) 
+
+
+My new testing strategy for the coarse-grained Acceptance tests (i.e. the one in place in that __'Hexagonal' branch__:
+
+![](./NewTestingStrategy.png) 
+
+
+
+
+
+
 
 
 
