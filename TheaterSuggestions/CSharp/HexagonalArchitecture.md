@@ -1,4 +1,4 @@
-# Hexagonal Architecture sample
+# Hexagonal Architecture code sample
 
 __Thomas PIERRAIN__
 
