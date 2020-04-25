@@ -7,6 +7,9 @@ This solution is used to support various hands-on labs built and used for one of
 
 The "__Hexagonal__" branch of this repo hosts a typical Hexagonal Architecture structure. 
 
+![](./PortsAndAdapters.JPG) 
+
+
 ## Description of the solution
 
 Here are the projects of this solution:
