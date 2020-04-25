@@ -7,6 +7,10 @@ using SeatsSuggestions.Tests.Tools;
 
 namespace SeatsSuggestions.Tests.AcceptanceTests
 {
+    /// <summary>
+    /// Coarse-grained Acceptance tests involving the whole Hexagon + all the Adapters
+    /// (left and right-side) but not the I/O.
+    /// </summary>
     [TestFixture]
     public class SeatsSuggestionsControllerShould
     {
