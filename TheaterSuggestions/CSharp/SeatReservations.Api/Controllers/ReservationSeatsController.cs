@@ -4,8 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SeatReservations.Api.Controllers
 {
-    [Route("api/data_for_reservation_seats/")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/data_for_reservation_seats")]
     public class ReservationSeatsController : ControllerBase
     {
         private readonly IProvideCurrentReservations _provideCurrentReservations;

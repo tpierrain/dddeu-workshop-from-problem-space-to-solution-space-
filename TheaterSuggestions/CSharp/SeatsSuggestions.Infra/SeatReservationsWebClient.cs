@@ -32,7 +32,7 @@ namespace SeatsSuggestions.Infra
 
         private async Task<string> GetDataForReservations(string showId)
         {
-            var response = await _webClient.GetAsync($"{_uriSeatReservationService}api/data_for_reservation_seats/{showId}");
+            var response = await _webClient.GetAsync($"{_uriSeatReservationService}api/v1/data_for_reservation_seats/{showId}");
 
             response.EnsureSuccessStatusCode();
 

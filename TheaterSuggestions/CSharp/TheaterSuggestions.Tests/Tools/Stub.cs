@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Reflection;
 using NSubstitute;
 using SeatsSuggestions.Infra.Helpers;
-using SeatsSuggestions.Tests.AcceptanceTests;
 
 namespace SeatsSuggestions.Tests.Tools
 {
@@ -17,7 +16,7 @@ namespace SeatsSuggestions.Tests.Tools
             webClient.GetAsync(Arg.Is<string>(s => s.EndsWith($"/api/v1/data_for_auditoriumSeating/{showId}")))
                 .Returns(new HttpResponseMessage() {StatusCode = HttpStatusCode.OK, Content = new StringContent(File.ReadAllText($"{Path.Combine(jsonDirPath, layoutTheaterJsonFileName)}"))});
 
-            webClient.GetAsync(Arg.Is<string>(s => s.EndsWith($"api/data_for_reservation_seats/{showId}")))
+            webClient.GetAsync(Arg.Is<string>(s => s.EndsWith($"api/v1/data_for_reservation_seats/{showId}")))
                 .Returns(new HttpResponseMessage() {StatusCode = HttpStatusCode.OK, Content = new StringContent(File.ReadAllText($"{Path.Combine(jsonDirPath, bookedSeatsJsonFileName)}"))});
             
             return webClient;
