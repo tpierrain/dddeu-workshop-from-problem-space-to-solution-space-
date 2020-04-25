@@ -31,6 +31,9 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
             Check.That(suggestionsMade.ShowId.Id).IsEqualTo(showId);
 
             Check.That(suggestionsMade).IsInstanceOf<SuggestionNotAvailable>();
+            Check.That(suggestionsMade.SeatsInFirstPricingCategory).IsEmpty();
+            Check.That(suggestionsMade.SeatsInSecondPricingCategory).IsEmpty();
+            Check.That(suggestionsMade.SeatsInThirdPricingCategory).IsEmpty();
         }
 
         [Test]
