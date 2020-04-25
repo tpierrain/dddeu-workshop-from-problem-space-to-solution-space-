@@ -4,6 +4,9 @@ using SeatsSuggestions.Domain.Ports;
 
 namespace SeatsSuggestions.Domain
 {
+    /// <summary>
+    /// The Hexagon.
+    /// </summary>
     public class SeatAllocator : IRequestSuggestions
     {
         private const int NumberOfSuggestionsPerPricingCategory = 3;
