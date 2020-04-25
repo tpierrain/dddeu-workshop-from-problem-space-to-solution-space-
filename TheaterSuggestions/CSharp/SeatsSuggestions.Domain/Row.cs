@@ -29,8 +29,7 @@ namespace SeatsSuggestions.Domain
             var availableSeatsCompliant = Seats.SelectAvailableSeatsCompliant(suggestionRequest.PricingCategory);
             var rowSize = Seats.Count();
 
-            var adjacentSeatsOfExpectedSize =
-                availableSeatsCompliant.SelectAdjacentSeats(suggestionRequest.PartyRequested);
+            var adjacentSeatsOfExpectedSize = availableSeatsCompliant.SelectAdjacentSeats(suggestionRequest.PartyRequested);
 
             var adjacentSeatsOrdered = adjacentSeatsOfExpectedSize.OrderByMiddleOfTheRow(rowSize);
 
@@ -38,7 +37,10 @@ namespace SeatsSuggestions.Domain
             {
                 seatingOptionSuggested.AddSeats(adjacentSeats);
 
-                if (seatingOptionSuggested.MatchExpectation()) return seatingOptionSuggested;
+                if (seatingOptionSuggested.MatchExpectation())
+                {
+                    return seatingOptionSuggested;
+                }
             }
 
             return new SeatingOptionNotAvailable(suggestionRequest);
@@ -49,11 +51,16 @@ namespace SeatsSuggestions.Domain
             var newVersionOfSeats = new List<Seat>();
 
             foreach (var currentSeat in Seats)
+            {
                 if (currentSeat.SameSeatLocation(seat))
-                    newVersionOfSeats.Add(new Seat(seat.RowName, seat.Number, seat.PricingCategory,
-                        SeatAvailability.Allocated));
+                {
+                    newVersionOfSeats.Add(new Seat(seat.RowName, seat.Number, seat.PricingCategory, SeatAvailability.Allocated));
+                }
                 else
+                {
                     newVersionOfSeats.Add(currentSeat);
+                }
+            }
 
             return new Row(seat.RowName, newVersionOfSeats);
         }

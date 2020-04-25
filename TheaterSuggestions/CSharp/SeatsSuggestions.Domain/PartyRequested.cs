@@ -11,7 +11,9 @@ namespace SeatsSuggestions.Domain
         public PartyRequested(int partySize)
         {
             if (partySize <= 0 || partySize > 20)
+            {
                 throw new ArgumentException($"{nameof(partySize)} should be greater than zero and less than 20");
+            }
 
             PartySize = partySize;
         }

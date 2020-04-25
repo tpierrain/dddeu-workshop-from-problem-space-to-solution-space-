@@ -12,8 +12,7 @@ namespace SeatsSuggestions.Domain
         public ShowId ShowId { get; }
         public PartyRequested PartyRequested { get; }
 
-        private Dictionary<PricingCategory, List<SuggestionMade>> ForCategory { get; } =
-            new Dictionary<PricingCategory, List<SuggestionMade>>();
+        private Dictionary<PricingCategory, List<SuggestionMade>> ForCategory { get; } = new Dictionary<PricingCategory, List<SuggestionMade>>();
 
         public IEnumerable<string> SeatsInFirstPricingCategory => SeatNames(PricingCategory.First);
         public IEnumerable<string> SeatsInSecondPricingCategory => SeatNames(PricingCategory.Second);
@@ -37,12 +36,17 @@ namespace SeatsSuggestions.Domain
         private void InstantiateAnEmptyListForEveryPricingCategory()
         {
             foreach (PricingCategory pricingCategory in Enum.GetValues(typeof(PricingCategory)))
+            {
                 ForCategory[pricingCategory] = new List<SuggestionMade>();
+            }
         }
 
         public void Add(IEnumerable<SuggestionMade> suggestions)
         {
-            foreach (var suggestionMade in suggestions) ForCategory[suggestionMade.PricingCategory].Add(suggestionMade);
+            foreach (var suggestionMade in suggestions)
+            {
+                ForCategory[suggestionMade.PricingCategory].Add(suggestionMade);
+            }
         }
 
         public bool MatchExpectations()

@@ -6,19 +6,20 @@ namespace SeatsSuggestions.Domain
 {
     public static class SeatCollectionExtensions
     {
-        public static IEnumerable<Seat> SelectAvailableSeatsCompliant(this IEnumerable<Seat> seats,
-            PricingCategory pricingCategory)
+        public static IEnumerable<Seat> SelectAvailableSeatsCompliant(this IEnumerable<Seat> seats, PricingCategory pricingCategory)
         {
             return seats.Where(s => s.IsAvailable() && s.MatchCategory(pricingCategory));
         }
 
-        public static IEnumerable<AdjacentSeats> SelectAdjacentSeats(this IEnumerable<Seat> seats,
-            PartyRequested partyRequested)
+        public static IEnumerable<AdjacentSeats> SelectAdjacentSeats(this IEnumerable<Seat> seats, PartyRequested partyRequested)
         {
             var adjacentSeatsGroups = new List<AdjacentSeats>();
             var adjacentSeats = new List<Seat>();
 
-            if (partyRequested.PartySize == 1) return seats.Select(s => new AdjacentSeats(new List<Seat> {s}));
+            if (partyRequested.PartySize == 1)
+            {
+                return seats.Select(s => new AdjacentSeats(new List<Seat> {s}));
+            }
 
             foreach (var candidateSeat in seats.OrderBy(s => s.DistanceFromRowCentroid))
             {
@@ -36,7 +37,11 @@ namespace SeatsSuggestions.Domain
                 }
                 else
                 {
-                    if (adjacentSeats.Any()) adjacentSeatsGroups.Add(new AdjacentSeats(adjacentSeats));
+                    if (adjacentSeats.Any())
+                    {
+                        adjacentSeatsGroups.Add(new AdjacentSeats(adjacentSeats));
+                    }
+
                     adjacentSeats = new List<Seat> {candidateSeat};
                 }
             }
@@ -44,15 +49,12 @@ namespace SeatsSuggestions.Domain
             return adjacentSeatsGroups.Where(adjacent => adjacent.Count() == partyRequested.PartySize);
         }
 
-        private static bool DoesNotExceedPartyRequestedAndCandidateSeatIsAdjacent(Seat candidateSeat,
-            List<Seat> adjacentSeats,
-            PartyRequested partyRequested)
+        private static bool DoesNotExceedPartyRequestedAndCandidateSeatIsAdjacent(Seat candidateSeat, List<Seat> adjacentSeats, PartyRequested partyRequested)
         {
             return candidateSeat.IsAdjacentWith(adjacentSeats) && adjacentSeats.Count < partyRequested.PartySize;
         }
 
-        public static IEnumerable<AdjacentSeats> OrderByMiddleOfTheRow(this IEnumerable<AdjacentSeats> adjacentSeats,
-            int rowSize)
+        public static IEnumerable<AdjacentSeats> OrderByMiddleOfTheRow(this IEnumerable<AdjacentSeats> adjacentSeats, int rowSize)
         {
             var sortedAdjacentSeatsGroups = new SortedList<int, List<AdjacentSeats>>();
 
@@ -61,7 +63,9 @@ namespace SeatsSuggestions.Domain
                 var distanceFromRowCentroid = adjacentSeat.ComputeDistanceFromRowCentroid(rowSize);
 
                 if (!sortedAdjacentSeatsGroups.ContainsKey(distanceFromRowCentroid))
+                {
                     sortedAdjacentSeatsGroups.Add(distanceFromRowCentroid, new List<AdjacentSeats>());
+                }
 
                 sortedAdjacentSeatsGroups[distanceFromRowCentroid].Add(adjacentSeat);
             }

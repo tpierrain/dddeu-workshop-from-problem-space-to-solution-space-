@@ -5,7 +5,7 @@ using Value.Shared;
 namespace SeatsSuggestions.Domain
 {
     /// <summary>
-    /// The topology of an Auditorium with seats availability mapped.
+    ///     The topology of an Auditorium with seats availability mapped.
     /// </summary>
     public class AuditoriumSeating : ValueType<AuditoriumSeating>
     {
@@ -23,7 +23,10 @@ namespace SeatsSuggestions.Domain
             {
                 var seatingOption = row.SuggestSeatingOption(suggestionRequest);
 
-                if (seatingOption.MatchExpectation()) return seatingOption;
+                if (seatingOption.MatchExpectation())
+                {
+                    return seatingOption;
+                }
             }
 
             return new SeatingOptionNotAvailable(suggestionRequest);

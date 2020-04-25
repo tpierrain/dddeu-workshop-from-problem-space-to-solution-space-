@@ -5,7 +5,7 @@ using SeatsSuggestions.Domain.Ports;
 namespace SeatsSuggestions.Domain
 {
     /// <summary>
-    /// The Hexagon.
+    ///     The Hexagon.
     /// </summary>
     public class SeatAllocator : IRequestSuggestions
     {
@@ -23,7 +23,10 @@ namespace SeatsSuggestions.Domain
             suggestionsMade.Add(GiveMeSuggestionsFor(auditoriumSeating, partyRequested, PricingCategory.Third));
             suggestionsMade.Add(GiveMeSuggestionsFor(auditoriumSeating, partyRequested, PricingCategory.Mixed));
 
-            if (suggestionsMade.MatchExpectations()) return suggestionsMade;
+            if (suggestionsMade.MatchExpectations())
+            {
+                return suggestionsMade;
+            }
 
             return new SuggestionNotAvailable(showId, partyRequested);
         }
@@ -33,25 +36,20 @@ namespace SeatsSuggestions.Domain
             _auditoriumSeatingProvider = auditoriumSeatingProvider;
         }
 
-        private static IEnumerable<SuggestionMade> GiveMeSuggestionsFor(
-            AuditoriumSeating auditoriumSeating,
-            PartyRequested partyRequested,
-            PricingCategory pricingCategory)
+        private static IEnumerable<SuggestionMade> GiveMeSuggestionsFor(AuditoriumSeating auditoriumSeating, PartyRequested partyRequested, PricingCategory pricingCategory)
         {
             var foundedSuggestions = new List<SuggestionMade>();
 
             for (var i = 0; i < NumberOfSuggestionsPerPricingCategory; i++)
             {
-                var seatOptionsSuggested = auditoriumSeating
-                    .SuggestSeatingOptionFor(new SuggestionRequest(partyRequested, pricingCategory));
+                var seatOptionsSuggested = auditoriumSeating.SuggestSeatingOptionFor(new SuggestionRequest(partyRequested, pricingCategory));
 
                 if (seatOptionsSuggested.MatchExpectation())
                 {
                     // We get the new version of the Auditorium after the allocation
                     auditoriumSeating = auditoriumSeating.Allocate(seatOptionsSuggested);
 
-                    foundedSuggestions.Add(new SuggestionMade(partyRequested, pricingCategory,
-                        seatOptionsSuggested.Seats));
+                    foundedSuggestions.Add(new SuggestionMade(partyRequested, pricingCategory, seatOptionsSuggested.Seats));
                 }
             }
 

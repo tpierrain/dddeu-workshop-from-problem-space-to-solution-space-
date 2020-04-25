@@ -12,10 +12,14 @@ namespace SeatsSuggestions.Domain
         public ShowId(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
+            {
                 throw new ArgumentException($"{nameof(id)} should be not empty");
+            }
 
             if (id.Select(char.IsDigit).Count() != id.Length)
+            {
                 throw new ArgumentException($"{nameof(id)} should be a number");
+            }
 
             Id = id;
         }

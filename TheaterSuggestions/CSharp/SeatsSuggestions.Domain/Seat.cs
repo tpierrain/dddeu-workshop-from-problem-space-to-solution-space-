@@ -13,8 +13,7 @@ namespace SeatsSuggestions.Domain
         public int DistanceFromRowCentroid { get; }
 
 
-        public Seat(string rowName, uint number, PricingCategory pricingCategory, SeatAvailability seatAvailability,
-            int distanceFromRowCentroid = 0)
+        public Seat(string rowName, uint number, PricingCategory pricingCategory, SeatAvailability seatAvailability, int distanceFromRowCentroid = 0)
         {
             RowName = rowName;
             Number = number;
@@ -30,7 +29,10 @@ namespace SeatsSuggestions.Domain
 
         public bool MatchCategory(PricingCategory pricingCategory)
         {
-            if (pricingCategory == PricingCategory.Mixed) return true;
+            if (pricingCategory == PricingCategory.Mixed)
+            {
+                return true;
+            }
 
             return PricingCategory == pricingCategory;
         }
@@ -38,7 +40,9 @@ namespace SeatsSuggestions.Domain
         public Seat Allocate()
         {
             if (SeatAvailability == SeatAvailability.Available)
+            {
                 return new Seat(RowName, Number, PricingCategory, SeatAvailability.Allocated);
+            }
 
             return this;
         }
@@ -52,11 +56,20 @@ namespace SeatsSuggestions.Domain
         {
             var seatLocation = Number;
 
-            if (rowSize.IsOdd()) return seatLocation.ComputeDistanceFromCentroid(rowSize);
+            if (rowSize.IsOdd())
+            {
+                return seatLocation.ComputeDistanceFromCentroid(rowSize);
+            }
 
-            if (seatLocation.IsCentroid(rowSize)) return 0;
+            if (seatLocation.IsCentroid(rowSize))
+            {
+                return 0;
+            }
 
-            if (seatLocation < rowSize.CentroidIndex()) return seatLocation.ComputeDistanceFromCentroid(rowSize);
+            if (seatLocation < rowSize.CentroidIndex())
+            {
+                return seatLocation.ComputeDistanceFromCentroid(rowSize);
+            }
 
             return seatLocation.ComputeDistanceFromCentroid(rowSize) - 1;
         }
@@ -78,7 +91,9 @@ namespace SeatsSuggestions.Domain
             var seat = orderedSeats.First();
 
             if (Number + 1 == seat.Number || Number - 1 == seat.Number)
+            {
                 return true;
+            }
 
             seat = seats.Last();
 
