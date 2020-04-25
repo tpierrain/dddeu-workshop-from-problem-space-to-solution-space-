@@ -14,7 +14,7 @@ namespace SeatsSuggestions.Tests.Tools
         {
             var webClient = Substitute.For<IWebClient>();
             var jsonDirPath = Path.Combine(GetExecutingAssemblyDirectoryFullPath(), "AuditoriumLayouts");
-            webClient.GetAsync(Arg.Is<string>(s => s.EndsWith($"/api/data_for_auditoriumSeating/{showId}")))
+            webClient.GetAsync(Arg.Is<string>(s => s.EndsWith($"/api/v1/data_for_auditoriumSeating/{showId}")))
                 .Returns(new HttpResponseMessage() {StatusCode = HttpStatusCode.OK, Content = new StringContent(File.ReadAllText($"{Path.Combine(jsonDirPath, layoutTheaterJsonFileName)}"))});
 
             webClient.GetAsync(Arg.Is<string>(s => s.EndsWith($"api/data_for_reservation_seats/{showId}")))

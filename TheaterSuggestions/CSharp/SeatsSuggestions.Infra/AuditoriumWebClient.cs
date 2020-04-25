@@ -22,7 +22,7 @@ namespace SeatsSuggestions.Infra
 
         public async Task<AuditoriumDto> GetAuditoriumSeatingFor(string showId)
         {
-            var response = await _webClient.GetAsync($"{_uriAuditoriumSeatingRepository}api/data_for_auditoriumSeating/{showId}");
+            var response = await _webClient.GetAsync($"{_uriAuditoriumSeatingRepository}api/v1/data_for_auditoriumSeating/{showId}");
 
             response.EnsureSuccessStatusCode();
 
