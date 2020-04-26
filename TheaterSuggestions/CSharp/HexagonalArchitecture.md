@@ -73,14 +73,17 @@ Here is a typical test fixture for blazing-fast Coarse-grained Acceptance tests 
 Here is a typical fine-grained unit test:
  - __[SeatShould.cs](./TheaterSuggestions.Tests/UnitTests/SeatShould.cs)__
 
+
+Note: for now the solution is missing the Contract-Integration tests harness that checks our Fake-Stubs has the exact same behaviour than the concrete adapters plugged into the real external APIs. This will be added soon.
+
 ---
 
-My old testing strategy for the coarse-grained Acceptance tests :
+Even if the Domain is different, here is my old testing strategy for the coarse-grained Acceptance tests illustrated:
 
 ![](./OldTestingStrategy.png) 
 
 
-My new testing strategy for the coarse-grained Acceptance tests (i.e. the one in place in that __'Hexagonal' branch__:
+And my new testing strategy for the coarse-grained Acceptance tests (i.e. the one in place in that __'Hexagonal' branch__:
 
 ![](./NewTestingStrategy.png) 
 
