@@ -17,9 +17,7 @@ Our domain is “to find the best possible suggestions of Seats to make for a gr
 
 To make *Seats Suggestions*, we follow the rules defined from our Business applied to our concept of *__AuditoriumSeating__*
 
-[Examples](./AuditoriumLayoutExamples.md)
-
-__[See visual examples here‬](./AuditoriumLayoutExamples.md‬)__
+__[Visual Examples here](./AuditoriumLayoutExamples.md)__
 
 ‪
 To get our *__AuditoriumSeating__* to work with, our Hexagon/Service/API needs to collaborate with 2 others Web APIs managed by 2 other teams (working each in their own different *Bounded Contexts*). One providing the topology of the auditorium for a given Show. The other providing the list of already reserved seats for this show (and supporting the *Reservation Transactions* too).
