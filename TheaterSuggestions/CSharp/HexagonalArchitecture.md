@@ -9,7 +9,7 @@ __>> THE "Hexagonal" BRANCH <<__
 
 or this repo hosts __a typical Hexagonal Architecture structure__.
 
-![](../../PortsAndAdapters.JPG) 
+![](./PortsAndAdapters.JPG) 
 
 
 ## Description of the solution
@@ -18,7 +18,7 @@ Our domain is “to find the best possible suggestions of Seats to make for a gr
 
 To make *Seats Suggestions*, we follow the rules defined from our Business applied to our concept of *__AuditoriumSeating__*
 
-__[See visual examples here‬](https://github.com/42skillz/dddeu-workshop-from-problem-space-to-solution-space-/blob/Hexagonal/AuditoriumLayoutExamples.md‬)__
+__[See visual examples here‬](https://github.com/42skillz/dddeu-workshop-from-problem-space-to-solution-space-/Hexagonal/AuditoriumLayoutExamples.md‬)__
 
 ‪
 To get our *__AuditoriumSeating__* to work with, our Hexagon/Service/API needs to collaborate with 2 others Web APIs managed by 2 other teams (working each in their own different *Bounded Contexts*). One providing the topology of the auditorium for a given Show. The other providing the list of already reserved seats for this show (and supporting the *Reservation Transactions* too).
