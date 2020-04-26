@@ -11,12 +11,13 @@ or this repo hosts __a typical Hexagonal Architecture structure__.
 
 ![](./PortsAndAdapters.JPG) 
 
-
 ## Description of the solution
 
 Our domain is “to find the best possible suggestions of Seats to make for a group of people that want to go to a Theater Show”. Our *suggestions* are made to please our Customers so that they will then transform one of our *__SeatsSuggestions__* (with various *__Pricing Categories__*) into a real *Reservation Request* afterwards, handled by another Service.
 
 To make *Seats Suggestions*, we follow the rules defined from our Business applied to our concept of *__AuditoriumSeating__*
+
+[Examples](./AuditoriumLayoutExamples.md)
 
 __[See visual examples here‬](./AuditoriumLayoutExamples.md‬)__
 
