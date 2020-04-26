@@ -14,11 +14,16 @@ or this repo hosts __a typical Hexagonal Architecture structure__.
 
 ## Description of the solution
 
-Our Domain is to make the best suggestions of seats for Shows to our customers that want to reserve and buy tickets for a group of people (called a Party in our Domain).
+Our domain is “to find the best possible suggestions of Seats to make for a group of people that want to go to a Theater Show”. Our *suggestions* are made to please our Customers so that they will then transform one of our *__SeatsSuggestions__* (with various *__Pricing Categories__*) into a real *Reservation Request* afterwards, handled by another Service.
 
-To do so, our Hexagon/Service/API needs to collaborate with 2 others Web APIs managed by 2 other teams (working each in their own different *Bounded Contexts*). One providing the topology of the auditorium for a given Show. The other providing the list of already reserved seats for this show (and supporting the booking transactions too).
+To make *Seats Suggestions*, we follow the rules defined from our Business applied to our concept of *__AuditoriumSeating__*
 
-After combining those various information into our AuditoriumSeating types, our system must suggest seats fiting the requirement of our business (we want every party to be located in adjacent seats, we want to be as much as possible located in the center of a row, etc). 
+‪https://github.com/42skillz/dddeu-workshop-from-problem-space-to-solution-space-/blob/Hexagonal/AuditoriumLayoutExamples.md‬
+
+
+To get our *__AuditoriumSeating__* to work with, our Hexagon/Service/API needs to collaborate with 2 others Web APIs managed by 2 other teams (working each in their own different *Bounded Contexts*). One providing the topology of the auditorium for a given Show. The other providing the list of already reserved seats for this show (and supporting the *Reservation Transactions* too).
+
+After combining those various information into our *AuditoriumSeating* types, our system must suggest seats fiting the requirement of our business (we want every party to be located in *adjacent seats*, we want to be as much as possible located in the *center of a row*, etc). 
 
 Our *SeatSuggestion* Domain is just here to make suggestions of *Seats* in various *Pricing Categories* before the customer will try to transform one of our *Suggestion* into a real *Reservation* afterward.
 
