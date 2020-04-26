@@ -9,7 +9,7 @@ __>> THE "Hexagonal" BRANCH <<__
 
 or this repo hosts __a typical Hexagonal Architecture structure__.
 
-![](./PortsAndAdapters.JPG) 
+![](../../PortsAndAdapters.JPG) 
 
 
 ## Description of the solution
