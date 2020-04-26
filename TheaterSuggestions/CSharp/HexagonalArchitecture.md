@@ -14,14 +14,13 @@ __THE "Hexagonal" BRANCH OF THIS REPO__ hosts a typical Hexagonal Architecture s
 
 Our Domain is to make the best suggestions of seats for Shows to our customers that want to reserve and buy tickets for a group of people (called a Party in our Domain).
 
-To do so, our Hexagon/Service/API needs to collaborate with 2 others Web APIs managed by 2 other teams. One providing the topology of the auditorium for a given Show id. The other providing the list of already reserved seats for this show. 
+To do so, our Hexagon/Service/API needs to collaborate with 2 others Web APIs managed by 2 other teams (working each in their own different *Bounded Contexts*). One providing the topology of the auditorium for a given Show. The other providing the list of already reserved seats for this show (and supporting the booking transactions too).
 
-After combining those informations into AuditoriumSeating types, our system must suggest seats fiting the requirement of our business (we want every party to be located in adjacent seats, we want to be as much as possible located in the center of a row, etc). 
+After combining those various information into our AuditoriumSeating types, our system must suggest seats fiting the requirement of our business (we want every party to be located in adjacent seats, we want to be as much as possible located in the center of a row, etc). 
 
-Our Domain is just to make some suggestions before the customer try to transform a suggestion into a real reservation. 
+Our *SeatSuggestion* Domain is just here to make suggestions of *Seats* in various *Pricing Categories* before the customer will try to transform one of our *Suggestion* into a real *Reservation* afterward.
 
-
-Here are the projects of this solution:
+Here are the projects of our solution:
 
  - __SeatsSuggestions.Domain__: the project hosting the core domain of Theater Seat Suggestions with:
   
@@ -31,7 +30,7 @@ Here are the projects of this solution:
    
    - __[SeatAllocator](./SeatsSuggestions.Domain/SeatAllocator.cs)__ the *Hexagon* (implementing the __IRequestSuggestions__ left-side port)
    
-   - __[The rest of our core domain](./SeatsSuggestions.Domain/)__ (no technical frameworks involved here. Pure Domain only).
+   - __[The rest of our core domain](./SeatsSuggestions.Domain/)__ (no technical frameworks involved here. Pure Domain only). Without any surprise this is the main part of our code base.
    
  
  - __SeatsSuggestions.Infra__: the project hosting some infrastructure-level types such has the "AuditoriumSeatingAdapter" right-side Adapter (implementing the IProvideUpToDateAuditoriumSeating port). One can notice that we could have put all this project's content within the __SeatsSuggesion.Api__ one.
@@ -49,13 +48,13 @@ Here are the projects of this solution:
  
 --- 
 
-The solution also contains 2 web APIs supported by other teams / other Bounded Contexts: 
+In order to be fully autonomous when launching our API, the visual studio solution also contains 2 fake web APIs supported by other teams / other Bounded Contexts: 
 
  - __AuditoriumLayout.Api__: the web API providing the topology of an auditorium giving the identifier of a Show. This web API belongs to the *Auditorium topologies* Bounded Context (the one knowing in relation with all the Theaters involved in Shows). 
  
  - __SeatReservations.Api__: the web API providing the list of already reserved seats for a given Show. This web API belongs to the *Reservation* Bounded Context (the one dealing with the Booking Transactions).
  
- 
+To launch the solution, please configure a multi-project startup in visual studio, with all *.API involved  
  
 
 
@@ -85,8 +84,7 @@ My new testing strategy for the coarse-grained Acceptance tests (i.e. the one in
 
 
 
-
-
+Feel free to interact with PR or even better, via twitter: __[@tpierrain](https://twitter.com/tpierrain)__
 
 
 
