@@ -5,7 +5,7 @@ __Thomas Pierrain__
 
 This solution is used to support various hands-on labs built and used for one of our DDD training course with Bruno Boucard (and Kenny Baas-Schwegler)
 
-__THE "Hexagonal" BRANCH OF THIS REPO__ hosts a typical Hexagonal Architecture structure.
+__THE "Hexagonal" BRANCH__ OF THIS REPO hosts a typical Hexagonal Architecture structure.
 
 ![](./PortsAndAdapters.JPG) 
 
@@ -84,7 +84,7 @@ My new testing strategy for the coarse-grained Acceptance tests (i.e. the one in
 
 
 
-Feel free to interact with PR or even better, via twitter: __[@tpierrain](https://twitter.com/tpierrain)__
+Feel free to interact via PR or even better, via twitter HERE: __[@tpierrain](https://twitter.com/tpierrain/status/1254183257140342784?s=21)__
 
 
 
