@@ -4,6 +4,11 @@
         <name>SeatsSuggestions.Api</name>
     </assembly>
     <members>
+        <member name="T:SeatsSuggestions.Api.Controllers.SeatsSuggestionsController">
+            <summary>
+            Web controller acting as a left-side Adapter of a Hexagonal Architecture.
+            </summary>
+        </member>
         <member name="T:SeatsSuggestions.Api.ServiceCollectionExtension">
             <summary>
             Extension methods for <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> instances.

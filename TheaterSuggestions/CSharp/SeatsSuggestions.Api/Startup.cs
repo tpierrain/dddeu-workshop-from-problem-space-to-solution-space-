@@ -67,8 +67,7 @@ namespace SeatsSuggestions.Api
             var auditoriumSeatingAdapter = new AuditoriumSeatingAdapter(auditoriumSeatingRepository, seatReservationsProvider);
 
             // Step2: Instantiate the hexagon
-            var hexagon = new SeatAllocator(auditoriumSeatingAdapter);
-            services.AddSingleton<IRequestSuggestions>(hexagon);
+            services.AddSingleton<IProvideUpToDateAuditoriumSeating>(auditoriumSeatingAdapter);
 
             // Step3: Instantiate the "I want to go in" (i.e. left-side) adapters
             // ... actually, this will be done everytime the Left Adapter (SeatsSuggestionsController) will be instantiated by ASP.NET.

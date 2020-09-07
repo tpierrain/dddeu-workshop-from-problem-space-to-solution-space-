@@ -3,6 +3,9 @@ using NFluent;
 using NUnit.Framework;
 using SeatsSuggestions.Api.Controllers;
 using SeatsSuggestions.Domain;
+using SeatsSuggestions.Infra;
+using SeatsSuggestions.Infra.Adapter;
+using SeatsSuggestions.Infra.Helpers;
 using SeatsSuggestions.Tests.Tools;
 
 namespace SeatsSuggestions.Tests.AcceptanceTests
@@ -21,8 +24,8 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
             var partyRequested = 1;
 
             var webClient = Stub.AWebClientWith(showId, "5-Madison Theater-(2)(0)_theater.json", "5-Madison Theater-(2)(0)_booked_seats.json");
-            var hexagon = Configure.Hexagon(webClient);
-            var leftSideAdapter = new SeatsSuggestionsController(hexagon);
+            
+            var leftSideAdapter = new SeatsSuggestionsController(BuildAuditoriumSeatingProvider(webClient));
 
             var response = await leftSideAdapter.Get(showId, partyRequested);
             
@@ -37,6 +40,11 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
             Check.That(suggestionsMade.SeatsInMixedPricingCategory).IsEmpty();
         }
 
+        private static AuditoriumSeatingAdapter BuildAuditoriumSeatingProvider(IWebClient webClient)
+        {
+            return new AuditoriumSeatingAdapter(new AuditoriumWebClient("http://fakehost:50950/", webClient), new SeatReservationsWebClient("http://fakehost:50951/", webClient));
+        }
+
         [Test]
         public async Task Suggest_one_seat_when_Auditorium_contains_one_available_seat_only()
         {
@@ -44,8 +52,8 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
             var partyRequested = 1;
 
             var webClient = Stub.AWebClientWith(showId, "1-Ford Theater-(2)(0)_theater.json", "1-Ford Theater-(2)(0)_booked_seats.json");
-            var hexagon = Configure.Hexagon(webClient);
-            var leftSideAdapter = new SeatsSuggestionsController(hexagon);
+            
+            var leftSideAdapter = new SeatsSuggestionsController(BuildAuditoriumSeatingProvider(webClient));
 
             var response = await leftSideAdapter.Get(showId, partyRequested);
             
@@ -62,8 +70,8 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
             var partyRequested = 1;
 
             var webClient = Stub.AWebClientWith(showId, "18-New Amsterdam-(6)(0)_theater.json", "18-New Amsterdam-(6)(0)_booked_seats.json");
-            var hexagon = Configure.Hexagon(webClient);
-            var leftSideAdapter = new SeatsSuggestionsController(hexagon);
+            
+            var leftSideAdapter = new SeatsSuggestionsController(BuildAuditoriumSeatingProvider(webClient));
 
             var response = await leftSideAdapter.Get(showId, partyRequested);
             
@@ -81,8 +89,8 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
             var partyRequested = 1;
 
             var webClient = Stub.AWebClientWith(showId, "9-Mogador Theater-(2)(0)_theater.json", "9-Mogador Theater-(2)(0)_booked_seats.json");
-            var hexagon = Configure.Hexagon(webClient);
-            var leftSideAdapter = new SeatsSuggestionsController(hexagon);
+            
+            var leftSideAdapter = new SeatsSuggestionsController(BuildAuditoriumSeatingProvider(webClient));
 
             var response = await leftSideAdapter.Get(showId, partyRequested);
             
@@ -97,8 +105,8 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
             var partyRequested = 4;
 
             var webClient = Stub.AWebClientWith(showId, "3-Dock Street Theater-(6)(0)_theater.json", "3-Dock Street Theater-(6)(0)_booked_seats.json");
-            var hexagon = Configure.Hexagon(webClient);
-            var leftSideAdapter = new SeatsSuggestionsController(hexagon);
+            
+            var leftSideAdapter = new SeatsSuggestionsController(BuildAuditoriumSeatingProvider(webClient));
 
             var response = await leftSideAdapter.Get(showId, partyRequested);
             

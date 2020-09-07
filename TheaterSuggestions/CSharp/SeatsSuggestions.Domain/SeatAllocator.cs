@@ -7,15 +7,12 @@ namespace SeatsSuggestions.Domain
     /// <summary>
     ///     The Hexagon.
     /// </summary>
-    public class SeatAllocator : IRequestSuggestions
+    public class SeatAllocator
     {
         private const int NumberOfSuggestionsPerPricingCategory = 3;
-        private readonly IProvideUpToDateAuditoriumSeating _auditoriumSeatingProvider;
 
-        public async Task<SuggestionsMade> MakeSuggestions(ShowId showId, PartyRequested partyRequested)
+        public static SuggestionsMade MakeSuggestions(ShowId showId, PartyRequested partyRequested, AuditoriumSeating auditoriumSeating)
         {
-            var auditoriumSeating = await _auditoriumSeatingProvider.GetAuditoriumSeating(showId);
-
             var suggestionsMade = new SuggestionsMade(showId, partyRequested);
 
             suggestionsMade.Add(GiveMeSuggestionsFor(auditoriumSeating, partyRequested, PricingCategory.First));
@@ -29,11 +26,6 @@ namespace SeatsSuggestions.Domain
             }
 
             return new SuggestionNotAvailable(showId, partyRequested);
-        }
-
-        public SeatAllocator(IProvideUpToDateAuditoriumSeating auditoriumSeatingProvider)
-        {
-            _auditoriumSeatingProvider = auditoriumSeatingProvider;
         }
 
         private static IEnumerable<SuggestionMade> GiveMeSuggestionsFor(AuditoriumSeating auditoriumSeating, PartyRequested partyRequested, PricingCategory pricingCategory)

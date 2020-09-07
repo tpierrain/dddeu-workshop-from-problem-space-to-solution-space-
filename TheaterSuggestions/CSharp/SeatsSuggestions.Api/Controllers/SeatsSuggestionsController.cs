@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SeatsSuggestions.Domain;
 using SeatsSuggestions.Domain.Ports;
+using SeatsSuggestions.Infra.Adapter;
 
 namespace SeatsSuggestions.Api.Controllers
 {
@@ -14,11 +15,11 @@ namespace SeatsSuggestions.Api.Controllers
     [Route("api/v{version:apiVersion}/[controller]")]
     public class SeatsSuggestionsController : ControllerBase
     {
-        private readonly IRequestSuggestions _hexagon;
+        private readonly IProvideUpToDateAuditoriumSeating _auditoriumSeatingProvider;
 
-        public SeatsSuggestionsController(IRequestSuggestions hexagon)
+        public SeatsSuggestionsController(IProvideUpToDateAuditoriumSeating auditoriumSeatingProvider)
         {
-            _hexagon = hexagon;
+            _auditoriumSeatingProvider = auditoriumSeatingProvider;
         }
 
         // GET api/SeatsSuggestions?showId=5&party=3
@@ -30,7 +31,9 @@ namespace SeatsSuggestions.Api.Controllers
             var partyRequested = new PartyRequested(party);
 
             // Call the Domain
-            var suggestions = await _hexagon.MakeSuggestions(id, partyRequested);
+            var auditoriumSeating = await _auditoriumSeatingProvider.GetAuditoriumSeating(id);
+
+            var suggestions = SeatAllocator.MakeSuggestions(id, partyRequested, auditoriumSeating);
 
             // Domain => Infra
             return new OkObjectResult(suggestions/*JsonConvert.SerializeObject(suggestions, Formatting.Indented)*/);
