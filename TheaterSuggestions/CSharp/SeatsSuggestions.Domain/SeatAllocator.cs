@@ -11,7 +11,8 @@ namespace SeatsSuggestions.Domain
     {
         private const int NumberOfSuggestionsPerPricingCategory = 3;
 
-        public static SuggestionsMade MakeSuggestions(ShowId showId, PartyRequested partyRequested, AuditoriumSeating auditoriumSeating)
+        public static Maybe<SuggestionsMade> TryMakeSuggestions(ShowId showId, PartyRequested partyRequested,
+            AuditoriumSeating auditoriumSeating)
         {
             var suggestionsMade = new SuggestionsMade(showId, partyRequested);
 
@@ -22,10 +23,10 @@ namespace SeatsSuggestions.Domain
 
             if (suggestionsMade.MatchExpectations())
             {
-                return suggestionsMade;
+                return new Maybe<SuggestionsMade>(suggestionsMade);
             }
 
-            return new SuggestionNotAvailable(showId, partyRequested);
+            return new Maybe<SuggestionsMade>();
         }
 
         private static IEnumerable<SuggestionMade> GiveMeSuggestionsFor(AuditoriumSeating auditoriumSeating, PartyRequested partyRequested, PricingCategory pricingCategory)

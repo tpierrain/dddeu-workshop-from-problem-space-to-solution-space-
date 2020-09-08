@@ -29,11 +29,11 @@ namespace SeatsSuggestions.Api.Controllers
             // Infra => Domain
             var id = new ShowId(showId);
             var partyRequested = new PartyRequested(party);
-
-            // Call the Domain
             var auditoriumSeating = await _auditoriumSeatingProvider.GetAuditoriumSeating(id);
 
-            var suggestions = SeatAllocator.MakeSuggestions(id, partyRequested, auditoriumSeating);
+            // Call the function core
+            var suggestions = SeatAllocator.TryMakeSuggestions(id, partyRequested, auditoriumSeating)
+                .GetValueOrFallback(new SuggestionNotAvailable(id, partyRequested));
 
             // Domain => Infra
             return new OkObjectResult(suggestions/*JsonConvert.SerializeObject(suggestions, Formatting.Indented)*/);
