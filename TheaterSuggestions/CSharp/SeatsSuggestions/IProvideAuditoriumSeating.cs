@@ -2,7 +2,7 @@
 
 namespace SeatsSuggestions
 {
-    public interface IAdaptAuditoriumSeating
+    public interface IProvideAuditoriumSeating
     {
         Task<AuditoriumSeating> GetAuditoriumSeating(string showId);
     }

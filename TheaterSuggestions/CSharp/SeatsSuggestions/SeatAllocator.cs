@@ -6,9 +6,9 @@ namespace SeatsSuggestions
     public class SeatAllocator
     {
         private const int NumberOfSuggestionsPerPricingCategory = 3;
-        private readonly IAdaptAuditoriumSeating _auditoriumSeatingAdapter;
+        private readonly IProvideAuditoriumSeating _auditoriumSeatingAdapter;
 
-        public SeatAllocator(IAdaptAuditoriumSeating auditoriumSeatingAdapter)
+        public SeatAllocator(IProvideAuditoriumSeating auditoriumSeatingAdapter)
         {
             _auditoriumSeatingAdapter = auditoriumSeatingAdapter;
         }

@@ -8,7 +8,7 @@ namespace SeatsSuggestions
     ///     Adapt Dtos coming from the external dependencies (ReservationsProvider, AuditoriumLayoutRepository) to
     ///     AuditoriumSeating instances.
     /// </summary>
-    public class AuditoriumSeatingAdapter : IAdaptAuditoriumSeating
+    public class AuditoriumSeatingAdapter : IProvideAuditoriumSeating
     {
         private readonly IProvideCurrentReservations _reservationsProvider;
         private readonly IProvideAuditoriumLayouts _auditoriumSeatingRepository;

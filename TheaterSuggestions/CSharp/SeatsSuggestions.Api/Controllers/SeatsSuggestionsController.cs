@@ -20,7 +20,7 @@ namespace SeatsSuggestions.Api.Controllers
 
         // GET api/SeatsSuggestions?showId=5&party=3
         [HttpGet]
-        public async Task<ActionResult<string>> Get([FromQuery(Name = "showId")]string showId, [FromQuery(Name = "party")]int party)
+        public async Task<string> Get([FromQuery(Name = "showId")]string showId, [FromQuery(Name = "party")]int party)
         {
             var seatAllocator = new SeatAllocator(new AuditoriumSeatingAdapter(_auditoriumSeatingRepository, _seatReservationsProvider));
             var suggestions = await seatAllocator.MakeSuggestions(showId, party);
