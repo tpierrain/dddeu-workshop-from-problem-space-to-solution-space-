@@ -8,9 +8,11 @@ namespace SeatsSuggestions.Domain
     {
         private readonly Dictionary<string, Row> _rows;
         public IReadOnlyDictionary<string, Row> Rows => _rows;
+        public ShowId ShowId { get; }
 
-        public AuditoriumSeating(Dictionary<string, Row> rows)
+        public AuditoriumSeating(ShowId showId, Dictionary<string, Row> rows)
         {
+            ShowId = showId;
             _rows = rows;
         }
 
@@ -50,7 +52,7 @@ namespace SeatsSuggestions.Domain
                 newVersionOfRows[updatedSeat.RowName] = newVersionOfRow;
             }
 
-            return new AuditoriumSeating(newVersionOfRows);
+            return new AuditoriumSeating(ShowId, newVersionOfRows);
         }
     }
 }

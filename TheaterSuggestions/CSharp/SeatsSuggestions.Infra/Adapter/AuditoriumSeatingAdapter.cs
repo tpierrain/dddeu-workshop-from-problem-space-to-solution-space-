@@ -19,7 +19,7 @@ namespace SeatsSuggestions.Infra.Adapter
         {
             var auditoriumDto = await _auditoriumSeatingRepository.GetAuditoriumSeatingFor(showId.Id);
             var reservedSeatsDto = await _reservationsProvider.GetReservedSeats(showId.Id);
-            return AdaptAuditoriumSeatingDto(auditoriumDto, reservedSeatsDto);
+            return AdaptAuditoriumSeatingDto(showId, auditoriumDto, reservedSeatsDto);
         }
 
         public AuditoriumSeatingAdapter(IProvideAuditoriumLayouts auditoriumSeatingRepository,
@@ -30,7 +30,7 @@ namespace SeatsSuggestions.Infra.Adapter
         }
 
 
-        private static AuditoriumSeating AdaptAuditoriumSeatingDto(AuditoriumDto auditoriumDto,
+        private AuditoriumSeating AdaptAuditoriumSeatingDto(ShowId showId, AuditoriumDto auditoriumDto,
             ReservedSeatsDto reservedSeatsDto)
         {
             var rows = new Dictionary<string, Row>();
@@ -52,7 +52,7 @@ namespace SeatsSuggestions.Infra.Adapter
                 rows[rowName] = new Row(rowName, seats);
             }
 
-            return new AuditoriumSeating(rows);
+            return new AuditoriumSeating(showId, rows);
         }
 
         private static PricingCategory ConvertCategory(int dtoPricingCategory)

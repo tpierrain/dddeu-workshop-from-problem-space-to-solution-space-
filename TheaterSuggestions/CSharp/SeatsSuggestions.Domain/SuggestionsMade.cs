@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Value;
+using Value.Shared;
 
 namespace SeatsSuggestions.Domain
 {
     /// <summary>
     ///     Occurs when a bunch of Suggestion are made.
     /// </summary>
-    public class SuggestionsMade
+    public class SuggestionsMade: ValueType<SuggestionMade>, IProvideDomainEvent
     {
         public ShowId ShowId { get; }
         public PartyRequested PartyRequested { get; }
@@ -48,6 +50,11 @@ namespace SeatsSuggestions.Domain
         public bool MatchExpectations()
         {
             return ForCategory.SelectMany(s => s.Value).Any(x => x.MatchExpectation());
+        }
+
+        protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
+        {
+            return new object[] { ShowId, PartyRequested, new DictionaryByValue<PricingCategory, List<SuggestionMade>>(ForCategory) };
         }
     }
 }

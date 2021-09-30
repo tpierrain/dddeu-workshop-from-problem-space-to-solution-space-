@@ -22,8 +22,11 @@ namespace SeatsSuggestions.Api
 
             // data_for_reservation_seats/
             IProvideCurrentReservations seatReservationsProvider = new SeatReservationsWebRepository("http://localhost:50951/");
+
             var seatAllocator =
-                new SeatAllocator(new AuditoriumSeatingAdapter(auditoriumSeatingRepository, seatReservationsProvider));
+                new SeatAllocator(new AuditoriumSeatingRepository(new AuditoriumSeatingAdapter(auditoriumSeatingRepository, seatReservationsProvider)));
+
+
             services.AddSingleton<IProvideAuditoriumSeating>(seatAllocator);
 
             services.AddSwaggerGen(c =>
