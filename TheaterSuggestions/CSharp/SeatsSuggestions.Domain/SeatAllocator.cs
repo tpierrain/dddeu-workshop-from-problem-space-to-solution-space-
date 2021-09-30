@@ -15,16 +15,15 @@ namespace SeatsSuggestions.Domain
 
             var auditoriumSeating = await _retrieveAuditoriumSeating.GetById(showId);
 
-            suggestionsMade.Add(GiveMeSuggestionsFor(auditoriumSeating, partyRequested, PricingCategory.First));
-            suggestionsMade.Add(GiveMeSuggestionsFor(auditoriumSeating, partyRequested, PricingCategory.Second));
-            suggestionsMade.Add(GiveMeSuggestionsFor(auditoriumSeating, partyRequested, PricingCategory.Third));
-            suggestionsMade.Add(GiveMeSuggestionsFor(auditoriumSeating, partyRequested, PricingCategory.Mixed));
+            foreach (var pricingCategory in new List<PricingCategory> { PricingCategory.First, PricingCategory.Second, 
+                                                                        PricingCategory.Third, PricingCategory.Mixed })
+            {
+                suggestionsMade.Add(GiveMeSuggestionsFor(auditoriumSeating, partyRequested, pricingCategory));
+            }
 
             _retrieveAuditoriumSeating.Save(auditoriumSeating);
 
-            if (suggestionsMade.MatchExpectations()) return suggestionsMade;
-
-            return new SuggestionNotAvailable(showId, partyRequested);
+            return suggestionsMade.MatchExpectations() ? suggestionsMade : new SuggestionNotAvailable(showId, partyRequested);
         }
 
         public SeatAllocator(IRetrieveAuditoriumSeating retrieveAuditoriumSeating)
