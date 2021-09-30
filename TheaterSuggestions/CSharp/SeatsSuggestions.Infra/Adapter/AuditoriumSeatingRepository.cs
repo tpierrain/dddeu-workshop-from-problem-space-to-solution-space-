@@ -16,11 +16,12 @@ namespace SeatsSuggestions.Infra.Adapter
 
         public async Task<AuditoriumSeating> GetById(ShowId showId)
         {
-            var auditoriumSeating = await _auditoriumLayoutAdapter.GetAuditoriumSeating(showId);
             if (!_repository.ContainsKey(showId))
-                _repository.Add(showId, auditoriumSeating);
+            {
+                _repository.Add(showId, await _auditoriumLayoutAdapter.GetAuditoriumSeating(showId));
+            }
 
-            return auditoriumSeating;
+            return _repository[showId];
         }
 
         public void Save(AuditoriumSeating auditoriumSeating)
