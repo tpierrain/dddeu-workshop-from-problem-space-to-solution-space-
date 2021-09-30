@@ -14,8 +14,8 @@ namespace SeatsSuggestions.Domain
         public ShowId ShowId { get; }
         public PartyRequested PartyRequested { get; }
 
-        private Dictionary<PricingCategory, List<SuggestionMade>> ForCategory { get; } =
-            new Dictionary<PricingCategory, List<SuggestionMade>>();
+        private Dictionary<PricingCategory, ListByValue<SuggestionMade>> ForCategory { get; } =
+            new Dictionary<PricingCategory, ListByValue<SuggestionMade>>();
 
         public IEnumerable<string> SeatsInFirstPricingCategory => SeatNames(PricingCategory.First);
         public IEnumerable<string> SeatsInSecondPricingCategory => SeatNames(PricingCategory.Second);
@@ -39,7 +39,7 @@ namespace SeatsSuggestions.Domain
         private void InstantiateAnEmptyListForEveryPricingCategory()
         {
             foreach (PricingCategory pricingCategory in Enum.GetValues(typeof(PricingCategory)))
-                ForCategory[pricingCategory] = new List<SuggestionMade>();
+                ForCategory[pricingCategory] = new ListByValue<SuggestionMade>();
         }
 
         public void Add(IEnumerable<SuggestionMade> suggestions)
@@ -54,7 +54,7 @@ namespace SeatsSuggestions.Domain
 
         protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
         {
-            return new object[] { ShowId, PartyRequested, new DictionaryByValue<PricingCategory, List<SuggestionMade>>(ForCategory) };
+            return new object[] { ShowId, PartyRequested, new DictionaryByValue<PricingCategory, ListByValue<SuggestionMade>>(ForCategory) };
         }
     }
 }
