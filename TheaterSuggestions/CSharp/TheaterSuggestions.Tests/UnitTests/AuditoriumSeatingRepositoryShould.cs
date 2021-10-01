@@ -8,7 +8,7 @@ using SeatsSuggestions.Infra.Adapter;
 
 namespace SeatsSuggestions.Tests.UnitTests
 {
-    class AuditoriumSeatingRepositoryShould
+    public class AuditoriumSeatingRepositoryShould
     {
         [Test]
         public async Task Retrieve_and_save_auditorium_seating_instances_from_repository()

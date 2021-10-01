@@ -9,7 +9,7 @@ namespace SeatsSuggestions.Domain
     /// <summary>
     ///     Occurs when a bunch of Suggestion are made.
     /// </summary>
-    public class SuggestionsMade: ValueType<SuggestionMade>, IProvideDomainEvent
+    public class SuggestionsMade: ValueType<SuggestionsMade>, IProvideDomainEvent
     {
         public ShowId ShowId { get; }
         public PartyRequested PartyRequested { get; }
@@ -26,7 +26,6 @@ namespace SeatsSuggestions.Domain
         {
             ShowId = showId;
             PartyRequested = partyRequested;
-
             InstantiateAnEmptyListForEveryPricingCategory();
         }
 
