@@ -7,13 +7,13 @@ namespace SeatsSuggestions.Domain
     public class SeatAllocator : IProvideAuditoriumSeating
     {
         private const int NumberOfSuggestionsPerPricingCategory = 3;
-        private readonly IRetrieveAuditoriumSeating _retrieveAuditoriumSeating;
+        private readonly Auditoriums _auditoriums;
 
         public async Task<SuggestionsMade> MakeSuggestions(ShowId showId, PartyRequested partyRequested)
         {
             var suggestionsMade = new SuggestionsMade(showId, partyRequested);
 
-            var auditoriumSeating = await _retrieveAuditoriumSeating.GetById(showId);
+            var auditoriumSeating = await _auditoriums.FindById(showId);
 
             foreach (var pricingCategory in new List<PricingCategory> { PricingCategory.First, PricingCategory.Second, 
                                                                         PricingCategory.Third, PricingCategory.Mixed })
@@ -21,14 +21,14 @@ namespace SeatsSuggestions.Domain
                 suggestionsMade.Add(GiveMeSuggestionsFor(auditoriumSeating, partyRequested, pricingCategory));
             }
 
-            _retrieveAuditoriumSeating.Save(auditoriumSeating);
+            _auditoriums.Save(auditoriumSeating);
 
             return suggestionsMade.MatchExpectations() ? suggestionsMade : new SuggestionNotAvailable(showId, partyRequested);
         }
 
-        public SeatAllocator(IRetrieveAuditoriumSeating retrieveAuditoriumSeating)
+        public SeatAllocator(Auditoriums auditoriums)
         {
-            _retrieveAuditoriumSeating = retrieveAuditoriumSeating;
+            _auditoriums = auditoriums;
         }
 
         private static IEnumerable<SuggestionMade> GiveMeSuggestionsFor(

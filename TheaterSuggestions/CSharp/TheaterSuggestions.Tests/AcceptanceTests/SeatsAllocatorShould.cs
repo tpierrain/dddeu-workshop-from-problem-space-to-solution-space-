@@ -17,10 +17,10 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
             var showId = new ShowId("5");
             var partyRequested = new PartyRequested(1);
 
-            var auditoriumSeatingRepository = new AuditoriumSeatingRepository(
+            var auditoriums = new AuditoriumsRepository(
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider()));
 
-            var seatAllocator = new SeatAllocator(auditoriumSeatingRepository);
+            var seatAllocator = new SeatAllocator(auditoriums);
 
             var suggestionsMade = await seatAllocator.MakeSuggestions(showId, partyRequested);
             Check.That(suggestionsMade.PartyRequested).IsEqualTo(partyRequested);
@@ -35,10 +35,10 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
             var showId = new ShowId("1");
             var partyRequested = new PartyRequested(1);
 
-            var auditoriumSeatingRepository = new AuditoriumSeatingRepository(
+            var auditoriums = new AuditoriumsRepository(
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider()));
 
-            var seatAllocator = new SeatAllocator(auditoriumSeatingRepository);
+            var seatAllocator = new SeatAllocator(auditoriums);
 
             var suggestionsMade = await seatAllocator.MakeSuggestions(showId, partyRequested);
 
@@ -51,10 +51,10 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
             var showId = new ShowId("18");
             var partyRequested = new PartyRequested(1);
 
-            var auditoriumSeatingRepository = new AuditoriumSeatingRepository(
+            var auditoriums = new AuditoriumsRepository(
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider()));
 
-            var seatAllocator = new SeatAllocator(auditoriumSeatingRepository);
+            var seatAllocator = new SeatAllocator(auditoriums);
 
             var suggestionsMade = await seatAllocator.MakeSuggestions(showId, partyRequested);
 
@@ -71,10 +71,10 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
             var showId = new ShowId("9");
             var partyRequested = new PartyRequested(1);
 
-            var auditoriumSeatingRepository = new AuditoriumSeatingRepository(
+            var auditoriums = new AuditoriumsRepository(
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider()));
 
-            var seatAllocator = new SeatAllocator(auditoriumSeatingRepository);
+            var seatAllocator = new SeatAllocator(auditoriums);
 
             var suggestionsMade = await seatAllocator.MakeSuggestions(showId, partyRequested);
 
@@ -87,10 +87,10 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
             var showId = new ShowId("3");
             PartyRequested partyRequested = new PartyRequested(4);
 
-            var auditoriumSeatingRepository = new AuditoriumSeatingRepository(
+            var auditoriums = new AuditoriumsRepository(
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider()));
 
-            var seatAllocator = new SeatAllocator(auditoriumSeatingRepository);
+            var seatAllocator = new SeatAllocator(auditoriums);
 
             var suggestionsMade = await seatAllocator.MakeSuggestions(showId, partyRequested);
 

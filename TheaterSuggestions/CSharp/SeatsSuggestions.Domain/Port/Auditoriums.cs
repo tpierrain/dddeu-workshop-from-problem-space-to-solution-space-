@@ -2,9 +2,9 @@
 
 namespace SeatsSuggestions.Domain.Port
 {
-    public interface IRetrieveAuditoriumSeating    
+    public interface Auditoriums    
     {
-        Task<AuditoriumSeating> GetById(ShowId showId);
+        Task<AuditoriumSeating> FindById(ShowId showId);
         void Save(AuditoriumSeating auditoriumSeating);
     }
 }
