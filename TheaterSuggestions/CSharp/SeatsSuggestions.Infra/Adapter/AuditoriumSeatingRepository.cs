@@ -18,7 +18,8 @@ namespace SeatsSuggestions.Infra.Adapter
         {
             if (!_repository.ContainsKey(showId))
             {
-                _repository.Add(showId, await _auditoriumLayoutAdapter.GetAuditoriumSeating(showId));
+                var  auditoriumSeating = await _auditoriumLayoutAdapter.GetAuditoriumSeating(showId);
+                _repository.Add(showId, auditoriumSeating);
             }
 
             return _repository[showId];
@@ -26,7 +27,16 @@ namespace SeatsSuggestions.Infra.Adapter
 
         public void Save(AuditoriumSeating auditoriumSeating)
         {
-            _repository[auditoriumSeating.ShowId] = auditoriumSeating;
+            var showId = auditoriumSeating.ShowId;
+
+            if (!_repository.ContainsKey(showId))
+            {
+                _repository.Add(showId, auditoriumSeating);
+            }
+            else
+            {
+                _repository[showId] = auditoriumSeating;
+            }
         }
     }
 }

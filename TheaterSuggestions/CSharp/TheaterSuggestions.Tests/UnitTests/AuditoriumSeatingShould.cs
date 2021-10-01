@@ -17,11 +17,14 @@ namespace SeatsSuggestions.Tests.UnitTests
         {
             var auditoriumLayoutAdapter =
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
+
             var showIdWithoutReservationYet = new ShowId("18");
-            var auditoriumSeatingFirstInstance =
-                await auditoriumLayoutAdapter.GetAuditoriumSeating(showIdWithoutReservationYet);
-            var auditoriumSeatingSecondInstance =
-                await auditoriumLayoutAdapter.GetAuditoriumSeating(showIdWithoutReservationYet);
+            
+            var auditoriumSeatingFirstInstance = await 
+                auditoriumLayoutAdapter.GetAuditoriumSeating(showIdWithoutReservationYet);
+
+            var auditoriumSeatingSecondInstance = await 
+                auditoriumLayoutAdapter.GetAuditoriumSeating(showIdWithoutReservationYet);
 
             // Two different instances with same values should be equals
             Check.That(auditoriumSeatingSecondInstance).IsEqualTo(auditoriumSeatingFirstInstance);
