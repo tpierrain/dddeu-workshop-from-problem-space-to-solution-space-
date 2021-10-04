@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class ReservedSeatsDto {
 
     @JsonProperty("ReservedSeats")
-    private ImmutableList<String> reservedSeats;
+    public ImmutableList<String> reservedSeats;
 }

@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 public class AuditoriumDto {
 
     @JsonProperty("Rows")
-    private ImmutableMap<String, ImmutableList<SeatDto>> rows;
+    public ImmutableMap<String, ImmutableList<SeatDto>> rows;
 
     @JsonProperty("Corridors")
-    private ImmutableList<CorridorDto> corridors;
+    public ImmutableList<CorridorDto> corridors;
 }

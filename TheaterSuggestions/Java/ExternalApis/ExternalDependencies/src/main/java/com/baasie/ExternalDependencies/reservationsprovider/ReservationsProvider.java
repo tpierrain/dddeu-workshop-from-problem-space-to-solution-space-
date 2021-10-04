@@ -14,13 +14,13 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-@Service
 public class ReservationsProvider implements IProvideCurrentReservations {
 
     private Map<String, ReservedSeatsDto> repository = new HashMap<>();
 
-    public ReservationsProvider() throws IOException, URISyntaxException {
-        String jsonDirectory = Paths.get(ClassLoader.getSystemResource("AuditoriumLayouts").toURI()).toString();
+    public ReservationsProvider() throws IOException {
+        String jsonDirectory = Paths.get(System.getProperty("user.dir")).getParent().getParent().getParent().toString() + "/Stubs/AuditoriumLayouts";
+
         DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get(jsonDirectory));
 
         for (Path path : directoryStream) {

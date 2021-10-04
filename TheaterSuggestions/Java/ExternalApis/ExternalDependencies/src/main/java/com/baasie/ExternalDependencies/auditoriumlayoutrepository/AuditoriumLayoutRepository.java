@@ -3,10 +3,8 @@ package com.baasie.ExternalDependencies.auditoriumlayoutrepository;
 import com.baasie.ExternalDependencies.IProvideAuditoriumLayouts;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,13 +12,13 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-@Service
 public class AuditoriumLayoutRepository implements IProvideAuditoriumLayouts {
 
     private Map<String, AuditoriumDto> repository = new HashMap<>();
 
-    public AuditoriumLayoutRepository() throws IOException, URISyntaxException {
-        String jsonDirectory = Paths.get(ClassLoader.getSystemResource("AuditoriumLayouts").toURI()).toString();
+    public AuditoriumLayoutRepository() throws IOException {
+        String jsonDirectory = Paths.get(System.getProperty("user.dir")).getParent().getParent().getParent().toString() + "/Stubs/AuditoriumLayouts";
+
         DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get(jsonDirectory));
 
         for (Path path : directoryStream) {

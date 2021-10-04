@@ -5,14 +5,15 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+
 @NoArgsConstructor
 @Getter
 @EqualsAndHashCode
 public class SeatDto {
 
     @JsonProperty("Name")
-    private String name;
+    public String name;
 
     @JsonProperty("Category")
-    private int category;
+    public int category;
 }
