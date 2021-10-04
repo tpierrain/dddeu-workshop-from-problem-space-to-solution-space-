@@ -13,29 +13,7 @@ public class SeatAllocator {
         this.auditoriumSeatingAdapter = auditoriumLayoutAdapter;
     }
 
-    public SuggestionsMade makeSuggestions(String showId, int partyRequested) {
-
-        AuditoriumSeating auditoriumSeating = auditoriumSeatingAdapter.getAuditoriumSeating(showId);
-
-        SuggestionsMade suggestionsMade = new SuggestionsMade(showId, partyRequested);
-
-        suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating, partyRequested,
-                PricingCategory.First));
-        suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating, partyRequested,
-                PricingCategory.Second));
-        suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating, partyRequested,
-                PricingCategory.Third));
-        suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating, partyRequested,
-                PricingCategory.Mixed));
-
-        if (suggestionsMade.matchExpectations()) {
-            return suggestionsMade;
-        }
-
-        return new SuggestionNotAvailable(showId, partyRequested);
-    }
-
-    private static Iterable<SuggestionMade> giveMeSuggestionsFor(
+    private static List<SuggestionMade> giveMeSuggestionsFor(
             AuditoriumSeating auditoriumSeating, int partyRequested, PricingCategory pricingCategory) {
 
         SuggestionRequest suggestionRequest = new SuggestionRequest(partyRequested, pricingCategory);
@@ -51,5 +29,28 @@ public class SeatAllocator {
         }
 
         return ImmutableList.copyOf(foundedSuggestions);
+    }
+
+    public SuggestionsMade makeSuggestions(String showId, int partyRequested) {
+
+        AuditoriumSeating auditoriumSeating = auditoriumSeatingAdapter.getAuditoriumSeating(showId);
+
+        SuggestionsMade suggestionsMade = new SuggestionsMade(showId, partyRequested);
+
+        suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating, partyRequested,
+                PricingCategory.First));
+        suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating, partyRequested,
+                PricingCategory.Second));
+
+        suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating, partyRequested,
+                PricingCategory.Third));
+        suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating, partyRequested,
+                PricingCategory.Mixed));
+
+        if (suggestionsMade.matchExpectations()) {
+            return suggestionsMade;
+        }
+
+        return new SuggestionNotAvailable(showId, partyRequested);
     }
 }

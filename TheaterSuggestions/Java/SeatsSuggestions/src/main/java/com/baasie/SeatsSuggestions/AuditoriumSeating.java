@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
 import java.util.Map;
 
 @EqualsAndHashCode
@@ -20,7 +21,7 @@ public class AuditoriumSeating {
             SeatingOptionSuggested seatingOptionSuggested = row.suggestSeatingOption(suggestionRequest);
 
             if (seatingOptionSuggested.matchExpectation()) {
-                // Cool, we mark the seat as Allocated (that we turns into a SuggestionMode)
+                // Cool, we mark the seat as Allocated (that we turns into a SuggestionMade)
                 return seatingOptionSuggested;
             }
         }
@@ -33,14 +34,14 @@ public class AuditoriumSeating {
         return allocateSeats(seatingOptionSuggested.seats());
     }
 
-    private AuditoriumSeating allocateSeats(Iterable<Seat> updatedSeats) {
+    private AuditoriumSeating allocateSeats(List<Seat> updatedSeats) {
         Map<String, Row> newVersionOfRows = Maps.newHashMap(rows);
 
-        updatedSeats.forEach(updatedSeat -> {
+        for (Seat updatedSeat : updatedSeats) {
             Row formerRow = newVersionOfRows.get(updatedSeat.rowName());
             Row newVersionOfRow = formerRow.allocate(updatedSeat);
             newVersionOfRows.put(updatedSeat.rowName(), newVersionOfRow);
-        });
+        }
 
         return new AuditoriumSeating(newVersionOfRows);
     }

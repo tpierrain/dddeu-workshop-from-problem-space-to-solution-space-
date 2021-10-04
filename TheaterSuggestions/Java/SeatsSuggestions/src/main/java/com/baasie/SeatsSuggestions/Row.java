@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.baasie.SeatsSuggestions.SeatCollectionExtensions.*;
+
 @EqualsAndHashCode
 public class Row {
     private String name;
@@ -13,7 +15,14 @@ public class Row {
 
     public Row(String name, List<Seat> seats) {
         this.name = name;
-        this.seats = seats;
+        this.seats = seats
+                .stream()
+                .map(s -> new Seat(
+                        s.rowName(),
+                        s.number(),
+                        s.pricingCategory(),
+                        s.seatAvailability(),
+                        s.computeDistanceFromRowCentroid(seats.size()))).collect(Collectors.toList());
     }
 
     public List<Seat> seats() {
@@ -30,20 +39,22 @@ public class Row {
 
         SeatingOptionSuggested seatingOptionSuggested = new SeatingOptionSuggested(suggestionRequest);
 
-        for (Seat seat : selectAvailableSeatsCompliantWith(suggestionRequest.pricingCategory())) {
-            seatingOptionSuggested.addSeat(seat);
+        List<Seat> availableSeatsCompliant = selectAvailableSeatsCompliant(seats, suggestionRequest.pricingCategory());
 
-            if (seatingOptionSuggested.matchExpectation())
-            {
+        List<AdjacentSeats> adjacentSeatsOfExpectedSize =
+                selectAdjacentSeats(availableSeatsCompliant, suggestionRequest.partyRequested());
+
+        List<AdjacentSeats> adjacentSeatsOrdered = orderByMiddleOfTheRow(adjacentSeatsOfExpectedSize, seats.size());
+
+        for (AdjacentSeats adjacentSeats : adjacentSeatsOrdered) {
+            seatingOptionSuggested.addSeats(adjacentSeats);
+
+            if (seatingOptionSuggested.matchExpectation()) {
                 return seatingOptionSuggested;
             }
         }
 
         return new SeatingOptionNotAvailable(suggestionRequest);
-    }
-
-    private Iterable<Seat> selectAvailableSeatsCompliantWith(PricingCategory pricingCategory) {
-        return seats.stream().filter(seat -> seat.isAvailable() && seat.matchCategory(pricingCategory)).collect(Collectors.toList());
     }
 
     public Row allocate(Seat seat) {

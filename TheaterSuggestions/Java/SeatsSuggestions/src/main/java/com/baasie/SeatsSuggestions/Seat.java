@@ -2,6 +2,13 @@ package com.baasie.SeatsSuggestions;
 
 import lombok.EqualsAndHashCode;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.baasie.SeatsSuggestions.SeatCollectionExtensions.*;
+
 @EqualsAndHashCode
 public class Seat {
 
@@ -9,19 +16,25 @@ public class Seat {
     private int number;
     private PricingCategory pricingCategory;
     private SeatAvailability seatAvailability;
+    private int distanceFromCentroid;
 
     public Seat(String rowName, int number, PricingCategory pricingCategory, SeatAvailability seatAvailability) {
+        this(rowName, number, pricingCategory, seatAvailability, 0);
+    }
+
+    public Seat(String rowName, int number, PricingCategory pricingCategory, SeatAvailability seatAvailability, int distanceFromCentroid) {
         this.rowName = rowName;
         this.number = number;
         this.pricingCategory = pricingCategory;
         this.seatAvailability = seatAvailability;
+        this.distanceFromCentroid = distanceFromCentroid;
     }
 
-    public boolean isAvailable() {
+    boolean isAvailable() {
         return seatAvailability == SeatAvailability.Available;
     }
 
-    public boolean matchCategory(PricingCategory pricingCategory) {
+    boolean matchCategory(PricingCategory pricingCategory) {
         if (pricingCategory == PricingCategory.Mixed) {
             return true;
         }
@@ -29,7 +42,7 @@ public class Seat {
         return this.pricingCategory == pricingCategory;
     }
 
-    public Seat allocate() {
+    Seat allocate() {
         if (seatAvailability == SeatAvailability.Available) {
             return new Seat(rowName, number, pricingCategory, SeatAvailability.Allocated);
         }
@@ -38,6 +51,41 @@ public class Seat {
 
     public boolean sameSeatLocation(Seat seat) {
         return rowName.equals(seat.rowName) && number == seat.number;
+    }
+
+    boolean isAdjacentWith(List<Seat> seats) {
+
+        List<Seat> orderedSeats = seats.stream()
+                .sorted(Comparator.comparing(Seat::number))
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        for (Seat seat : orderedSeats) {
+            if (number + 1 == seat.number || number - 1 == seat.number)
+                return true;
+        }
+        return false;
+    }
+
+    public SeatAvailability seatAvailability() {
+        return seatAvailability;
+    }
+
+    public int computeDistanceFromRowCentroid(int rowSize) {
+        int seatLocation = number;
+
+        if (isOdd(rowSize)) {
+            return computeDistanceFromCentroid(seatLocation, rowSize);
+        }
+
+        if (isCentroid(seatLocation, rowSize)) {
+            return 0;
+        }
+
+        if (seatLocation < centroidIndex(rowSize)) {
+            return computeDistanceFromCentroid(seatLocation, rowSize);
+        }
+
+        return computeDistanceFromCentroid(seatLocation, rowSize) - 1;
     }
 
     public String rowName() {
@@ -55,5 +103,9 @@ public class Seat {
     @Override
     public String toString() {
         return rowName + number;
+    }
+
+    public int distanceFromCentroid() {
+        return this.distanceFromCentroid;
     }
 }

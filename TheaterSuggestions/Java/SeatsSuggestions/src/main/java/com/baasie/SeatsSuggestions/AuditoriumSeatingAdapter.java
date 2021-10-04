@@ -1,5 +1,7 @@
 package com.baasie.SeatsSuggestions;
 
+import com.baasie.ExternalDependencies.IProvideAuditoriumLayouts;
+import com.baasie.ExternalDependencies.IProvideCurrentReservations;
 import com.baasie.ExternalDependencies.auditoriumlayoutrepository.AuditoriumDto;
 import com.baasie.ExternalDependencies.auditoriumlayoutrepository.AuditoriumLayoutRepository;
 import com.baasie.ExternalDependencies.auditoriumlayoutrepository.SeatDto;
@@ -14,13 +16,21 @@ import java.util.Map;
 
 public class AuditoriumSeatingAdapter {
 
-    private final ReservationsProvider reservedSeatsRepository;
-    private final AuditoriumLayoutRepository auditoriumLayoutRepository;
+    private final IProvideCurrentReservations reservedSeatsRepository;
+    private final IProvideAuditoriumLayouts auditoriumLayoutRepository;
 
 
-    public AuditoriumSeatingAdapter(AuditoriumLayoutRepository auditoriumLayoutRepository, ReservationsProvider reservationsProvider) {
+    public AuditoriumSeatingAdapter(IProvideAuditoriumLayouts auditoriumLayoutRepository, IProvideCurrentReservations reservationsProvider) {
         this.auditoriumLayoutRepository = auditoriumLayoutRepository;
         this.reservedSeatsRepository = reservationsProvider;
+    }
+
+    private static PricingCategory convertCategory(int seatDtoCategory) {
+        return PricingCategory.valueOf(seatDtoCategory);
+    }
+
+    private static int extractNumber(String name) {
+        return Integer.parseUnsignedInt(name.substring(1));
     }
 
     public AuditoriumSeating getAuditoriumSeating(String showId) {
@@ -32,16 +42,16 @@ public class AuditoriumSeatingAdapter {
     private AuditoriumSeating adapt(AuditoriumDto auditoriumDto, ReservedSeatsDto reservedSeatsDto) {
 
         Map<String, Row> rows = new HashMap<>();
-        
-        for (Map.Entry<String, ImmutableList<SeatDto>> rowDto : auditoriumDto.rows().entrySet()) {
+
+        for (Map.Entry<String, ImmutableList<SeatDto>> rowDto : auditoriumDto.rows.entrySet()) {
             List<Seat> seats = new ArrayList<>();
 
             rowDto.getValue().forEach(seatDto -> {
                 String rowName = rowDto.getKey();
-                int number = extractNumber(seatDto.name());
-                PricingCategory pricingCategory = convertCategory(seatDto.category());
+                int number = extractNumber(seatDto.name);
+                PricingCategory pricingCategory = convertCategory(seatDto.category);
 
-                boolean isReserved = reservedSeatsDto.reservedSeats().contains(seatDto.name());
+                boolean isReserved = reservedSeatsDto.reservedSeats.contains(seatDto.name);
 
                 seats.add(new Seat(rowName, number, pricingCategory, isReserved ? SeatAvailability.Reserved : SeatAvailability.Available));
             });
@@ -50,13 +60,5 @@ public class AuditoriumSeatingAdapter {
         }
 
         return new AuditoriumSeating(rows);
-    }
-
-    private static PricingCategory convertCategory(int seatDtoCategory) {
-        return PricingCategory.valueOf(seatDtoCategory);
-    }
-
-    private static int extractNumber(String name) {
-        return Integer.parseUnsignedInt(name.substring(1));
     }
 }
