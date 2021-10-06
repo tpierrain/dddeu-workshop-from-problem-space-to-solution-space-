@@ -15,8 +15,8 @@ public class AuditoriumWebRepository implements IProvideAuditoriumLayouts {
 
     private String uriAuditoriumSeatingRepository;
 
-    public AuditoriumWebRepository() {
-        this.uriAuditoriumSeatingRepository = "http://localhost:8090/";
+    public AuditoriumWebRepository(String uriAuditoriumSeatingRepository) {
+        this.uriAuditoriumSeatingRepository = uriAuditoriumSeatingRepository;
     }
 
     @Override

@@ -1,28 +1,27 @@
 package com.baasie.SeatsSuggestionsApi.controllers;
 
-import com.baasie.SeatsSuggestionsInfra.AuditoriumSeatingAdapter;
-import com.baasie.SeatsSuggestionsDomain.SeatAllocator;
 import com.baasie.SeatsSuggestionsDomain.SuggestionsMade;
-import com.baasie.ExternalDependencies.IProvideAuditoriumLayouts;
-import com.baasie.ExternalDependencies.IProvideCurrentReservations;
-import org.springframework.web.bind.annotation.*;
+import com.baasie.SeatsSuggestionsDomain.port.IProvideAuditoriumSeating;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api/SeatsSuggestions")
 public class SeatSuggestionsController {
 
-    private IProvideAuditoriumLayouts auditoriumSeatingRepository;
-    private IProvideCurrentReservations seatReservationsProvider;
+    private IProvideAuditoriumSeating iProvideAuditoriumSeating;
 
-    public SeatSuggestionsController() {
+    public SeatSuggestionsController(IProvideAuditoriumSeating iProvideAuditoriumSeating) {
+        this.iProvideAuditoriumSeating = iProvideAuditoriumSeating;
     }
 
     // GET api/SeatsSuggestions?showId=5&party=3
     @GetMapping(produces = "application/json")
-    public SuggestionsMade get(@RequestParam String showId, @RequestParam int party) {
-
-//        SeatAllocator seatAllocator = new SeatAllocator(new AuditoriumSeatingAdapter(auditoriumSeatingRepository, seatReservationsProvider));
-//        return seatAllocator.makeSuggestions(showId, party);
-        return null;
+    public ResponseEntity<SuggestionsMade> makeSuggestions(@RequestParam String showId, @RequestParam int party) {
+        SuggestionsMade suggestionsMade = iProvideAuditoriumSeating.makeSuggestions(showId,party);
+        return ResponseEntity.ok(suggestionsMade);
     }
 }
