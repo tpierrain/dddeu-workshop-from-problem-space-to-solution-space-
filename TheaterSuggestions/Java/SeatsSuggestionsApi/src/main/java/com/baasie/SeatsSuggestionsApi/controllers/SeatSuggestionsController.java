@@ -8,13 +8,13 @@ import com.baasie.ExternalDependencies.IProvideCurrentReservations;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/data_for_auditoriumSeating")
-public class MovieScreeningController {
+@RequestMapping("api/SeatsSuggestions")
+public class SeatSuggestionsController {
 
     private IProvideAuditoriumLayouts auditoriumSeatingRepository;
     private IProvideCurrentReservations seatReservationsProvider;
 
-    public MovieScreeningController() {
+    public SeatSuggestionsController() {
     }
 
     // GET api/SeatsSuggestions?showId=5&party=3

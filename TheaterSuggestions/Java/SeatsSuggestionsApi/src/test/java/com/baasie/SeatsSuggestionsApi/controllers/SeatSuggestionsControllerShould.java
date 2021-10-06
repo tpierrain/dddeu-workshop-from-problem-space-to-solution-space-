@@ -22,7 +22,7 @@ import static io.restassured.RestAssured.given;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 @AutoConfigureTestDatabase
-public class MovieScreeningControllerShould {
+public class SeatSuggestionsControllerShould {
 
     @LocalServerPort
     private int randomServerPort;
@@ -30,7 +30,7 @@ public class MovieScreeningControllerShould {
 
     @Before
     public void before() {
-        RestAssured.baseURI = "http://localhost:" + randomServerPort + "/api/moviescreening/";
+        RestAssured.baseURI = "http://localhost:" + randomServerPort + "/api/SeatsSuggestions/";
     }
 
 //    @Test
