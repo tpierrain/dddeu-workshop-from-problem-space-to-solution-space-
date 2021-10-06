@@ -17,7 +17,15 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.baasie</groupId>
-			<artifactId>SeatsSuggestions</artifactId>
+			<artifactId>SeatsSuggestionsDomain</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.baasie</groupId>
+			<artifactId>SeatsSuggestionsInfra</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.baasie</groupId>
+			<artifactId>ExternalDependencies</artifactId>
 		</dependency>
 
 		<dependency>

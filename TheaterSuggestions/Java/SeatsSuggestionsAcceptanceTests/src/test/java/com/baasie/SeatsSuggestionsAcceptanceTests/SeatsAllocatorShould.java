@@ -2,7 +2,12 @@ package com.baasie.SeatsSuggestionsAcceptanceTests;
 
 import com.baasie.ExternalDependencies.auditoriumlayoutrepository.AuditoriumLayoutRepository;
 import com.baasie.ExternalDependencies.reservationsprovider.ReservationsProvider;
-import com.baasie.SeatsSuggestions.*;
+import com.baasie.SeatsSuggestionsDomain.PricingCategory;
+import com.baasie.SeatsSuggestionsDomain.SeatAllocator;
+import com.baasie.SeatsSuggestionsDomain.SuggestionNotAvailable;
+import com.baasie.SeatsSuggestionsDomain.SuggestionsMade;
+import com.baasie.SeatsSuggestionsDomain.port.IAdaptAuditoriumSeating;
+import com.baasie.SeatsSuggestionsInfra.AuditoriumSeatingAdapter;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -17,7 +22,7 @@ public class SeatsAllocatorShould {
         final String showId = "5";
         final int partyRequested = 1;
 
-        AuditoriumSeatingAdapter auditoriumLayoutAdapter =
+        IAdaptAuditoriumSeating auditoriumLayoutAdapter =
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
 
         SeatAllocator seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
@@ -32,7 +37,7 @@ public class SeatsAllocatorShould {
         final String showId = "1";
         final int partyRequested = 1;
 
-        AuditoriumSeatingAdapter auditoriumLayoutAdapter =
+        IAdaptAuditoriumSeating auditoriumLayoutAdapter =
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
 
         SeatAllocator seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
@@ -47,7 +52,7 @@ public class SeatsAllocatorShould {
         final String showId = "18";
         final int partyRequested = 1;
 
-        AuditoriumSeatingAdapter auditoriumLayoutAdapter =
+        IAdaptAuditoriumSeating auditoriumLayoutAdapter =
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
 
         SeatAllocator seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
@@ -66,7 +71,7 @@ public class SeatsAllocatorShould {
         final String showId = "9";
         final int partyRequested = 1;
 
-        AuditoriumSeatingAdapter auditoriumLayoutAdapter =
+        IAdaptAuditoriumSeating auditoriumLayoutAdapter =
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
 
         SeatAllocator seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
@@ -80,7 +85,7 @@ public class SeatsAllocatorShould {
         final String showId = "3";
         final int partyRequested = 4;
 
-        AuditoriumSeatingAdapter auditoriumLayoutAdapter =
+        IAdaptAuditoriumSeating auditoriumLayoutAdapter =
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
 
         SeatAllocator seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
@@ -102,7 +107,7 @@ public class SeatsAllocatorShould {
         final String showId = "3";
         final int partyRequested = 3;
 
-        AuditoriumSeatingAdapter auditoriumLayoutAdapter =
+        IAdaptAuditoriumSeating auditoriumLayoutAdapter =
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
 
         SeatAllocator seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);

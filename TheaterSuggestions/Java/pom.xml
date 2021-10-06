@@ -23,7 +23,6 @@
 
     <modules>
         <module>ExternalApis</module>
-        <module>SeatsSuggestions</module>
         <module>SeatsSuggestionsApi</module>
         <module>SeatsSuggestionsDomain</module>
         <module>SeatsSuggestionsInfra</module>
@@ -34,7 +33,7 @@
         <dependencies>
             <dependency>
                 <groupId>com.baasie</groupId>
-                <artifactId>SeatsSuggestions</artifactId>
+                <artifactId>ExternalApis</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -88,6 +87,13 @@
                 <groupId>com.google.truth.extensions</groupId>
                 <artifactId>truth-java8-extension</artifactId>
                 <version>0.42</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.rest-assured</groupId>
+                <artifactId>rest-assured</artifactId>
+                <version>3.3.0</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
