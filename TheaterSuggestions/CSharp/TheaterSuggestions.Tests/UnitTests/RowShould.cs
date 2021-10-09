@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NFluent;
+using NSubstitute.Routing.Handlers;
 using NUnit.Framework;
 using Value;
 
@@ -46,7 +47,7 @@ namespace SeatsSuggestions.Tests.UnitTests
 
             var row = new Row("A", new List<Seat> { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 });
 
-            Check.That(RetrieveSuggestedSeats(row, partySize)).ContainsExactly(a5, a6);
+            Check.That(SuggestSeatsNearTheMiddleOfRow(row, partySize)).ContainsExactly(a5, a6);
         }
 
         [Test]
@@ -66,7 +67,7 @@ namespace SeatsSuggestions.Tests.UnitTests
 
             var row = new Row("A", new List<Seat> { a1, a2, a3, a4, a5, a6, a7, a8, a9 });
 
-            Check.That(RetrieveSuggestedSeats(row, partySize)).ContainsExactly(a2, a3, a5, a6, a7);
+            Check.That(SuggestSeatsNearTheMiddleOfRow(row, partySize)).ContainsExactly(a2, a3, a5, a6, a7);
         }
 
         [Test]
@@ -86,7 +87,7 @@ namespace SeatsSuggestions.Tests.UnitTests
 
             var row = new Row("A", new List<Seat> { a1, a2, a3, a4, a5, a6, a7, a8, a9 });
 
-            Check.That(RetrieveSuggestedSeats(row, partySize, PricingCategory.First)).ContainsExactly(a3, a5, a6, a7);
+            Check.That(SuggestSeatsNearTheMiddleOfRow(row, partySize, PricingCategory.First)).ContainsExactly(a3, a5, a6, a7);
         }
         [Test]
         public void Suggest_groups_of_adjacent_seats_when_row_contains_some_reserved_seats()
@@ -106,32 +107,91 @@ namespace SeatsSuggestions.Tests.UnitTests
 
             var seatWithDistances = ComputeDistancesForRow(row);
             var withDistances = seatWithDistances.Where(s => s.Seat.IsAvailable());
-            var computeGroupOfAdjacentSeats = RetrieveGroupOfAdjacentSeats(withDistances);
+            var groupOfAdjacentSeats = RetrieveGroupOfAdjacentSeats(withDistances);
 
-            Check.That(computeGroupOfAdjacentSeats).HasSize(3);
-            Check.That(computeGroupOfAdjacentSeats[0][0].Seat).IsEqualTo(a1);
-            Check.That(computeGroupOfAdjacentSeats[0][1].Seat).IsEqualTo(a2);
-            Check.That(computeGroupOfAdjacentSeats[0][2].Seat).IsEqualTo(a3);
+            Check.That(groupOfAdjacentSeats).HasSize(3);
+            Check.That(groupOfAdjacentSeats[0][0].Seat).IsEqualTo(a1);
+            Check.That(groupOfAdjacentSeats[0][1].Seat).IsEqualTo(a2);
+            Check.That(groupOfAdjacentSeats[0][2].Seat).IsEqualTo(a3);
 
-            Check.That(computeGroupOfAdjacentSeats[1][0].Seat).IsEqualTo(a5);
-            Check.That(computeGroupOfAdjacentSeats[1][1].Seat).IsEqualTo(a6);
-            Check.That(computeGroupOfAdjacentSeats[1][2].Seat).IsEqualTo(a7);
+            Check.That(groupOfAdjacentSeats[1][0].Seat).IsEqualTo(a5);
+            Check.That(groupOfAdjacentSeats[1][1].Seat).IsEqualTo(a6);
+            Check.That(groupOfAdjacentSeats[1][2].Seat).IsEqualTo(a7);
 
 
-            Check.That(computeGroupOfAdjacentSeats[2][0].Seat).IsEqualTo(a9);
-            Check.That(computeGroupOfAdjacentSeats[2][1].Seat).IsEqualTo(a10);
+            Check.That(groupOfAdjacentSeats[2][0].Seat).IsEqualTo(a9);
+            Check.That(groupOfAdjacentSeats[2][1].Seat).IsEqualTo(a10);
+
+            var seats = SelectGroupsWithShorterDistanceOfMiddleOfTheRow(groupOfAdjacentSeats, 3);
+
+            Check.That(seats).ContainsExactly(a5, a6, a7);
         }
 
 
-        private static IOrderedEnumerable<Seat> RetrieveSuggestedSeats(Row row, int partySize,
+        [Test]
+        public void Suggest_adjacent_seats_nearer_the_middle_of_row()
+        {
+            var a1 = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
+            var a2 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
+            var a3 = new Seat("A", 3, PricingCategory.First, SeatAvailability.Available);
+            var a4 = new Seat("A", 4, PricingCategory.First, SeatAvailability.Reserved);
+            var a5 = new Seat("A", 5, PricingCategory.First, SeatAvailability.Available);
+            var a6 = new Seat("A", 6, PricingCategory.First, SeatAvailability.Available);
+            var a7 = new Seat("A", 7, PricingCategory.First, SeatAvailability.Available);
+            var a8 = new Seat("A", 8, PricingCategory.First, SeatAvailability.Reserved);
+            var a9 = new Seat("A", 9, PricingCategory.Second, SeatAvailability.Available);
+            var a10 = new Seat("A", 10, PricingCategory.Second, SeatAvailability.Available);
+
+            var row = new Row("A", new List<Seat> { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 });
+
+            var seats = SuggestAdjacentSeatsNearedTheMiddleOfRow(row, 3, PricingCategory.Mixed);
+
+            Check.That(seats).ContainsExactly(a5, a6, a7);
+        }
+
+
+        public List<Seat> SuggestAdjacentSeatsNearedTheMiddleOfRow(Row row, int partySize, PricingCategory pricingCategory = PricingCategory.Mixed)
+        {
+            var seatsWithDistances = SuggestSeatsNearerTheMiddleOfTheRow(row, pricingCategory);
+            return SuggestAdjacentSeats(partySize, seatsWithDistances);
+        }
+
+        private static List<Seat> SuggestAdjacentSeats(int partySize, IEnumerable<SeatWithDistance> seatsWithDistances)
+        {
+            var groupOfAdjacentSeats = RetrieveGroupOfAdjacentSeats(seatsWithDistances);
+            return SelectGroupsWithShorterDistanceOfMiddleOfTheRow(groupOfAdjacentSeats, partySize);
+        }
+
+        private static IEnumerable<SeatWithDistance> SuggestSeatsNearerTheMiddleOfTheRow(Row row, PricingCategory pricingCategory)
+        {
+            var seatWithDistances = ComputeDistancesForRow(row);
+            var withDistances = seatWithDistances.Where(s => s.Seat.IsAvailable())
+                .Where(d => d.Seat.MatchCategory(pricingCategory));
+            return withDistances;
+        }
+
+        private static List<Seat> SelectGroupsWithShorterDistanceOfMiddleOfTheRow(IEnumerable<List<SeatWithDistance>> groupOfAdjacentSeats, int partySize)
+        {
+            var subGroups = groupOfAdjacentSeats.Where(g => g.Count >= partySize);
+            
+            var bestDistances = new SortedDictionary<int, List<SeatWithDistance>>();
+            foreach (var seatWithDistances in subGroups)
+            {
+                bestDistances.Add(seatWithDistances.Sum(s => s.DistanceFromTheMiddle), seatWithDistances);
+            }
+
+            return bestDistances.Values.First().Select(seatsWithDistance => seatsWithDistance.Seat).ToList(); ;
+        }
+        private static IOrderedEnumerable<Seat> SuggestSeatsNearTheMiddleOfRow(Row row, int partySize,
             PricingCategory pricingCategory = PricingCategory.Mixed)
         {
             return ComputeDistancesForRow(row)
-                .Select(s => s.Seat)
-                .Where(s => s.IsAvailable())
-                .Where(s => MatchCurrentPricingCategory(s, pricingCategory))
-                .Take(partySize)
-                .OrderBy(s => s.Number);
+            .Select(s => s.Seat)
+            .Where(s => s.IsAvailable())
+            .Where(s => MatchCurrentPricingCategory(s, pricingCategory))
+            .Take(partySize)
+            .OrderBy(s => s.Number);
+            
         }
 
         private static bool MatchCurrentPricingCategory(Seat seat, PricingCategory pricingCategory)
