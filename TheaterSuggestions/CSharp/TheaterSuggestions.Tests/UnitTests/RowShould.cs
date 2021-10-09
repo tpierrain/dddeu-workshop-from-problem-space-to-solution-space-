@@ -117,39 +117,39 @@ namespace SeatsSuggestions.Tests.UnitTests
             IEnumerable<SeatWithDistance> seatsWithDistances)
         {
             var groupSeatDistance = new List<SeatWithDistance>();
-            var groups = new List<List<SeatWithDistance>>();
+            var groupsOfSeatDistance = new List<List<SeatWithDistance>>();
 
             using (var enumerator = seatsWithDistances.OrderBy(s => s.Seat.Number).GetEnumerator())
             {
-                SeatWithDistance seatPrevious = null;
+                SeatWithDistance seatWithDistancePrevious = null;
                 while (enumerator.MoveNext())
                 {
                     var seatWithDistance = enumerator.Current;
-                    if (seatPrevious == null)
+                    if (seatWithDistancePrevious == null)
                     {
-                        seatPrevious = seatWithDistance;
-                        groupSeatDistance.Add(seatPrevious);
+                        seatWithDistancePrevious = seatWithDistance;
+                        groupSeatDistance.Add(seatWithDistancePrevious);
                     }
                     else
                     {
-                        if (seatWithDistance?.Seat.Number == seatPrevious.Seat.Number + 1)
+                        if (seatWithDistance?.Seat.Number == seatWithDistancePrevious.Seat.Number + 1)
                         {
                             groupSeatDistance.Add(seatWithDistance);
-                            seatPrevious = seatWithDistance;
+                            seatWithDistancePrevious = seatWithDistance;
                         }
                         else
                         {
-                            groups.Add(groupSeatDistance);
+                            groupsOfSeatDistance.Add(groupSeatDistance);
                             groupSeatDistance = new List<SeatWithDistance> { seatWithDistance };
-                            seatPrevious = null;
+                            seatWithDistancePrevious = null;
                         }
                     }
                 }
             }
 
-            groups.Add(groupSeatDistance);
+            groupsOfSeatDistance.Add(groupSeatDistance);
 
-            return groups;
+            return groupsOfSeatDistance;
         }
 
         private static IEnumerable<SeatWithDistance> ComputeDistancesForRow(Row row)
@@ -196,7 +196,7 @@ namespace SeatsSuggestions.Tests.UnitTests
         public static IEnumerable<List<SeatWithDistance>> Split(List<Seat> seats, Func<Seat, bool> predicate,
             int middle)
         {
-            var list = new List<SeatWithDistance>();
+            var seatWithDistances = new List<SeatWithDistance>();
             foreach (var seat in seats)
                 if (!predicate(seat))
                 {
@@ -213,17 +213,17 @@ namespace SeatsSuggestions.Tests.UnitTests
                         distance = (int)Math.Abs(seat.Number - middle);
                     }
 
-                    list.Add(new SeatWithDistance(seat, distance));
+                    seatWithDistances.Add(new SeatWithDistance(seat, distance));
                 }
                 else
                 {
-                    if (list.Count > 0)
-                        yield return list;
-                    list = new List<SeatWithDistance>();
+                    if (seatWithDistances.Count > 0)
+                        yield return seatWithDistances;
+                    seatWithDistances = new List<SeatWithDistance>();
                 }
 
-            if (list.Count > 0)
-                yield return list;
+            if (seatWithDistances.Count > 0)
+                yield return seatWithDistances;
         }
 
         public class SeatWithDistance : ValueType<Seat>
