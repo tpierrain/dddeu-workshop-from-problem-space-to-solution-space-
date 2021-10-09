@@ -160,7 +160,7 @@ namespace SeatsSuggestions.Tests.UnitTests
                     }
                     else
                     {
-                        if (seatWithDistance.Seat.Number == seatWithDistancePrevious.Seat.Number + 1)
+                        if (seatWithDistance?.Seat.Number == seatWithDistancePrevious.Seat.Number + 1)
                         {
                             groupOfSeatDistance.Add(seatWithDistance);
                             seatWithDistancePrevious = seatWithDistance;
