@@ -50,7 +50,7 @@ namespace SeatsSuggestions.Tests.UnitTests
         }
 
         [Test]
-        public void Suggest_seas_from_the_middle_of_row_is_odd_when_party_size_is_greater_than_one()
+        public void Suggest_seats_from_the_middle_of_row_is_odd_when_party_size_is_greater_than_one()
         {
             var partySize = 5;
 
@@ -69,6 +69,25 @@ namespace SeatsSuggestions.Tests.UnitTests
             Check.That(RetrieveSuggestedSeats(row, partySize)).ContainsExactly(a2, a3, a5, a6, a7);
         }
 
+        [Test]
+        public void Suggest_seats_from_the_middle_of_row_is_odd_when_party_size_and_pricing_category_are_requested()
+        {
+            var partySize = 5;
+
+            var a1 = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
+            var a2 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
+            var a3 = new Seat("A", 3, PricingCategory.First, SeatAvailability.Available);
+            var a4 = new Seat("A", 4, PricingCategory.First, SeatAvailability.Reserved);
+            var a5 = new Seat("A", 5, PricingCategory.First, SeatAvailability.Available);
+            var a6 = new Seat("A", 6, PricingCategory.First, SeatAvailability.Available);
+            var a7 = new Seat("A", 7, PricingCategory.First, SeatAvailability.Available);
+            var a8 = new Seat("A", 8, PricingCategory.First, SeatAvailability.Reserved);
+            var a9 = new Seat("A", 9, PricingCategory.Second, SeatAvailability.Available);
+
+            var row = new Row("A", new List<Seat> { a1, a2, a3, a4, a5, a6, a7, a8, a9 });
+
+            Check.That(RetrieveSuggestedSeats(row, partySize, PricingCategory.First)).ContainsExactly(a3, a5, a6, a7);
+        }
         [Test]
         public void Suggest_groups_of_adjacent_seats_when_row_contains_some_reserved_seats()
         {
@@ -104,50 +123,59 @@ namespace SeatsSuggestions.Tests.UnitTests
         }
 
 
-        private static IOrderedEnumerable<Seat> RetrieveSuggestedSeats(Row row, int partySize)
+        private static IOrderedEnumerable<Seat> RetrieveSuggestedSeats(Row row, int partySize,
+            PricingCategory pricingCategory = PricingCategory.Mixed)
         {
             return ComputeDistancesForRow(row)
                 .Select(s => s.Seat)
                 .Where(s => s.IsAvailable())
+                .Where(s => MatchCurrentPricingCategory(s, pricingCategory))
                 .Take(partySize)
                 .OrderBy(s => s.Number);
+        }
+
+        private static bool MatchCurrentPricingCategory(Seat seat, PricingCategory pricingCategory)
+        {
+            return seat.PricingCategory == pricingCategory || pricingCategory == PricingCategory.Mixed;
         }
 
         private static List<List<SeatWithDistance>> RetrieveGroupOfAdjacentSeats(
             IEnumerable<SeatWithDistance> seatsWithDistances)
         {
-            var groupSeatDistance = new List<SeatWithDistance>();
+            // Why not use a Set<>?
+            var groupOfSeatDistance = new List<SeatWithDistance>();
             var groupsOfSeatDistance = new List<List<SeatWithDistance>>();
 
             using (var enumerator = seatsWithDistances.OrderBy(s => s.Seat.Number).GetEnumerator())
             {
                 SeatWithDistance seatWithDistancePrevious = null;
+
                 while (enumerator.MoveNext())
                 {
                     var seatWithDistance = enumerator.Current;
                     if (seatWithDistancePrevious == null)
                     {
                         seatWithDistancePrevious = seatWithDistance;
-                        groupSeatDistance.Add(seatWithDistancePrevious);
+                        groupOfSeatDistance.Add(seatWithDistancePrevious);
                     }
                     else
                     {
-                        if (seatWithDistance?.Seat.Number == seatWithDistancePrevious.Seat.Number + 1)
+                        if (seatWithDistance.Seat.Number == seatWithDistancePrevious.Seat.Number + 1)
                         {
-                            groupSeatDistance.Add(seatWithDistance);
+                            groupOfSeatDistance.Add(seatWithDistance);
                             seatWithDistancePrevious = seatWithDistance;
                         }
                         else
                         {
-                            groupsOfSeatDistance.Add(groupSeatDistance);
-                            groupSeatDistance = new List<SeatWithDistance> { seatWithDistance };
+                            groupsOfSeatDistance.Add(groupOfSeatDistance);
+                            groupOfSeatDistance = new List<SeatWithDistance> { seatWithDistance };
                             seatWithDistancePrevious = null;
                         }
                     }
                 }
             }
 
-            groupsOfSeatDistance.Add(groupSeatDistance);
+            groupsOfSeatDistance.Add(groupOfSeatDistance);
 
             return groupsOfSeatDistance;
         }
