@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Value;
 
-namespace SeatsSuggestions
+namespace SeatsSuggestions.Model
 {
     public class Seat : ValueType<Seat>
     {

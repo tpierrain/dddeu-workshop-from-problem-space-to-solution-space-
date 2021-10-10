@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using SeatsSuggestions.Model;
 
 namespace SeatsSuggestions
 {
@@ -12,13 +13,11 @@ namespace SeatsSuggestions
         public int PartyRequested { get; }
         public PricingCategory PricingCategory { get; }
 
-        public IReadOnlyList<Seat> SuggestedSeats => _suggestedSeats;
-
         public SuggestionMade(int partyRequested, PricingCategory pricingCategory, List<Seat> seats)
         {
             PartyRequested = partyRequested;
             PricingCategory = pricingCategory;
-            _suggestedSeats = seats;
+            _suggestedSeats = seats.OrderBy(s => s.Number).ToList();
         }
 
         public IEnumerable<string> SeatNames()

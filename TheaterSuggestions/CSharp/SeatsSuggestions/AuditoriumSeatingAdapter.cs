@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using ExternalDependencies;
+using SeatsSuggestions.Model;
 
 namespace SeatsSuggestions
 {

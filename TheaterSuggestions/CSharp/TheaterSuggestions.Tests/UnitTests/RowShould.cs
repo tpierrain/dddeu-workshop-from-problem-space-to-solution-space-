@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NFluent;
-using NSubstitute.Routing.Handlers;
 using NUnit.Framework;
+using SeatsSuggestions.Model;
 using Value;
 
 namespace SeatsSuggestions.Tests.UnitTests
@@ -144,30 +144,9 @@ namespace SeatsSuggestions.Tests.UnitTests
 
             var row = new Row("A", new List<Seat> { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 });
 
-            var seats = SuggestAdjacentSeatsNearedTheMiddleOfRow(row, 3, PricingCategory.Mixed);
+            var seats = row.SuggestAdjacentSeatsNearedTheMiddleOfRow(new SuggestionRequest(3, PricingCategory.Mixed));
 
             Check.That(seats).ContainsExactly(a5, a6, a7);
-        }
-
-
-        public List<Seat> SuggestAdjacentSeatsNearedTheMiddleOfRow(Row row, int partySize, PricingCategory pricingCategory = PricingCategory.Mixed)
-        {
-            var seatsWithDistances = SuggestSeatsNearerTheMiddleOfTheRow(row, pricingCategory);
-            return SuggestAdjacentSeats(partySize, seatsWithDistances);
-        }
-
-        private static List<Seat> SuggestAdjacentSeats(int partySize, IEnumerable<SeatWithDistance> seatsWithDistances)
-        {
-            var groupOfAdjacentSeats = RetrieveGroupOfAdjacentSeats(seatsWithDistances);
-            return SelectGroupsWithShorterDistanceOfMiddleOfTheRow(groupOfAdjacentSeats, partySize);
-        }
-
-        private static IEnumerable<SeatWithDistance> SuggestSeatsNearerTheMiddleOfTheRow(Row row, PricingCategory pricingCategory)
-        {
-            var seatWithDistances = ComputeDistancesForRow(row);
-            var withDistances = seatWithDistances.Where(s => s.Seat.IsAvailable())
-                .Where(d => d.Seat.MatchCategory(pricingCategory));
-            return withDistances;
         }
 
         private static List<Seat> SelectGroupsWithShorterDistanceOfMiddleOfTheRow(IEnumerable<List<SeatWithDistance>> groupOfAdjacentSeats, int partySize)
@@ -180,7 +159,7 @@ namespace SeatsSuggestions.Tests.UnitTests
                 bestDistances.Add(seatWithDistances.Sum(s => s.DistanceFromTheMiddle), seatWithDistances);
             }
 
-            return bestDistances.Values.First().Select(seatsWithDistance => seatsWithDistance.Seat).ToList(); ;
+            return bestDistances.Values.First().Select(seatsWithDistance => seatsWithDistance.Seat).ToList();
         }
         private static IOrderedEnumerable<Seat> SuggestSeatsNearTheMiddleOfRow(Row row, int partySize,
             PricingCategory pricingCategory = PricingCategory.Mixed)
@@ -202,7 +181,6 @@ namespace SeatsSuggestions.Tests.UnitTests
         private static List<List<SeatWithDistance>> RetrieveGroupOfAdjacentSeats(
             IEnumerable<SeatWithDistance> seatsWithDistances)
         {
-            // Why not use a Set<>?
             var groupOfSeatDistance = new List<SeatWithDistance>();
             var groupsOfSeatDistance = new List<List<SeatWithDistance>>();
 

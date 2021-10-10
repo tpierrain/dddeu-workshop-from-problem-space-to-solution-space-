@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Xml.Linq;
 
 namespace SeatsSuggestions
 {
@@ -53,7 +52,6 @@ namespace SeatsSuggestions
                         seatOptionsSuggested.Seats));
                 }
             }
-
             return foundedSuggestions;
         }
     }
