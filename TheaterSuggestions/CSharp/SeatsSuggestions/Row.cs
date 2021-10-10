@@ -53,9 +53,10 @@ namespace SeatsSuggestions
 
         public List<Seat> SuggestAdjacentSeatsNearedTheMiddleOfRow(SuggestionRequest suggestionRequest)
         {
-            var seatsWithDistances = new OfferSeatsNearerMiddleOfTheRow(this).SuggestSeatsNearerTheMiddleOfTheRow(suggestionRequest);
-
-            return new OfferAdjacentSeatsToMembersOfTheSameParty(suggestionRequest).SuggestAdjacentSeats(seatsWithDistances);
+            var seatsWithDistances = new OfferSeatsNearerMiddleOfTheRow(this)
+                .SuggestSeatsNearerTheMiddleOfTheRow(suggestionRequest);
+            return new OfferAdjacentSeatsToMembersOfTheSameParty(suggestionRequest)
+                .SuggestAdjacentSeats(seatsWithDistances);
         }
 
         protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()

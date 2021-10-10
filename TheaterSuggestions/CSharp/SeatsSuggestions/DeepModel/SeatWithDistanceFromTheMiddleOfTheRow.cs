@@ -12,7 +12,7 @@ namespace SeatsSuggestions.DeepModel
     ///     * Offer adjacent seats to member of the same party
     /// 
     /// </summary>
-    public class SeatWithDistanceFromTheMiddleOfTheRow : ValueType<Seat>
+    public class SeatWithDistanceFromTheMiddleOfTheRow : ValueType<SeatWithDistanceFromTheMiddleOfTheRow>
     {
         public SeatWithDistanceFromTheMiddleOfTheRow(Seat seat, int distanceFromTheMiddle)
         {
@@ -25,7 +25,7 @@ namespace SeatsSuggestions.DeepModel
 
         public override string ToString()
         {
-            return $"{Seat.RowName}{Seat.Number}";
+            return $"{Seat.RowName}{Seat.Number} {DistanceFromTheMiddle}";
         }
 
         protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()

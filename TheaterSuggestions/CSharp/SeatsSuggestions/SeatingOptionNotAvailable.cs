@@ -1,6 +1,6 @@
 ﻿namespace SeatsSuggestions
 {
-    internal class SeatingOptionNotAvailable : SeatingOptionSuggested
+    internal sealed class SeatingOptionNotAvailable : SeatingOptionSuggested
     {
         public SeatingOptionNotAvailable(SuggestionRequest suggestionRequest) : base(suggestionRequest)
         {
