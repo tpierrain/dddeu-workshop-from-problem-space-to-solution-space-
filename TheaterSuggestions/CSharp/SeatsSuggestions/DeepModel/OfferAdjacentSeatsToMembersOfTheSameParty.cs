@@ -32,19 +32,23 @@ namespace SeatsSuggestions.DeepModel
             IEnumerable<List<SeatWithDistanceFromTheMiddleOfTheRow>> groupOfAdjacentSeats)
         {
             var bestDistances = new SortedDictionary<int, List<SeatWithDistanceFromTheMiddleOfTheRow>>();
-            foreach (var seatsWithDistance in groupOfAdjacentSeats)
-                if (IsMatchingPartyRequested(_suggestionRequest, seatsWithDistance))
-                {
-                    var sumOfDistances = seatsWithDistance.Sum(s => s.DistanceFromTheMiddle);
 
-                    if (!bestDistances.ContainsKey(sumOfDistances))
-                        bestDistances.Add(sumOfDistances, seatsWithDistance);
-                }
+            // To select the best group of adjacent seats, we sort them by their distances
+            foreach (var seatsWithDistance in groupOfAdjacentSeats
+                .Select(seatWithDistances => seatWithDistances.OrderBy(s => s.DistanceFromTheMiddle).ToList()).ToList())
+            {
+                if (!IsMatchingPartyRequested(_suggestionRequest, seatsWithDistance)) continue;
 
+                var sumOfDistances = seatsWithDistance.Sum(s => s.DistanceFromTheMiddle);
+
+                if (!bestDistances.ContainsKey(sumOfDistances))
+                    bestDistances.Add(sumOfDistances, seatsWithDistance);
+            }
+            
             return bestDistances.Any()
-                ? bestDistances.Values.First().Select(seatsWithDistance => seatsWithDistance.Seat).ToList()
-                : NoSeatSuggested;
-        }
+                    ? bestDistances.Values.First().Select(seatsWithDistance => seatsWithDistance.Seat).ToList()
+                    : NoSeatSuggested;
+            }
 
         private static bool IsMatchingPartyRequested(SuggestionRequest suggestionRequest, ICollection seatWithDistances)
         {
@@ -56,7 +60,8 @@ namespace SeatsSuggestions.DeepModel
         {
             var groupOfSeatDistance = new List<SeatWithDistanceFromTheMiddleOfTheRow>();
             var groupsOfSeatDistance = new List<List<SeatWithDistanceFromTheMiddleOfTheRow>>();
-
+            
+            // To find adjacent seats, the seats are sorted by their numbers
             using (var enumerator = seatsWithDistances.OrderBy(s => s.Seat.Number).GetEnumerator())
             {
                 SeatWithDistanceFromTheMiddleOfTheRow seatWithDistancePrevious = null;
@@ -78,8 +83,7 @@ namespace SeatsSuggestions.DeepModel
                         }
                         else
                         {
-                            groupsOfSeatDistance.Add(groupOfSeatDistance.OrderBy(s => s.DistanceFromTheMiddle)
-                                .ToList());
+                            groupsOfSeatDistance.Add(groupOfSeatDistance);
                             groupOfSeatDistance = new List<SeatWithDistanceFromTheMiddleOfTheRow> { seatWithDistance };
                             seatWithDistancePrevious = null;
                         }
@@ -89,8 +93,9 @@ namespace SeatsSuggestions.DeepModel
 
             groupsOfSeatDistance.Add(groupOfSeatDistance);
 
-            return groupsOfSeatDistance
-                .Select(seatWithDistances => seatWithDistances.OrderBy(s => s.DistanceFromTheMiddle).ToList()).ToList();
+            
+            return groupsOfSeatDistance;
+
         }
 
         protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()

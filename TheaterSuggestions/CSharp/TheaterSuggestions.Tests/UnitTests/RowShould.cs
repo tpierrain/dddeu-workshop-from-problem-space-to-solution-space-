@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using NFluent;
 using NUnit.Framework;
-using SeatsSuggestions.DeepModel;
 
 namespace SeatsSuggestions.Tests.UnitTests
 {
@@ -24,123 +22,6 @@ namespace SeatsSuggestions.Tests.UnitTests
             var a3 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
             rowSecondInstance.AddSeat(a3);
             Check.That(rowSecondInstance).IsEqualTo(rowFirstInstance);
-        }
-
-        [Test]
-        public void Suggest_seas_from_the_middle_of_row_is_even_when_party_size_is_greater_than_one()
-        {
-            var partySize = 2;
-
-            var a1 = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
-            var a2 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
-            var a3 = new Seat("A", 3, PricingCategory.First, SeatAvailability.Available);
-            var a4 = new Seat("A", 4, PricingCategory.First, SeatAvailability.Reserved);
-            var a5 = new Seat("A", 5, PricingCategory.First, SeatAvailability.Available);
-            var a6 = new Seat("A", 6, PricingCategory.First, SeatAvailability.Available);
-            var a7 = new Seat("A", 7, PricingCategory.First, SeatAvailability.Available);
-            var a8 = new Seat("A", 8, PricingCategory.First, SeatAvailability.Reserved);
-            var a9 = new Seat("A", 9, PricingCategory.Second, SeatAvailability.Available);
-            var a10 = new Seat("A", 10, PricingCategory.Second, SeatAvailability.Available);
-
-            var row = new Row("A", new List<Seat> { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 });
-
-            var seatsWithDistance = new OfferSeatsNearerMiddleOfTheRow(row).SuggestSeatsNearerTheMiddleOfTheRow(
-                new SuggestionRequest(partySize, PricingCategory.Mixed)).Take(partySize);
-
-            Check.That(seatsWithDistance.Select(s => s.Seat).ToList())
-                .ContainsExactly(a5, a6);
-        }
-
-        [Test]
-        public void Suggest_seats_from_the_middle_of_row_is_odd_when_party_size_is_greater_than_one()
-        {
-            var partySize = 5;
-
-            var a1 = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
-            var a2 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
-            var a3 = new Seat("A", 3, PricingCategory.First, SeatAvailability.Available);
-            var a4 = new Seat("A", 4, PricingCategory.First, SeatAvailability.Reserved);
-            var a5 = new Seat("A", 5, PricingCategory.First, SeatAvailability.Available);
-            var a6 = new Seat("A", 6, PricingCategory.First, SeatAvailability.Available);
-            var a7 = new Seat("A", 7, PricingCategory.First, SeatAvailability.Available);
-            var a8 = new Seat("A", 8, PricingCategory.First, SeatAvailability.Reserved);
-            var a9 = new Seat("A", 9, PricingCategory.Second, SeatAvailability.Available);
-
-            var row = new Row("A", new List<Seat> { a1, a2, a3, a4, a5, a6, a7, a8, a9 });
-            var seatsWithDistance = new OfferSeatsNearerMiddleOfTheRow(row).SuggestSeatsNearerTheMiddleOfTheRow(
-                new SuggestionRequest(partySize, PricingCategory.Mixed)).Take(partySize);
-
-            Check.That(seatsWithDistance.Select(s => s.Seat).OrderBy(s => s.Number).ToList())
-                .ContainsExactly(a2, a3, a5, a6, a7);
-        }
-
-        [Test]
-        public void Suggest_seats_from_the_middle_of_row_is_odd_when_party_size_and_pricing_category_are_requested()
-        {
-            var partySize = 5;
-
-            var a1 = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
-            var a2 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
-            var a3 = new Seat("A", 3, PricingCategory.First, SeatAvailability.Available);
-            var a4 = new Seat("A", 4, PricingCategory.First, SeatAvailability.Reserved);
-            var a5 = new Seat("A", 5, PricingCategory.First, SeatAvailability.Available);
-            var a6 = new Seat("A", 6, PricingCategory.First, SeatAvailability.Available);
-            var a7 = new Seat("A", 7, PricingCategory.First, SeatAvailability.Available);
-            var a8 = new Seat("A", 8, PricingCategory.First, SeatAvailability.Reserved);
-            var a9 = new Seat("A", 9, PricingCategory.Second, SeatAvailability.Available);
-
-            var row = new Row("A", new List<Seat> { a1, a2, a3, a4, a5, a6, a7, a8, a9 });
-            var seatsWithDistance = new OfferSeatsNearerMiddleOfTheRow(row).SuggestSeatsNearerTheMiddleOfTheRow(
-                new SuggestionRequest(partySize, PricingCategory.Mixed)).Take(partySize);
-
-            Check.That(seatsWithDistance.Select(sd => sd.Seat).OrderBy(s => s.Number))
-                .ContainsExactly(a2, a3, a5, a6, a7);
-        }
-
-        [Test]
-        public void Suggest_groups_of_adjacent_seats_when_row_contains_some_reserved_seats()
-        {
-            var partySize = 3;
-            var a1 = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
-            var a2 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
-            var a3 = new Seat("A", 3, PricingCategory.First, SeatAvailability.Available);
-            var a4 = new Seat("A", 4, PricingCategory.First, SeatAvailability.Reserved);
-            var a5 = new Seat("A", 5, PricingCategory.First, SeatAvailability.Available);
-            var a6 = new Seat("A", 6, PricingCategory.First, SeatAvailability.Available);
-            var a7 = new Seat("A", 7, PricingCategory.First, SeatAvailability.Available);
-            var a8 = new Seat("A", 8, PricingCategory.First, SeatAvailability.Reserved);
-            var a9 = new Seat("A", 9, PricingCategory.Second, SeatAvailability.Available);
-            var a10 = new Seat("A", 10, PricingCategory.Second, SeatAvailability.Available);
-
-            var row = new Row("A", new List<Seat> { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 });
-            var seatsWithDistance =
-                new OfferSeatsNearerMiddleOfTheRow(row).SuggestSeatsNearerTheMiddleOfTheRow(
-                    new SuggestionRequest(partySize, PricingCategory.Mixed)).Take(partySize);
-
-            Check.That(new OfferAdjacentSeatsToMembersOfTheSameParty(new SuggestionRequest(partySize,
-                    PricingCategory.Mixed))
-                .SuggestAdjacentSeats(seatsWithDistance)).ContainsExactly(a5, a6, a7);
-        }
-
-
-        [Test]
-        public void Suggest_adjacent_seats_nearer_the_middle_of_row()
-        {
-            var a1 = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
-            var a2 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
-            var a3 = new Seat("A", 3, PricingCategory.First, SeatAvailability.Available);
-            var a4 = new Seat("A", 4, PricingCategory.First, SeatAvailability.Reserved);
-            var a5 = new Seat("A", 5, PricingCategory.First, SeatAvailability.Available);
-            var a6 = new Seat("A", 6, PricingCategory.First, SeatAvailability.Available);
-            var a7 = new Seat("A", 7, PricingCategory.First, SeatAvailability.Available);
-            var a8 = new Seat("A", 8, PricingCategory.First, SeatAvailability.Reserved);
-            var a9 = new Seat("A", 9, PricingCategory.Second, SeatAvailability.Available);
-            var a10 = new Seat("A", 10, PricingCategory.Second, SeatAvailability.Available);
-
-            var row = new Row("A", new List<Seat> { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 });
-
-            Check.That(row.SuggestAdjacentSeatsNearedTheMiddleOfRow(new SuggestionRequest(3, PricingCategory.Mixed)))
-                .ContainsExactly(a5, a6, a7);
         }
     }
 }

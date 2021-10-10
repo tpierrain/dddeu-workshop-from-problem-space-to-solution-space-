@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using SeatsSuggestions.DeepModel;
 
-namespace SeatsSuggestions.Tests.UnitTests
+namespace SeatsSuggestions.Tests.UnitTests.DeepModel
 {
     class SeatWithDistanceFromTheMiddleOfTheRowShould
     {
