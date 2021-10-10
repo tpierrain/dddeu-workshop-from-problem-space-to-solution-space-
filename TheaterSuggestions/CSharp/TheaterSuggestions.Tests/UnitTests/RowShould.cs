@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NFluent;
 using NUnit.Framework;
-using SeatsSuggestions.Model;
 using Value;
 
 namespace SeatsSuggestions.Tests.UnitTests

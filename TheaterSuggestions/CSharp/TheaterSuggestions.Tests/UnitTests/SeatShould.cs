@@ -1,6 +1,5 @@
 ﻿using NFluent;
 using NUnit.Framework;
-using SeatsSuggestions.Model;
 
 namespace SeatsSuggestions.Tests.UnitTests
 {

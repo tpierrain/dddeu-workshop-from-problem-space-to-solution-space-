@@ -95,7 +95,7 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
             Check.That(suggestionsMade.SeatNames(PricingCategory.First)).IsEmpty();
             Check.That(suggestionsMade.SeatNames(PricingCategory.Second)).ContainsExactly("C4-C5-C6-C7", "D4-D5-D6-D7");
             Check.That(suggestionsMade.SeatNames(PricingCategory.Third)).ContainsExactly("E4-E5-E6-E7", "F4-F5-F6-F7");
-            Check.That(suggestionsMade.SeatNames(PricingCategory.Mixed)).ContainsExactly("A6-A7-A8-A9", "C4-C5-C6-C7", "D4-D5-D6-D7");
+            Check.That(suggestionsMade.SeatNames(PricingCategory.Mixed)).ContainsExactly("A6-A7-A8-A9", "B1-B2-B3-B4", "C4-C5-C6-C7");
         }
     }
 }
