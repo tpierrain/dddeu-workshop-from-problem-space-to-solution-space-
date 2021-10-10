@@ -17,7 +17,7 @@ namespace SeatsSuggestions.DeepModel
             _suggestionRequest = suggestionRequest;
         }
 
-        private List<Seat> NoSeatSuggested { get; } = new List<Seat>();
+        private IEnumerable<Seat> NoSeatSuggested { get; } = new List<Seat>();
 
         public IEnumerable<Seat> SuggestAdjacentSeats(
             IEnumerable<SeatWithDistanceFromTheMiddleOfTheRow> seatsWithDistances)
@@ -47,7 +47,7 @@ namespace SeatsSuggestions.DeepModel
             }
 
             return bestDistances.Any()
-                // if bestDistances contains two proposals for the best distance, the shorter one.
+                // if bestDistances contain two proposals for the best distance (i.e. the shorter one).
                 // We to take the right side and not the left side, it's a domain expert choice.
                 ? bestDistances.Values.First()[0]
                     .Select(seatsWithDistance => seatsWithDistance.Seat)
