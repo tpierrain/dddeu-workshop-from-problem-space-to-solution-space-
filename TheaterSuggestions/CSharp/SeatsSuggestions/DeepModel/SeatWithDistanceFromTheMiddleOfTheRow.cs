@@ -14,23 +14,23 @@ namespace SeatsSuggestions.DeepModel
     /// </summary>
     public class SeatWithDistanceFromTheMiddleOfTheRow : ValueType<SeatWithDistanceFromTheMiddleOfTheRow>
     {
-        public SeatWithDistanceFromTheMiddleOfTheRow(Seat seat, int distanceFromTheMiddle)
+        public SeatWithDistanceFromTheMiddleOfTheRow(Seat seat, int distanceFromTheMiddleOfTheRow)
         {
             Seat = seat;
-            DistanceFromTheMiddle = distanceFromTheMiddle;
+            DistanceFromTheMiddleOfTheRow = distanceFromTheMiddleOfTheRow;
         }
 
         public Seat Seat { get; }
-        public int DistanceFromTheMiddle { get; }
+        public int DistanceFromTheMiddleOfTheRow { get; }
 
         public override string ToString()
         {
-            return $"{Seat.RowName}{Seat.Number} {DistanceFromTheMiddle}";
+            return $"{Seat.RowName}{Seat.Number} {DistanceFromTheMiddleOfTheRow}";
         }
 
         protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
         {
-            return new object[] { Seat, DistanceFromTheMiddle };
+            return new object[] { Seat, DistanceFromTheMiddleOfTheRow };
         }
     }
 }

@@ -6,9 +6,7 @@ using Value;
 namespace SeatsSuggestions.DeepModel
 {
     /// <summary>
-    ///
-    /// Business Rule: offer adjacent seats to members of the same party
-    /// 
+    ///     Business Rule: offer adjacent seats to members of the same party
     /// </summary>
     public class OfferAdjacentSeatsToMembersOfTheSameParty : ValueType<OfferAdjacentSeatsToMembersOfTheSameParty>
     {
@@ -31,24 +29,30 @@ namespace SeatsSuggestions.DeepModel
         private IEnumerable<Seat> SelectAdjacentSeatsWithShorterDistanceFromTheMiddleOfTheRow(
             IEnumerable<List<SeatWithDistanceFromTheMiddleOfTheRow>> groupOfAdjacentSeats)
         {
-            var bestDistances = new SortedDictionary<int, List<SeatWithDistanceFromTheMiddleOfTheRow>>();
+            var bestDistances = new SortedDictionary<int, List<List<SeatWithDistanceFromTheMiddleOfTheRow>>>();
 
             // To select the best group of adjacent seats, we sort them by their distances
             foreach (var seatsWithDistance in groupOfAdjacentSeats
-                .Select(seatWithDistances => seatWithDistances.OrderBy(s => s.DistanceFromTheMiddle).ToList()).ToList())
+                .Select(seatWithDistances => seatWithDistances.OrderBy(s => s.DistanceFromTheMiddleOfTheRow).ToList())
+                .ToList())
             {
                 if (!IsMatchingPartyRequested(_suggestionRequest, seatsWithDistance)) continue;
 
-                var sumOfDistances = seatsWithDistance.Sum(s => s.DistanceFromTheMiddle);
+                var sumOfDistances = seatsWithDistance.Sum(s => s.DistanceFromTheMiddleOfTheRow);
 
                 if (!bestDistances.ContainsKey(sumOfDistances))
-                    bestDistances.Add(sumOfDistances, seatsWithDistance);
+                    bestDistances[sumOfDistances] = new List<List<SeatWithDistanceFromTheMiddleOfTheRow>>();
+
+                bestDistances[sumOfDistances].Add(seatsWithDistance);
             }
-            
+
             return bestDistances.Any()
-                    ? bestDistances.Values.First().Select(seatsWithDistance => seatsWithDistance.Seat).ToList()
-                    : NoSeatSuggested;
-            }
+                // if bestDistances contains two proposals for the best distance, the shorter one.
+                // We to take the right side and not the left side, it's a domain expert choice.
+                ? bestDistances.Values.First()[0]
+                    .Select(seatsWithDistance => seatsWithDistance.Seat).ToList()
+                : NoSeatSuggested;
+        }
 
         private static bool IsMatchingPartyRequested(SuggestionRequest suggestionRequest, ICollection seatWithDistances)
         {
@@ -60,8 +64,8 @@ namespace SeatsSuggestions.DeepModel
         {
             var groupOfSeatDistance = new List<SeatWithDistanceFromTheMiddleOfTheRow>();
             var groupsOfSeatDistance = new List<List<SeatWithDistanceFromTheMiddleOfTheRow>>();
-            
-            // To find adjacent seats, the seats are sorted by their numbers
+
+            // To find adjacent seats, we need to sort seats by their numbers
             using (var enumerator = seatsWithDistances.OrderBy(s => s.Seat.Number).GetEnumerator())
             {
                 SeatWithDistanceFromTheMiddleOfTheRow seatWithDistancePrevious = null;
@@ -93,9 +97,8 @@ namespace SeatsSuggestions.DeepModel
 
             groupsOfSeatDistance.Add(groupOfSeatDistance);
 
-            
-            return groupsOfSeatDistance;
 
+            return groupsOfSeatDistance;
         }
 
         protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()

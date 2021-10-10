@@ -6,9 +6,7 @@ using Value;
 namespace SeatsSuggestions.DeepModel
 {
     /// <summary>
-    /// 
-    /// Business Rule: offer seats nearer the middle of a row
-    /// 
+    ///     Business Rule: offer seats nearer the middle of a row
     /// </summary>
     public class OfferSeatsNearerMiddleOfTheRow : ValueType<OfferSeatsNearerMiddleOfTheRow>
     {
@@ -19,7 +17,8 @@ namespace SeatsSuggestions.DeepModel
             _row = row;
         }
 
-        public IEnumerable<SeatWithDistanceFromTheMiddleOfTheRow> SuggestSeatsNearerTheMiddleOfTheRow(SuggestionRequest suggestionRequest)
+        public IEnumerable<SeatWithDistanceFromTheMiddleOfTheRow> SuggestSeatsNearerTheMiddleOfTheRow(
+            SuggestionRequest suggestionRequest)
         {
             return ComputeDistancesNearerTheMiddleOfTheRow().Where(seatWithDistance =>
                     seatWithDistance.Seat.MatchCategory(suggestionRequest.PricingCategory))
@@ -30,18 +29,18 @@ namespace SeatsSuggestions.DeepModel
         {
             var theMiddleOfRow = GetTheMiddleOfRow();
 
-            var seatsWithDistancesFromTheMiddle =
-                SplitSeatsByDistanceNearerTheMiddleOfTheRow(seat => IsMiddle(seat, theMiddleOfRow), theMiddleOfRow)
-                    .ToList();
+            var seatsWithDistancesFromTheMiddle = SplitSeatsByDistanceNearerTheMiddleOfTheRow(IsMiddle).ToList();
 
-            seatsWithDistancesFromTheMiddle.Add(GetSeatsInTheMiddle(theMiddleOfRow));
+            seatsWithDistancesFromTheMiddle.Add(GetSeatsInTheMiddleOfTheRow());
 
-            return seatsWithDistancesFromTheMiddle.SelectMany(s => s).OrderBy(s => s.DistanceFromTheMiddle).ToList();
+            return seatsWithDistancesFromTheMiddle.SelectMany(s => s)
+                .OrderBy(s => s.DistanceFromTheMiddleOfTheRow).ToList();
         }
 
-        private List<SeatWithDistanceFromTheMiddleOfTheRow> GetSeatsInTheMiddle(int theMiddleOfRow)
+        private List<SeatWithDistanceFromTheMiddleOfTheRow> GetSeatsInTheMiddleOfTheRow()
         {
-            return GetSeatsInTheMiddle(_row.Seats, theMiddleOfRow).Select(s => new SeatWithDistanceFromTheMiddleOfTheRow(s, 0)).ToList();
+            return GetSeatsInTheMiddleOfTheRow(_row.Seats, GetTheMiddleOfRow())
+                .Select(s => new SeatWithDistanceFromTheMiddleOfTheRow(s, 0)).ToList();
         }
 
         private int GetTheMiddleOfRow()
@@ -49,15 +48,17 @@ namespace SeatsSuggestions.DeepModel
             return _row.Seats.Count % 2 == 0 ? _row.Seats.Count / 2 : Math.Abs(_row.Seats.Count / 2) + 1;
         }
 
-        private static IEnumerable<Seat> GetSeatsInTheMiddle(IReadOnlyList<Seat> seats, int middle)
+        private static IEnumerable<Seat> GetSeatsInTheMiddleOfTheRow(IReadOnlyList<Seat> seats, int middle)
         {
             return seats.Count % 2 == 0
                 ? new List<Seat> { seats[middle - 1], seats[middle] }
                 : new List<Seat> { seats[middle - 1] };
         }
 
-        private bool IsMiddle(Seat seat, int middle)
+        private bool IsMiddle(Seat seat)
         {
+            var middle = GetTheMiddleOfRow();
+
             switch (_row.Seats.Count % 2)
             {
                 case 0 when Math.Abs(seat.Number - middle) == 0:
@@ -69,22 +70,21 @@ namespace SeatsSuggestions.DeepModel
         }
 
         private IEnumerable<List<SeatWithDistanceFromTheMiddleOfTheRow>> SplitSeatsByDistanceNearerTheMiddleOfTheRow(
-            Func<Seat, bool> predicate,
-            int middle)
+            Func<Seat, bool> predicate)
         {
+            var middle = GetTheMiddleOfRow();
+
             var seatWithDistances = new List<SeatWithDistanceFromTheMiddleOfTheRow>();
             foreach (var seat in _row.Seats)
                 if (!predicate(seat))
                 {
                     int distance;
                     if (_row.Seats.Count % 2 == 0)
-                    {
-                        distance = seat.Number - middle > 0 ? Math.Abs((int)(seat.Number - middle)) : Math.Abs((int)(seat.Number - (middle + 1)));
-                    }
+                        distance = seat.Number - middle > 0
+                            ? Math.Abs((int)(seat.Number - middle))
+                            : Math.Abs((int)(seat.Number - (middle + 1)));
                     else
-                    {
                         distance = Math.Abs((int)(seat.Number - middle));
-                    }
 
                     seatWithDistances.Add(new SeatWithDistanceFromTheMiddleOfTheRow(seat, distance));
                 }
