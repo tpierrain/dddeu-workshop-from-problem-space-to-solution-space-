@@ -27,20 +27,17 @@ namespace SeatsSuggestions.DeepModel
 
         private IEnumerable<SeatWithDistanceFromTheMiddleOfTheRow> ComputeDistancesNearerTheMiddleOfTheRow()
         {
-            var theMiddleOfRow = GetTheMiddleOfRow();
+            var seatsWithDistancesFromTheMiddle = SplitSeatsByDistanceNearerTheMiddleOfTheRow(IsMiddle);
 
-            var seatsWithDistancesFromTheMiddle = SplitSeatsByDistanceNearerTheMiddleOfTheRow(IsMiddle).ToList();
-
-            seatsWithDistancesFromTheMiddle.Add(GetSeatsInTheMiddleOfTheRow());
-
-            return seatsWithDistancesFromTheMiddle.SelectMany(s => s)
-                .OrderBy(s => s.DistanceFromTheMiddleOfTheRow).ToList();
+            return seatsWithDistancesFromTheMiddle.Append(GetSeatsInTheMiddleOfTheRow())
+                .SelectMany(seatWithDistanceFromTheMiddleOfTheRows => seatWithDistanceFromTheMiddleOfTheRows)
+                .OrderBy(s => s.DistanceFromTheMiddleOfTheRow);
         }
 
-        private List<SeatWithDistanceFromTheMiddleOfTheRow> GetSeatsInTheMiddleOfTheRow()
+        private IEnumerable<SeatWithDistanceFromTheMiddleOfTheRow> GetSeatsInTheMiddleOfTheRow()
         {
             return GetSeatsInTheMiddleOfTheRow(_row.Seats, GetTheMiddleOfRow())
-                .Select(s => new SeatWithDistanceFromTheMiddleOfTheRow(s, 0)).ToList();
+                .Select(s => new SeatWithDistanceFromTheMiddleOfTheRow(s, 0));
         }
 
         private int GetTheMiddleOfRow()

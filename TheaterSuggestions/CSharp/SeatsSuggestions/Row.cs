@@ -51,10 +51,11 @@ namespace SeatsSuggestions
             return new Row(seat.RowName, newVersionOfSeats);
         }
 
-        public List<Seat> SuggestAdjacentSeatsNearedTheMiddleOfRow(SuggestionRequest suggestionRequest)
+        public IEnumerable<Seat> SuggestAdjacentSeatsNearedTheMiddleOfRow(SuggestionRequest suggestionRequest)
         {
             var seatsWithDistances = new OfferSeatsNearerMiddleOfTheRow(this)
                 .SuggestSeatsNearerTheMiddleOfTheRow(suggestionRequest);
+
             return new OfferAdjacentSeatsToMembersOfTheSameParty(suggestionRequest)
                 .SuggestAdjacentSeats(seatsWithDistances);
         }

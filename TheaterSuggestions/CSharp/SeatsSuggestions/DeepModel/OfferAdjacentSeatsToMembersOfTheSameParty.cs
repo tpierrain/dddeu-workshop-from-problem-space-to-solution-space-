@@ -19,11 +19,11 @@ namespace SeatsSuggestions.DeepModel
 
         private List<Seat> NoSeatSuggested { get; } = new List<Seat>();
 
-        public List<Seat> SuggestAdjacentSeats(IEnumerable<SeatWithDistanceFromTheMiddleOfTheRow> seatsWithDistances)
+        public IEnumerable<Seat> SuggestAdjacentSeats(
+            IEnumerable<SeatWithDistanceFromTheMiddleOfTheRow> seatsWithDistances)
         {
-            var groupOfAdjacentSeats = SplitInGroupsOfAdjacentSeats(seatsWithDistances);
-            return SelectAdjacentSeatsWithShorterDistanceFromTheMiddleOfTheRow(groupOfAdjacentSeats)
-                .ToList();
+            return SelectAdjacentSeatsWithShorterDistanceFromTheMiddleOfTheRow(
+                SplitInGroupsOfAdjacentSeats(seatsWithDistances));
         }
 
         private IEnumerable<Seat> SelectAdjacentSeatsWithShorterDistanceFromTheMiddleOfTheRow(
@@ -50,7 +50,7 @@ namespace SeatsSuggestions.DeepModel
                 // if bestDistances contains two proposals for the best distance, the shorter one.
                 // We to take the right side and not the left side, it's a domain expert choice.
                 ? bestDistances.Values.First()[0]
-                    .Select(seatsWithDistance => seatsWithDistance.Seat).ToList()
+                    .Select(seatsWithDistance => seatsWithDistance.Seat)
                 : NoSeatSuggested;
         }
 
