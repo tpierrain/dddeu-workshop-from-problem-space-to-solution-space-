@@ -23,8 +23,8 @@ namespace SeatsSuggestions.Tests.UnitTests.DeepModel
 
             var row = new Row("A", new List<Seat> { a1, a2, a3, a4, a5, a6, a7, a8, a9 });
 
-            var firstInstance = new OfferSeatsNearerMiddleOfTheRow(row);
-            var secondInstance = new OfferSeatsNearerMiddleOfTheRow(row);
+            var firstInstance = new OfferingSeatsNearerMiddleOfTheRow(row);
+            var secondInstance = new OfferingSeatsNearerMiddleOfTheRow(row);
 
             Check.That(firstInstance).IsEqualTo(secondInstance);
         }
@@ -47,7 +47,7 @@ namespace SeatsSuggestions.Tests.UnitTests.DeepModel
 
             var row = new Row("A", new List<Seat> { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 });
 
-            var seatsWithDistance = new OfferSeatsNearerMiddleOfTheRow(row).SuggestSeatsNearerTheMiddleOfTheRow(
+            var seatsWithDistance = new OfferingSeatsNearerMiddleOfTheRow(row).SuggestSeatsNearerTheMiddleOfTheRow(
                 new SuggestionRequest(partySize, PricingCategory.Mixed)).Take(partySize);
 
             Check.That(seatsWithDistance.Select(s => s.Seat).ToList())
@@ -70,7 +70,7 @@ namespace SeatsSuggestions.Tests.UnitTests.DeepModel
             var a9 = new Seat("A", 9, PricingCategory.Second, SeatAvailability.Available);
 
             var row = new Row("A", new List<Seat> { a1, a2, a3, a4, a5, a6, a7, a8, a9 });
-            var seatsWithDistance = new OfferSeatsNearerMiddleOfTheRow(row).SuggestSeatsNearerTheMiddleOfTheRow(
+            var seatsWithDistance = new OfferingSeatsNearerMiddleOfTheRow(row).SuggestSeatsNearerTheMiddleOfTheRow(
                 new SuggestionRequest(partySize, PricingCategory.Mixed)).Take(partySize);
 
             Check.That(seatsWithDistance.Select(s => s.Seat).OrderBy(s => s.Number).ToList())
@@ -93,7 +93,7 @@ namespace SeatsSuggestions.Tests.UnitTests.DeepModel
             var a9 = new Seat("A", 9, PricingCategory.Second, SeatAvailability.Available);
 
             var row = new Row("A", new List<Seat> { a1, a2, a3, a4, a5, a6, a7, a8, a9 });
-            var seatsWithDistance = new OfferSeatsNearerMiddleOfTheRow(row).SuggestSeatsNearerTheMiddleOfTheRow(
+            var seatsWithDistance = new OfferingSeatsNearerMiddleOfTheRow(row).SuggestSeatsNearerTheMiddleOfTheRow(
                 new SuggestionRequest(partySize, PricingCategory.Mixed)).Take(partySize);
 
             Check.That(seatsWithDistance.Select(sd => sd.Seat).OrderBy(s => s.Number))

@@ -8,11 +8,11 @@ namespace SeatsSuggestions.DeepModel
     /// <summary>
     ///     Business Rule: offer adjacent seats to members of the same party
     /// </summary>
-    public class OfferAdjacentSeatsToMembersOfTheSameParty : ValueType<OfferAdjacentSeatsToMembersOfTheSameParty>
+    public class OfferingAdjacentSeatsToMembersOfTheSameParty : ValueType<OfferingAdjacentSeatsToMembersOfTheSameParty>
     {
         private readonly SuggestionRequest _suggestionRequest;
 
-        public OfferAdjacentSeatsToMembersOfTheSameParty(SuggestionRequest suggestionRequest)
+        public OfferingAdjacentSeatsToMembersOfTheSameParty(SuggestionRequest suggestionRequest)
         {
             _suggestionRequest = suggestionRequest;
         }

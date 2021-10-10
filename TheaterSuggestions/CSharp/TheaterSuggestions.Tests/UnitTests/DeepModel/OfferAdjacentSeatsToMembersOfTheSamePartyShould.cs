@@ -12,9 +12,9 @@ namespace SeatsSuggestions.Tests.UnitTests.DeepModel
         public void Be_a_Value_Type()
         {
             var firstInstance =
-                new OfferAdjacentSeatsToMembersOfTheSameParty(new SuggestionRequest(3, PricingCategory.Mixed));
+                new OfferingAdjacentSeatsToMembersOfTheSameParty(new SuggestionRequest(3, PricingCategory.Mixed));
             var secondInstance =
-                new OfferAdjacentSeatsToMembersOfTheSameParty(new SuggestionRequest(3, PricingCategory.Mixed));
+                new OfferingAdjacentSeatsToMembersOfTheSameParty(new SuggestionRequest(3, PricingCategory.Mixed));
 
             Check.That(firstInstance).IsEqualTo(secondInstance);
         }
@@ -36,10 +36,10 @@ namespace SeatsSuggestions.Tests.UnitTests.DeepModel
 
             var row = new Row("A", new List<Seat> { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 });
             var seatsWithDistance =
-                new OfferSeatsNearerMiddleOfTheRow(row).SuggestSeatsNearerTheMiddleOfTheRow(
+                new OfferingSeatsNearerMiddleOfTheRow(row).SuggestSeatsNearerTheMiddleOfTheRow(
                     new SuggestionRequest(partySize, PricingCategory.Mixed)).Take(partySize);
 
-            Check.That(new OfferAdjacentSeatsToMembersOfTheSameParty(new SuggestionRequest(partySize,
+            Check.That(new OfferingAdjacentSeatsToMembersOfTheSameParty(new SuggestionRequest(partySize,
                     PricingCategory.Mixed))
                 .SuggestAdjacentSeats(seatsWithDistance)).ContainsExactly(a5, a6, a7);
         }

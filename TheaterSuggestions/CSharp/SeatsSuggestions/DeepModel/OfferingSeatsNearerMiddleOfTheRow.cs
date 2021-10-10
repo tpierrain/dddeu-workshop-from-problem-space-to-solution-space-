@@ -8,11 +8,11 @@ namespace SeatsSuggestions.DeepModel
     /// <summary>
     ///     Business Rule: offer seats nearer the middle of a row
     /// </summary>
-    public class OfferSeatsNearerMiddleOfTheRow : ValueType<OfferSeatsNearerMiddleOfTheRow>
+    public class OfferingSeatsNearerMiddleOfTheRow : ValueType<OfferingSeatsNearerMiddleOfTheRow>
     {
         private readonly Row _row;
 
-        public OfferSeatsNearerMiddleOfTheRow(Row row)
+        public OfferingSeatsNearerMiddleOfTheRow(Row row)
         {
             _row = row;
         }
