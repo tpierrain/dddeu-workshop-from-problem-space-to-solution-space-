@@ -14,14 +14,14 @@ namespace SeatsSuggestions
             PricingCategory = suggestionRequest.PricingCategory;
         }
 
+        public void AddSeat(Seat seat)
+        {
+            Seats.Add(seat);
+        }
+
         public bool MatchExpectation()
         {
             return Seats.Count == PartyRequested;
-        }
-
-        public void AddSeats(AdjacentSeats adjacentSeats)
-        {
-            Seats.AddRange(adjacentSeats);
         }
     }
 }

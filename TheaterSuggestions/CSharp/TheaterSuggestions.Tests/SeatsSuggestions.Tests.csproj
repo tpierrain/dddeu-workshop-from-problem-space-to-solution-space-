@@ -74,6 +74,7 @@
 
   <ItemGroup>
     <Folder Include="AuditoriumLayouts\" />
+    <Folder Include="UnitTests\DeepModel\" />
   </ItemGroup>
 
   <ItemGroup>

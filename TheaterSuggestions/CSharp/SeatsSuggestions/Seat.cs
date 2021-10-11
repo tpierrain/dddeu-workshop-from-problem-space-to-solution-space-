@@ -10,17 +10,14 @@ namespace SeatsSuggestions
         public uint Number { get; }
         public PricingCategory PricingCategory { get; }
         public SeatAvailability SeatAvailability { get; }
-        public int DistanceFromRowCentroid { get; }
 
 
-        public Seat(string rowName, uint number, PricingCategory pricingCategory, SeatAvailability seatAvailability,
-            int distanceFromRowCentroid = 0)
+        public Seat(string rowName, uint number, PricingCategory pricingCategory, SeatAvailability seatAvailability)
         {
             RowName = rowName;
             Number = number;
             PricingCategory = pricingCategory;
             SeatAvailability = seatAvailability;
-            DistanceFromRowCentroid = distanceFromRowCentroid;
         }
 
         public bool IsAvailable()
@@ -48,22 +45,10 @@ namespace SeatsSuggestions
             return RowName == seat.RowName && Number == seat.Number;
         }
 
-        public int ComputeDistanceFromRowCentroid(int rowSize)
-        {
-            var seatLocation = Number;
-
-            if (rowSize.IsOdd()) return seatLocation.ComputeDistanceFromCentroid(rowSize);
-
-            if (seatLocation.IsCentroid(rowSize)) return 0;
-
-            if (seatLocation < rowSize.CentroidIndex()) return seatLocation.ComputeDistanceFromCentroid(rowSize);
-
-            return seatLocation.ComputeDistanceFromCentroid(rowSize) - 1;
-        }
-
+     
         protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
         {
-            return new object[] { RowName, Number, PricingCategory, SeatAvailability, DistanceFromRowCentroid };
+            return new object[] { RowName, Number, PricingCategory, SeatAvailability };
         }
 
         public override string ToString()

@@ -1,19 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Value;
+using SeatsSuggestions.DeepModel;
 
 namespace SeatsSuggestions
 {
     public class Row : ValueType<Row>
     {
         public string Name { get; }
-        public IEnumerable<Seat> Seats { get; }
+        public IReadOnlyList<Seat> Seats { get; }
 
-        public Row(string name, IReadOnlyCollection<Seat> seats)
+        public Row(string name, IReadOnlyList<Seat> seats)
         {
             Name = name;
-            Seats = seats.Select(s => new Seat(s.RowName, s.Number, s.PricingCategory, s.SeatAvailability,
-                s.ComputeDistanceFromRowCentroid(seats.Count())));
+            Seats = seats;
         }
 
         public Row AddSeat(Seat seat)
@@ -26,22 +26,27 @@ namespace SeatsSuggestions
         public SeatingOptionSuggested SuggestSeatingOption(SuggestionRequest suggestionRequest)
         {
             var seatingOptionSuggested = new SeatingOptionSuggested(suggestionRequest);
-            var availableSeatsCompliant = Seats.SelectAvailableSeatsCompliant(suggestionRequest.PricingCategory);
-            var rowSize = Seats.Count();
 
-            var adjacentSeatsOfExpectedSize =
-                availableSeatsCompliant.SelectAdjacentSeats(suggestionRequest.PartyRequested);
 
-            var adjacentSeatsOrdered = adjacentSeatsOfExpectedSize.OrderByMiddleOfTheRow(rowSize);
-
-            foreach (var adjacentSeats in adjacentSeatsOrdered)
+            foreach (var seat in OfferAdjacentSeatsNearerTheMiddleOfRow(suggestionRequest))
             {
-                seatingOptionSuggested.AddSeats(adjacentSeats);
+                seatingOptionSuggested.AddSeat(seat);
 
                 if (seatingOptionSuggested.MatchExpectation()) return seatingOptionSuggested;
             }
 
             return new SeatingOptionNotAvailable(suggestionRequest);
+        }
+
+        public IEnumerable<Seat> OfferAdjacentSeatsNearerTheMiddleOfRow(SuggestionRequest suggestionRequest)
+        {
+            // 1. offer seats from the middle of the row
+            var seatsWithDistanceFromMiddleOfTheRow =
+                new OfferingSeatsNearerMiddleOfTheRow(this).OfferSeatsNearerTheMiddleOfTheRow(suggestionRequest);
+            // 2. based on seats with distance from the middle of row,
+            //    we offer the best group (close to the middle) of adjacent seats
+            return new OfferingAdjacentSeatsToMembersOfTheSameParty(suggestionRequest).OfferAdjacentSeats(
+                seatsWithDistanceFromMiddleOfTheRow);
         }
 
         public Row Allocate(Seat seat)
