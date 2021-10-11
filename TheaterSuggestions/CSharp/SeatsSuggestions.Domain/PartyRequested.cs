@@ -6,8 +6,6 @@ namespace SeatsSuggestions.Domain
 {
     public class PartyRequested : ValueType<PartyRequested>
     {
-        public int PartySize { get; }
-
         public PartyRequested(int partySize)
         {
             if (partySize <= 0 || partySize > 20)
@@ -16,9 +14,11 @@ namespace SeatsSuggestions.Domain
             PartySize = partySize;
         }
 
+        public int PartySize { get; }
+
         protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
         {
-            return new object[] {PartySize};
+            return new object[] { PartySize };
         }
     }
 }

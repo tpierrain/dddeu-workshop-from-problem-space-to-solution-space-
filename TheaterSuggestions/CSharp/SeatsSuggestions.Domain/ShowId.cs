@@ -7,8 +7,6 @@ namespace SeatsSuggestions.Domain
 {
     public class ShowId : ValueType<ShowId>
     {
-        public string Id { get; }
-
         public ShowId(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -20,6 +18,8 @@ namespace SeatsSuggestions.Domain
             Id = id;
         }
 
+        public string Id { get; }
+
         public override string ToString()
         {
             return Id;
@@ -27,7 +27,7 @@ namespace SeatsSuggestions.Domain
 
         protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
         {
-            return new object[] {Id};
+            return new object[] { Id };
         }
     }
 }

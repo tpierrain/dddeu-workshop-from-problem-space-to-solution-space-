@@ -9,6 +9,11 @@ namespace SeatsSuggestions.Domain
         private const int NumberOfSuggestionsPerPricingCategory = 3;
         private readonly IAdaptAuditoriumSeating _auditoriumSeatingAdapter;
 
+        public SeatAllocator(IAdaptAuditoriumSeating auditoriumSeatingAdapter)
+        {
+            _auditoriumSeatingAdapter = auditoriumSeatingAdapter;
+        }
+
         public async Task<SuggestionsMade> MakeSuggestions(ShowId showId, PartyRequested partyRequested)
         {
             var auditoriumSeating = await _auditoriumSeatingAdapter.GetAuditoriumSeating(showId);
@@ -23,11 +28,6 @@ namespace SeatsSuggestions.Domain
             if (suggestionsMade.MatchExpectations()) return suggestionsMade;
 
             return new SuggestionNotAvailable(showId, partyRequested);
-        }
-
-        public SeatAllocator(IAdaptAuditoriumSeating auditoriumSeatingAdapter)
-        {
-            _auditoriumSeatingAdapter = auditoriumSeatingAdapter;
         }
 
         private static IEnumerable<SuggestionMade> GiveMeSuggestionsFor(

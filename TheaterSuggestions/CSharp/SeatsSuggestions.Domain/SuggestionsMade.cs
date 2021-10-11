@@ -9,6 +9,14 @@ namespace SeatsSuggestions.Domain
     /// </summary>
     public class SuggestionsMade
     {
+        public SuggestionsMade(ShowId showId, PartyRequested partyRequested)
+        {
+            ShowId = showId;
+            PartyRequested = partyRequested;
+
+            InstantiateAnEmptyListForEveryPricingCategory();
+        }
+
         public ShowId ShowId { get; }
         public PartyRequested PartyRequested { get; }
 
@@ -19,14 +27,6 @@ namespace SeatsSuggestions.Domain
         public IEnumerable<string> SeatsInSecondPricingCategory => SeatNames(PricingCategory.Second);
         public IEnumerable<string> SeatsInThirdPricingCategory => SeatNames(PricingCategory.Third);
         public IEnumerable<string> SeatsInMixedPricingCategory => SeatNames(PricingCategory.Mixed);
-
-        public SuggestionsMade(ShowId showId, PartyRequested partyRequested)
-        {
-            ShowId = showId;
-            PartyRequested = partyRequested;
-
-            InstantiateAnEmptyListForEveryPricingCategory();
-        }
 
         public IEnumerable<string> SeatNames(PricingCategory pricingCategory)
         {

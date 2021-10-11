@@ -59,7 +59,7 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
             var suggestionsMade = await seatAllocator.MakeSuggestions(showId, partyRequested);
 
             Check.That(suggestionsMade.SeatNames(PricingCategory.First)).ContainsExactly("A5", "A6", "A4");
-            Check.That(suggestionsMade.SeatNames(PricingCategory.Second)).ContainsExactly("A2", "A9", "A1");
+            Check.That(suggestionsMade.SeatNames(PricingCategory.Second)).ContainsExactly("A2", "A1", "A9");
             Check.That(suggestionsMade.SeatNames(PricingCategory.Third)).ContainsExactly("E5", "E6", "E4");
 
             Check.That(suggestionsMade.SeatNames(PricingCategory.Mixed)).ContainsExactly("A5", "A6", "A4");
@@ -100,7 +100,7 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
             Check.That(suggestionsMade.SeatNames(PricingCategory.Third))
                 .ContainsExactly("E4-E5-E6-E7", "F4-F5-F6-F7");
             Check.That(suggestionsMade.SeatNames(PricingCategory.Mixed))
-                .ContainsExactly("A6-A7-A8-A9", "C4-C5-C6-C7", "D4-D5-D6-D7");
+                .ContainsExactly("A6-A7-A8-A9", "B1-B2-B3-B4", "C4-C5-C6-C7");
         }
     }
 }
