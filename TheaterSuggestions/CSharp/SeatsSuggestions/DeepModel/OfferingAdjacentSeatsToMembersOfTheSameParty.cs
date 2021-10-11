@@ -19,17 +19,17 @@ namespace SeatsSuggestions.DeepModel
 
         private IEnumerable<Seat> NoSeatSuggested { get; } = new List<Seat>();
 
-        public IEnumerable<Seat> SuggestAdjacentSeats(
-            IEnumerable<SeatWithDistanceFromTheMiddleOfTheRow> seatsWithDistances)
+        public IEnumerable<Seat> OfferAdjacentSeats(
+            IEnumerable<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistances)
         {
             return SelectAdjacentSeatsWithShorterDistanceFromTheMiddleOfTheRow(
                 SplitInGroupsOfAdjacentSeats(seatsWithDistances));
         }
 
         private IEnumerable<Seat> SelectAdjacentSeatsWithShorterDistanceFromTheMiddleOfTheRow(
-            IEnumerable<List<SeatWithDistanceFromTheMiddleOfTheRow>> groupOfAdjacentSeats)
+            IEnumerable<List<SeatWithTheDistanceFromTheMiddleOfTheRow>> groupOfAdjacentSeats)
         {
-            var bestDistances = new SortedDictionary<int, List<List<SeatWithDistanceFromTheMiddleOfTheRow>>>();
+            var bestDistances = new SortedDictionary<int, List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>>>();
 
             // To select the best group of adjacent seats, we sort them by their distances
             foreach (var seatsWithDistance in groupOfAdjacentSeats
@@ -41,7 +41,7 @@ namespace SeatsSuggestions.DeepModel
                 var sumOfDistances = seatsWithDistance.Sum(s => s.DistanceFromTheMiddleOfTheRow);
 
                 if (!bestDistances.ContainsKey(sumOfDistances))
-                    bestDistances[sumOfDistances] = new List<List<SeatWithDistanceFromTheMiddleOfTheRow>>();
+                    bestDistances[sumOfDistances] = new List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>>();
 
                 bestDistances[sumOfDistances].Add(seatsWithDistance);
             }
@@ -59,37 +59,37 @@ namespace SeatsSuggestions.DeepModel
             return seatWithDistances.Count >= suggestionRequest.PartyRequested;
         }
 
-        private static IEnumerable<List<SeatWithDistanceFromTheMiddleOfTheRow>> SplitInGroupsOfAdjacentSeats(
-            IEnumerable<SeatWithDistanceFromTheMiddleOfTheRow> seatsWithDistances)
+        private static IEnumerable<List<SeatWithTheDistanceFromTheMiddleOfTheRow>> SplitInGroupsOfAdjacentSeats(
+            IEnumerable<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistances)
         {
-            var groupOfSeatDistance = new List<SeatWithDistanceFromTheMiddleOfTheRow>();
-            var groupsOfSeatDistance = new List<List<SeatWithDistanceFromTheMiddleOfTheRow>>();
+            var groupOfSeatDistance = new List<SeatWithTheDistanceFromTheMiddleOfTheRow>();
+            var groupsOfSeatDistance = new List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>>();
 
             // To find adjacent seats, we need to sort seats by their numbers
             using (var enumerator = seatsWithDistances.OrderBy(s => s.Seat.Number).GetEnumerator())
             {
-                SeatWithDistanceFromTheMiddleOfTheRow seatWithDistancePrevious = null;
+                SeatWithTheDistanceFromTheMiddleOfTheRow seatWithTheDistancePrevious = null;
 
                 while (enumerator.MoveNext())
                 {
                     var seatWithDistance = enumerator.Current;
-                    if (seatWithDistancePrevious == null)
+                    if (seatWithTheDistancePrevious == null)
                     {
-                        seatWithDistancePrevious = seatWithDistance;
-                        groupOfSeatDistance.Add(seatWithDistancePrevious);
+                        seatWithTheDistancePrevious = seatWithDistance;
+                        groupOfSeatDistance.Add(seatWithTheDistancePrevious);
                     }
                     else
                     {
-                        if (seatWithDistance?.Seat.Number == seatWithDistancePrevious.Seat.Number + 1)
+                        if (seatWithDistance?.Seat.Number == seatWithTheDistancePrevious.Seat.Number + 1)
                         {
                             groupOfSeatDistance.Add(seatWithDistance);
-                            seatWithDistancePrevious = seatWithDistance;
+                            seatWithTheDistancePrevious = seatWithDistance;
                         }
                         else
                         {
                             groupsOfSeatDistance.Add(groupOfSeatDistance);
-                            groupOfSeatDistance = new List<SeatWithDistanceFromTheMiddleOfTheRow> { seatWithDistance };
-                            seatWithDistancePrevious = null;
+                            groupOfSeatDistance = new List<SeatWithTheDistanceFromTheMiddleOfTheRow> { seatWithDistance };
+                            seatWithTheDistancePrevious = null;
                         }
                     }
                 }

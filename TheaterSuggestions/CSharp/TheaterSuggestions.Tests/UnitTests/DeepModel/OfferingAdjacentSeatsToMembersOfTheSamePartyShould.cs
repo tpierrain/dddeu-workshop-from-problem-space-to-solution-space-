@@ -6,7 +6,7 @@ using SeatsSuggestions.DeepModel;
 
 namespace SeatsSuggestions.Tests.UnitTests.DeepModel
 {
-    internal class OfferAdjacentSeatsToMembersOfTheSamePartyShould
+    internal class OfferingAdjacentSeatsToMembersOfTheSamePartyShould
     {
         [Test]
         public void Be_a_Value_Type()
@@ -20,7 +20,7 @@ namespace SeatsSuggestions.Tests.UnitTests.DeepModel
         }
 
         [Test]
-        public void Suggest_groups_of_adjacent_seats_when_row_contains_some_reserved_seats()
+        public void Offer_groups_of_adjacent_seats_when_row_contains_some_reserved_seats()
         {
             var partySize = 3;
             var a1 = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
@@ -36,17 +36,17 @@ namespace SeatsSuggestions.Tests.UnitTests.DeepModel
 
             var row = new Row("A", new List<Seat> { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 });
             var seatsWithDistance =
-                new OfferingSeatsNearerMiddleOfTheRow(row).SuggestSeatsNearerTheMiddleOfTheRow(
+                new OfferingSeatsNearerMiddleOfTheRow(row).OfferSeatsNearerTheMiddleOfTheRow(
                     new SuggestionRequest(partySize, PricingCategory.Mixed)).Take(partySize);
 
             Check.That(new OfferingAdjacentSeatsToMembersOfTheSameParty(new SuggestionRequest(partySize,
                     PricingCategory.Mixed))
-                .SuggestAdjacentSeats(seatsWithDistance)).ContainsExactly(a5, a6, a7);
+                .OfferAdjacentSeats(seatsWithDistance)).ContainsExactly(a5, a6, a7);
         }
 
 
         [Test]
-        public void Suggest_adjacent_seats_nearer_the_middle_of_row()
+        public void Offer_adjacent_seats_nearer_the_middle_of_row()
         {
             var a1 = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
             var a2 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
@@ -61,12 +61,12 @@ namespace SeatsSuggestions.Tests.UnitTests.DeepModel
 
             var row = new Row("A", new List<Seat> { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 });
 
-            Check.That(row.SuggestAdjacentSeatsNearedTheMiddleOfRow(new SuggestionRequest(3, PricingCategory.Mixed)))
+            Check.That(row.OfferAdjacentSeatsNearerTheMiddleOfRow(new SuggestionRequest(3, PricingCategory.Mixed)))
                 .ContainsExactly(a5, a6, a7);
         }
 
         [Test]
-        public void Suggest_adjacent_seats_nearer_the_middle_of_row_when_the_middle_is_reserve()
+        public void Offer_adjacent_seats_nearer_the_middle_of_row_when_the_middle_is_reserve()
         {
             var a1 = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
             var a2 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
@@ -81,7 +81,7 @@ namespace SeatsSuggestions.Tests.UnitTests.DeepModel
 
             var row = new Row("A", new List<Seat> { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 });
 
-            Check.That(row.SuggestAdjacentSeatsNearedTheMiddleOfRow(new SuggestionRequest(2, PricingCategory.Mixed)))
+            Check.That(row.OfferAdjacentSeatsNearerTheMiddleOfRow(new SuggestionRequest(2, PricingCategory.Mixed)))
                 .ContainsExactly(a2, a1);
         }
     }

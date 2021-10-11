@@ -27,7 +27,7 @@ namespace SeatsSuggestions
         {
             var seatingOptionSuggested = new SeatingOptionSuggested(suggestionRequest);
 
-            foreach (var seat in SuggestAdjacentSeatsNearedTheMiddleOfRow(suggestionRequest))
+            foreach (var seat in OfferAdjacentSeatsNearerTheMiddleOfRow(suggestionRequest))
             {
                 seatingOptionSuggested.AddSeat(seat);
 
@@ -51,13 +51,15 @@ namespace SeatsSuggestions
             return new Row(seat.RowName, newVersionOfSeats);
         }
 
-        public IEnumerable<Seat> SuggestAdjacentSeatsNearedTheMiddleOfRow(SuggestionRequest suggestionRequest)
+        public IEnumerable<Seat> OfferAdjacentSeatsNearerTheMiddleOfRow(SuggestionRequest suggestionRequest)
         {
-            var seatsWithDistances = new OfferingSeatsNearerMiddleOfTheRow(this)
-                .SuggestSeatsNearerTheMiddleOfTheRow(suggestionRequest);
-
-            return new OfferingAdjacentSeatsToMembersOfTheSameParty(suggestionRequest)
-                .SuggestAdjacentSeats(seatsWithDistances);
+            // 1. offer seats from the middle of the row
+            var seatsWithDistanceFromMiddleOfTheRow =
+                new OfferingSeatsNearerMiddleOfTheRow(this).OfferSeatsNearerTheMiddleOfTheRow(suggestionRequest);
+            // 2. based on seats with distance from the middle of row,
+            //    we offer the best group (close to the middle) of adjacent seats
+            return new OfferingAdjacentSeatsToMembersOfTheSameParty(suggestionRequest).OfferAdjacentSeats(
+                seatsWithDistanceFromMiddleOfTheRow);
         }
 
         protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()

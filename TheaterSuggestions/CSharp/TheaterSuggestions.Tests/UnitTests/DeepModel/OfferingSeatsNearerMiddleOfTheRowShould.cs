@@ -6,7 +6,7 @@ using SeatsSuggestions.DeepModel;
 
 namespace SeatsSuggestions.Tests.UnitTests.DeepModel
 {
-    internal class OfferSeatsNearerMiddleOfTheRowShould
+    internal class OfferingSeatsNearerMiddleOfTheRowShould
     {
         [Test]
         public void Be_a_Value_Type()
@@ -30,7 +30,7 @@ namespace SeatsSuggestions.Tests.UnitTests.DeepModel
         }
 
         [Test]
-        public void Suggest_seas_from_the_middle_of_row_is_even_when_party_size_is_greater_than_one()
+        public void Offer_seas_from_the_middle_of_row_is_even_when_party_size_is_greater_than_one()
         {
             var partySize = 2;
 
@@ -47,7 +47,7 @@ namespace SeatsSuggestions.Tests.UnitTests.DeepModel
 
             var row = new Row("A", new List<Seat> { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 });
 
-            var seatsWithDistance = new OfferingSeatsNearerMiddleOfTheRow(row).SuggestSeatsNearerTheMiddleOfTheRow(
+            var seatsWithDistance = new OfferingSeatsNearerMiddleOfTheRow(row).OfferSeatsNearerTheMiddleOfTheRow(
                 new SuggestionRequest(partySize, PricingCategory.Mixed)).Take(partySize);
 
             Check.That(seatsWithDistance.Select(s => s.Seat).ToList())
@@ -55,7 +55,7 @@ namespace SeatsSuggestions.Tests.UnitTests.DeepModel
         }
 
         [Test]
-        public void Suggest_seats_from_the_middle_of_row_is_odd_when_party_size_is_greater_than_one()
+        public void Offer_seats_from_the_middle_of_row_is_odd_when_party_size_is_greater_than_one()
         {
             var partySize = 5;
 
@@ -70,7 +70,7 @@ namespace SeatsSuggestions.Tests.UnitTests.DeepModel
             var a9 = new Seat("A", 9, PricingCategory.Second, SeatAvailability.Available);
 
             var row = new Row("A", new List<Seat> { a1, a2, a3, a4, a5, a6, a7, a8, a9 });
-            var seatsWithDistance = new OfferingSeatsNearerMiddleOfTheRow(row).SuggestSeatsNearerTheMiddleOfTheRow(
+            var seatsWithDistance = new OfferingSeatsNearerMiddleOfTheRow(row).OfferSeatsNearerTheMiddleOfTheRow(
                 new SuggestionRequest(partySize, PricingCategory.Mixed)).Take(partySize);
 
             Check.That(seatsWithDistance.Select(s => s.Seat).OrderBy(s => s.Number).ToList())
@@ -78,7 +78,7 @@ namespace SeatsSuggestions.Tests.UnitTests.DeepModel
         }
 
         [Test]
-        public void Suggest_seats_from_the_middle_of_row_is_odd_when_party_size_and_pricing_category_are_requested()
+        public void Offer_seats_from_the_middle_of_row_is_odd_when_party_size_and_pricing_category_are_requested()
         {
             var partySize = 5;
 
@@ -93,7 +93,7 @@ namespace SeatsSuggestions.Tests.UnitTests.DeepModel
             var a9 = new Seat("A", 9, PricingCategory.Second, SeatAvailability.Available);
 
             var row = new Row("A", new List<Seat> { a1, a2, a3, a4, a5, a6, a7, a8, a9 });
-            var seatsWithDistance = new OfferingSeatsNearerMiddleOfTheRow(row).SuggestSeatsNearerTheMiddleOfTheRow(
+            var seatsWithDistance = new OfferingSeatsNearerMiddleOfTheRow(row).OfferSeatsNearerTheMiddleOfTheRow(
                 new SuggestionRequest(partySize, PricingCategory.Mixed)).Take(partySize);
 
             Check.That(seatsWithDistance.Select(sd => sd.Seat).OrderBy(s => s.Number))

@@ -9,10 +9,10 @@ namespace SeatsSuggestions.Tests.UnitTests.DeepModel
         [Test]
         public void Be_a_Value_Type()
         {
-            var firstInstance = new SeatWithDistanceFromTheMiddleOfTheRow(
+            var firstInstance = new SeatWithTheDistanceFromTheMiddleOfTheRow(
                 new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available), 
                 5);            
-            var secondInstance = new SeatWithDistanceFromTheMiddleOfTheRow(
+            var secondInstance = new SeatWithTheDistanceFromTheMiddleOfTheRow(
                 new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available), 
                 5);
 
