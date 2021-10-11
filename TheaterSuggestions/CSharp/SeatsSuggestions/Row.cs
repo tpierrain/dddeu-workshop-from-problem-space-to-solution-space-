@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Value;
+using SeatsSuggestions.DeepModel;
 
 namespace SeatsSuggestions
 {
@@ -26,7 +27,7 @@ namespace SeatsSuggestions
         {
             var seatingOptionSuggested = new SeatingOptionSuggested(suggestionRequest);
 
-            foreach (var seat in SelectAvailableSeatsCompliantWith(suggestionRequest.PricingCategory))
+            foreach (var seat in OfferAdjacentSeatsNearerTheMiddleOfRow(suggestionRequest))
             {
                 seatingOptionSuggested.AddSeat(seat);
 
@@ -39,9 +40,12 @@ namespace SeatsSuggestions
             return new SeatingOptionNotAvailable(suggestionRequest);
         }
 
-        private IEnumerable<Seat> SelectAvailableSeatsCompliantWith(PricingCategory pricingCategory)
+        public IEnumerable<Seat> OfferAdjacentSeatsNearerTheMiddleOfRow(SuggestionRequest suggestionRequest)
         {
-            return Seats.Where(s => s.IsAvailable() && s.MatchCategory(pricingCategory));
+            // 1. offer seats from the middle of the row
+            var seatsWithDistanceFromMiddleOfTheRow = new OfferingSeatsNearerMiddleOfTheRow(this).OfferSeatsNearerTheMiddleOfTheRow(suggestionRequest);
+
+            return seatsWithDistanceFromMiddleOfTheRow.Select(seatWithTheDistanceFromTheMiddleOfTheRow => seatWithTheDistanceFromTheMiddleOfTheRow.Seat).ToList();
         }
 
         public Row Allocate(Seat seat)

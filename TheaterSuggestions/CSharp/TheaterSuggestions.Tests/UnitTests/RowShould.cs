@@ -2,6 +2,7 @@
 using System.Linq;
 using NFluent;
 using NUnit.Framework;
+using SeatsSuggestions.DeepModel;
 
 namespace SeatsSuggestions.Tests.UnitTests
 {
@@ -15,8 +16,8 @@ namespace SeatsSuggestions.Tests.UnitTests
             var A2 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
 
             // Two different instances with same values should be equals
-            var rowFirstInstance = new Row("A", new List<Seat> {A1, A2});
-            var rowSecondInstance = new Row("A", new List<Seat> {A1, A2});
+            var rowFirstInstance = new Row("A", new List<Seat> { A1, A2 });
+            var rowSecondInstance = new Row("A", new List<Seat> { A1, A2 });
             Check.That(rowSecondInstance).IsEqualTo(rowFirstInstance);
 
             // Should not mutate existing instance 
@@ -43,10 +44,10 @@ namespace SeatsSuggestions.Tests.UnitTests
 
             var row = new Row("A", new List<Seat> { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 });
 
-            var seatsWithDistance = OfferSeatsNearerTheMiddleOfTheRow(row, PricingCategory.Mixed).Take(partySize);
+            var seatsWithDistance = new OfferingSeatsNearerMiddleOfTheRow(row).OfferSeatsNearerTheMiddleOfTheRow(new SuggestionRequest(5, PricingCategory.Mixed)).Take(partySize);
 
             Check.That(seatsWithDistance.Select(s => s.Seat).ToList())
-                .ContainsExactly(a5, a6);
+               .ContainsExactly(a5, a6);
         }
 
 
@@ -66,35 +67,11 @@ namespace SeatsSuggestions.Tests.UnitTests
             var a9 = new Seat("A", 9, PricingCategory.Second, SeatAvailability.Available);
 
             var row = new Row("A", new List<Seat> { a1, a2, a3, a4, a5, a6, a7, a8, a9 });
-            var seatsWithDistance = OfferSeatsNearerTheMiddleOfTheRow(row, PricingCategory.Mixed).Take(partySize);
+
+            var seatsWithDistance = new OfferingSeatsNearerMiddleOfTheRow(row).OfferSeatsNearerTheMiddleOfTheRow(new SuggestionRequest(5, PricingCategory.Mixed)).Take(partySize);
 
             Check.That(seatsWithDistance.Select(s => s.Seat).OrderBy(s => s.Number).ToList())
                 .ContainsExactly(a2, a3, a5, a6, a7);
         }
-
-        public IEnumerable<SeatWithTheDistanceFromTheMiddleOfTheRow> OfferSeatsNearerTheMiddleOfTheRow(Row row, PricingCategory pricingCategory)
-        {
-            // TODO: Implement your logic here
-
-            return new List<SeatWithTheDistanceFromTheMiddleOfTheRow>();
-        }
-    }
-
-    public class SeatWithTheDistanceFromTheMiddleOfTheRow
-    {
-        public SeatWithTheDistanceFromTheMiddleOfTheRow(Seat seat, int distanceFromTheMiddleOfTheRow)
-        {
-            Seat = seat;
-            DistanceFromTheMiddleOfTheRow = distanceFromTheMiddleOfTheRow;
-        }
-
-        public Seat Seat { get; }
-        public int DistanceFromTheMiddleOfTheRow { get; }
-
-        public override string ToString()
-        {
-            return $"{Seat.RowName}{Seat.Number} {DistanceFromTheMiddleOfTheRow}";
-        }
-
     }
 }
