@@ -79,7 +79,7 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
             Check.That(suggestionsMade.SeatNames(PricingCategory.First)).ContainsExactly("A4", "A3", "B5");
         }
 
-        [Test, Ignore("not yet")]
+        [Test]
         public void Offer_adjacent_seats_nearer_the_middle_of_a_row_when_it_is_possible()
         {
             // FIX ME
