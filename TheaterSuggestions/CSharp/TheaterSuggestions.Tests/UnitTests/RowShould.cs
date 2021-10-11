@@ -12,17 +12,17 @@ namespace SeatsSuggestions.Tests.UnitTests
         [Test]
         public void Be_a_Value_Type()
         {
-            var A1 = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
-            var A2 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
+            var a1 = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
+            var a2 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
 
             // Two different instances with same values should be equals
-            var rowFirstInstance = new Row("A", new List<Seat> { A1, A2 });
-            var rowSecondInstance = new Row("A", new List<Seat> { A1, A2 });
+            var rowFirstInstance = new Row("A", new List<Seat> { a1, a2 });
+            var rowSecondInstance = new Row("A", new List<Seat> { a1, a2 });
             Check.That(rowSecondInstance).IsEqualTo(rowFirstInstance);
 
             // Should not mutate existing instance 
-            var A3 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
-            rowSecondInstance.AddSeat(A3);
+            var a3 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
+            rowSecondInstance.AddSeat(a3);
             Check.That(rowSecondInstance).IsEqualTo(rowFirstInstance);
         }
 
@@ -92,18 +92,15 @@ namespace SeatsSuggestions.Tests.UnitTests
 
             var row = new Row("A", new List<Seat> { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 });
 
-            var seatsWithDistance =
-                new OfferingSeatsNearerMiddleOfTheRow(row).OfferSeatsNearerTheMiddleOfTheRow(
-                    new SuggestionRequest(5, PricingCategory.Mixed));
+            var request = new SuggestionRequest(partySize, PricingCategory.Mixed);
 
-            var seats = OfferAdjacentSeats(seatsWithDistance, partySize);
+            var seatsWithDistance =
+                new OfferingSeatsNearerMiddleOfTheRow(row).OfferSeatsNearerTheMiddleOfTheRow(request);
+
+            var seats = new OfferingAdjacentSeatsToMembersOfTheSameParty(request).OfferAdjacentSeats(
+                seatsWithDistance);
 
             Check.That(seats).ContainsExactly(a5, a6, a7);
-        }
-
-        public IEnumerable<Seat> OfferAdjacentSeats(IEnumerable<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistances, int partySize)
-        {
-            return new List<Seat>();
         }
     }
 }
