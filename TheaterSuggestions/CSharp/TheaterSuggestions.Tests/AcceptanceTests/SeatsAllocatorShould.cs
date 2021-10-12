@@ -66,7 +66,7 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
         }
 
         [Test]
-        public async Task Offer_adjacent_seats_nearer_the_middle_of_a_row()
+        public async Task Offer_seats_nearer_the_middle_of_a_row()
         {
             var showId = new ShowId("9");
             var partyRequested = new PartyRequested(1);
