@@ -11,6 +11,10 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
         [Test]
         public void Return_SeatsNotAvailable_when_Auditorium_has_all_its_seats_already_reserved()
         {
+            // Madison Auditorium-5
+            //      1   2   3   4   5   6   7   8   9  10
+            // A : (2) (2) (1) (1) (1) (1) (1) (1) (2) (2)
+            // B : (2) (2) (1) (1) (1) (1) (1) (1) (2) (2)
             const string showId = "5";
             const int partyRequested = 1;
 
@@ -29,6 +33,11 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
         [Test]
         public void Suggest_one_seat_when_Auditorium_contains_one_available_seat_only()
         {
+            // Ford Auditorium-1
+            //
+            //       1   2   3   4   5   6   7   8   9  10
+            //  A : (2) (2)  1  (1) (1) (1) (1) (1) (2) (2)
+            //  B : (2) (2) (1) (1) (1) (1) (1) (1) (2) (2)
             const string showId = "1";
             const int partyRequested = 1;
 
@@ -45,6 +54,15 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
         [Test]
         public void Offer_several_suggestions_ie_1_per_PricingCategory_and_other_one_without_category_affinity()
         {
+            // New Amsterdam-18
+            //
+            //     1   2   3   4   5   6   7   8   9  10
+            //  A: 2   2   1   1   1   1   1   1   2   2
+            //  B: 2   2   1   1   1   1   1   1   2   2
+            //  C: 2   2   2   2   2   2   2   2   2   2
+            //  D: 2   2   2   2   2   2   2   2   2   2
+            //  E: 3   3   3   3   3   3   3   3   3   3
+            //  F: 3   3   3   3   3   3   3   3   3   3
             const string showId = "18";
             const int partyRequested = 1;
 
@@ -65,6 +83,10 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
         [Test]
         public void Offer_seats_nearer_the_middle_of_a_row()
         {
+            // Mogador Auditorium-9
+            //    1   2   3   4   5   6   7   8   9  10
+            // A: 2   2   1   1  (1) (1) (1) (1)  2   2
+            // B: 2   2   1   1   1   1   1   1   2   2
             const string showId = "9";
             const int partyRequested = 1;
 
@@ -81,6 +103,15 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
         [Test]
         public void Offer_adjacent_seats_nearer_the_middle_of_a_row_when_it_is_possible()
         {
+            // Dock Street Auditorium-3
+            //
+            //      1   2   3   4   5   6   7   8   9  10
+            // A:  (2) (2) (1) (1) (1)  1   1   1   2   2
+            // B:   2   2   1   1  (1) (1) (1) (1)  2   2
+            // C:   2   2   2   2   2   2   2   2   2   2
+            // D:   2   2   2   2   2   2   2   2   2   2
+            // E:   3   3   3   3   3   3   3   3   3   3
+            // F:   3   3   3   3   3   3   3   3   3   3
             const string showId = "3";
             const int partyRequested = 4;
 
