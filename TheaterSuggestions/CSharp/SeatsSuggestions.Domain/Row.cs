@@ -7,14 +7,14 @@ namespace SeatsSuggestions.Domain
 {
     public class Row : ValueType<Row>
     {
-        public Row(string name, List<Seat> seats)
+        public Row(string name, IReadOnlyList<Seat> seats)
         {
             Name = name;
             Seats = seats;
         }
 
         public string Name { get; }
-        public List<Seat> Seats { get; }
+        public IReadOnlyList<Seat> Seats { get; }
 
         public Row AddSeat(Seat seat)
         {
