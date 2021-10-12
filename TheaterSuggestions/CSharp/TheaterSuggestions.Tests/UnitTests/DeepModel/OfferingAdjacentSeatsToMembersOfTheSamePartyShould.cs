@@ -84,7 +84,7 @@ namespace SeatsSuggestions.Tests.UnitTests.DeepModel
 
             Check.That(row.OfferAdjacentSeatsNearerTheMiddleOfRow(new SuggestionRequest(new PartyRequested(2)
                     , PricingCategory.Mixed)))
-                .ContainsExactly(a2, a1);
+                .ContainsExactly(a9, a10);
         }
     }
 }

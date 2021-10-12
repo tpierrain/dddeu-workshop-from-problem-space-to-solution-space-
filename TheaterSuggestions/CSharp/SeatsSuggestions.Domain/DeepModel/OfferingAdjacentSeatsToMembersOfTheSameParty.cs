@@ -47,8 +47,6 @@ namespace SeatsSuggestions.Domain.DeepModel
             }
 
             return bestDistances.Any()
-                // if bestDistances contain two proposals for the best distance (i.e. the shorter one).
-                // We to take the right side and not the left side, it's a domain expert choice.
                 ? SelectTheBestGroup(bestDistances)
                 : NoSeatSuggested;
         }
@@ -56,19 +54,39 @@ namespace SeatsSuggestions.Domain.DeepModel
         private static IEnumerable<Seat> SelectTheBestGroup(
             SortedDictionary<int, List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>>> bestDistances)
         {
-            var seatWithTheDistanceFromTheMiddleOfTheRows = bestDistances.Values.First();
+            var seatsWithTheDistanceFromTheMiddleOfTheRows = bestDistances.Values.First();
 
-            if (seatWithTheDistanceFromTheMiddleOfTheRows.Count > 1)
-                foreach (var seatWithTheDistanceFromTheMiddleOfTheRow in seatWithTheDistanceFromTheMiddleOfTheRows)
-                    if (seatWithTheDistanceFromTheMiddleOfTheRow.Any(s => s.DistanceFromTheMiddleOfTheRow == 0))
-                    {
-                        return seatWithTheDistanceFromTheMiddleOfTheRow.Select(seatsWithDistance =>
-                            seatsWithDistance.Seat);
-                        ;
-                    }
+            if (HaveMultipleBestHighScores(seatsWithTheDistanceFromTheMiddleOfTheRows))
+            {
+                var sortedDictionary = new SortedDictionary<int, List<SeatWithTheDistanceFromTheMiddleOfTheRow>>();
 
+                foreach (var seatWithTheDistanceFromTheMiddleOfTheRow in bestDistances.Values.First())
+                    sortedDictionary[seatWithTheDistanceFromTheMiddleOfTheRow.Count] =
+                        seatWithTheDistanceFromTheMiddleOfTheRow;
+                return SelectTheGroupWhoseSizeIsTheLargestWithEqualScore(sortedDictionary);
+            }
+
+            return SelectTheOnlyBestGroup(bestDistances);
+        }
+
+        private static IEnumerable<Seat> SelectTheOnlyBestGroup(
+            SortedDictionary<int, List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>>> bestDistances)
+        {
             return bestDistances.Values.First()[0]
                 .Select(seatsWithDistance => seatsWithDistance.Seat);
+        }
+
+        private static IEnumerable<Seat> SelectTheGroupWhoseSizeIsTheLargestWithEqualScore(
+            SortedDictionary<int, List<SeatWithTheDistanceFromTheMiddleOfTheRow>> sortedDictionary)
+        {
+            return sortedDictionary.OrderByDescending(key => key.Key).First().Value
+                .Select(seatsWithDistance => seatsWithDistance.Seat);
+        }
+
+        private static bool HaveMultipleBestHighScores(
+            List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>> seatsWithTheDistanceFromTheMiddleOfTheRows)
+        {
+            return seatsWithTheDistanceFromTheMiddleOfTheRows.Count > 1;
         }
 
         private static bool IsMatchingPartyRequested(SuggestionRequest suggestionRequest, ICollection seatWithDistances)
