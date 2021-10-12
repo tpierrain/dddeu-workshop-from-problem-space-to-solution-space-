@@ -63,7 +63,7 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
         }
 
         [Test]
-        public void Offer_adjacent_seats_nearer_the_middle_of_a_row()
+        public void Offer_seats_nearer_the_middle_of_a_row()
         {
             // FIX ME
             const string showId = "9";
