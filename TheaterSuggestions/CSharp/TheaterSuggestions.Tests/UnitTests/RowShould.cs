@@ -11,22 +11,22 @@ namespace SeatsSuggestions.Tests.UnitTests
         [Test]
         public void Be_a_Value_Type()
         {
-            var A1 = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
-            var A2 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
+            var a1 = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
+            var a2 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
 
             // Two different instances with same values should be equals
-            var rowFirstInstance = new Row("A", new List<Seat> {A1, A2});
-            var rowSecondInstance = new Row("A", new List<Seat> {A1, A2});
+            var rowFirstInstance = new Row("A", new List<Seat> {a1, a2});
+            var rowSecondInstance = new Row("A", new List<Seat> {a1, a2});
             Check.That(rowSecondInstance).IsEqualTo(rowFirstInstance);
 
             // Should not mutate existing instance 
-            var A3 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
-            rowSecondInstance.AddSeat(A3);
+            var a3 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
+            rowSecondInstance.AddSeat(a3);
             Check.That(rowSecondInstance).IsEqualTo(rowFirstInstance);
         }
 
         [Test]
-        public void Offer_seas_from_the_middle_of_row_is_even_when_party_size_is_greater_than_one()
+        public void Offer_seas_from_the_middle_with_row_size_even_when_party_size_is_greater_than_one()
         {
             var partySize = 2;
 
@@ -51,7 +51,7 @@ namespace SeatsSuggestions.Tests.UnitTests
 
 
         [Test]
-        public void Offer_seats_from_the_middle_of_row_is_odd_when_party_size_is_greater_than_one()
+        public void Offer_seats_from_the_middle_of_row_with_row_size_odd_when_party_size_is_greater_than_one()
         {
             var partySize = 5;
 
