@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace SeatsSuggestions.Tests.AcceptanceTests
 {
     [TestFixture]
-    public class SeatsAllocatorShould
+    public class SeatAllocatorShould
     {
         [Test]
         public void Return_SeatsNotAvailable_when_Auditorium_has_all_its_seats_already_reserved()
