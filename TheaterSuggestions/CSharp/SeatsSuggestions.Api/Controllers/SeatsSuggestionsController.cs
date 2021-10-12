@@ -10,11 +10,11 @@ namespace SeatsSuggestions.Api.Controllers
     [ApiController]
     public class SeatsSuggestionsController : ControllerBase
     {
-        private readonly IProvideAuditoriumSeating _auditoriumSeating;
+        private readonly IProvideSeatSuggestionsForShows _seatSuggestionsForShows;
 
-        public SeatsSuggestionsController(IProvideAuditoriumSeating auditoriumSeating)
+        public SeatsSuggestionsController(IProvideSeatSuggestionsForShows seatSuggestionsForShows)
         {
-            _auditoriumSeating = auditoriumSeating;
+            _seatSuggestionsForShows = seatSuggestionsForShows;
         }
 
         // GET api/SeatsSuggestions?showId=5&party=3
@@ -26,7 +26,7 @@ namespace SeatsSuggestions.Api.Controllers
             var id = new ShowId(showId);
             var partyRequested = new PartyRequested(party);
 
-            var suggestions = await _auditoriumSeating.MakeSuggestions(id, partyRequested);
+            var suggestions = await _seatSuggestionsForShows.MakeSuggestions(id, partyRequested);
 
             // Domain => Infra
             return JsonConvert.SerializeObject(suggestions, Formatting.Indented);

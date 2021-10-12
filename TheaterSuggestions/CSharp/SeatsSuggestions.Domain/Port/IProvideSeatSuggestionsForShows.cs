@@ -2,7 +2,7 @@
 
 namespace SeatsSuggestions.Domain.Port
 {
-    public interface IProvideAuditoriumSeating
+    public interface IProvideSeatSuggestionsForShows
     {
         Task<SuggestionsMade> MakeSuggestions(ShowId showId, PartyRequested partyRequested);
     }

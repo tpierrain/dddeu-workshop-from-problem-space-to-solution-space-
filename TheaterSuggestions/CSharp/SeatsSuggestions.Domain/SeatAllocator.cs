@@ -4,7 +4,7 @@ using SeatsSuggestions.Domain.Port;
 
 namespace SeatsSuggestions.Domain
 {
-    public class SeatAllocator : IProvideAuditoriumSeating
+    public class SeatAllocator : IProvideSeatSuggestionsForShows
     {
         private const int NumberOfSuggestionsPerPricingCategory = 3;
         private readonly IAdaptAuditoriumSeating _auditoriumSeatingAdapter;
