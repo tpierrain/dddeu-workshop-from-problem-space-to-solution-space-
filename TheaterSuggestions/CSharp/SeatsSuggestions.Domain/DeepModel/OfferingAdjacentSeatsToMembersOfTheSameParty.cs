@@ -58,12 +58,18 @@ namespace SeatsSuggestions.Domain.DeepModel
 
             if (HaveMultipleBestHighScores(seatsWithTheDistanceFromTheMiddleOfTheRows))
             {
-                var sortedDictionary = new SortedDictionary<int, List<SeatWithTheDistanceFromTheMiddleOfTheRow>>();
+                var decideBetweenIdenticalScores = new SortedDictionary<int, List<SeatWithTheDistanceFromTheMiddleOfTheRow>>();
 
                 foreach (var seatWithTheDistanceFromTheMiddleOfTheRow in bestDistances.Values.First())
-                    sortedDictionary[seatWithTheDistanceFromTheMiddleOfTheRow.Count] =
+                    decideBetweenIdenticalScores[seatWithTheDistanceFromTheMiddleOfTheRow.Count] =
                         seatWithTheDistanceFromTheMiddleOfTheRow;
-                return SelectTheGroupWhoseSizeIsTheLargestWithEqualScore(sortedDictionary);
+
+                if (decideBetweenIdenticalScores.Count == 1 && decideBetweenIdenticalScores.First().Value.Count > 1)
+                {
+                    return SelectTheOnlyBestGroup(bestDistances);
+                }
+
+                return SelectTheGroupWhoseSizeIsTheLargestWithEqualScore(decideBetweenIdenticalScores);
             }
 
             return SelectTheOnlyBestGroup(bestDistances);
@@ -77,9 +83,9 @@ namespace SeatsSuggestions.Domain.DeepModel
         }
 
         private static IEnumerable<Seat> SelectTheGroupWhoseSizeIsTheLargestWithEqualScore(
-            SortedDictionary<int, List<SeatWithTheDistanceFromTheMiddleOfTheRow>> sortedDictionary)
+            SortedDictionary<int, List<SeatWithTheDistanceFromTheMiddleOfTheRow>> groupsWithHighScores)
         {
-            return sortedDictionary.OrderByDescending(key => key.Key).First().Value
+            return groupsWithHighScores.OrderByDescending(key => key.Key).First().Value
                 .Select(seatsWithDistance => seatsWithDistance.Seat);
         }
 
@@ -100,8 +106,7 @@ namespace SeatsSuggestions.Domain.DeepModel
             var groupOfSeatDistance = new List<SeatWithTheDistanceFromTheMiddleOfTheRow>();
             var groupsOfSeatDistance = new List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>>();
 
-            // To find adjacent seats, we need to sort seats by their numbers
-            using (var enumerator = seatsWithDistances.OrderBy(s => s.Seat.Number).GetEnumerator())
+            using (var enumerator = OrderSeatsByTheirNumberToGroupAjactents(seatsWithDistances).GetEnumerator())
             {
                 SeatWithTheDistanceFromTheMiddleOfTheRow seatWithTheDistancePrevious = null;
 
@@ -135,6 +140,11 @@ namespace SeatsSuggestions.Domain.DeepModel
 
 
             return groupsOfSeatDistance;
+        }
+
+        private static IOrderedEnumerable<SeatWithTheDistanceFromTheMiddleOfTheRow> OrderSeatsByTheirNumberToGroupAjactents(IEnumerable<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistances)
+        {
+            return seatsWithDistances.OrderBy(s => s.Seat.Number);
         }
 
         protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
