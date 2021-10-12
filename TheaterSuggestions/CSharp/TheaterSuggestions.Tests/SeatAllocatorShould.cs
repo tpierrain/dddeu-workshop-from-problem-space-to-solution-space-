@@ -3,7 +3,7 @@
 namespace SeatsSuggestions.Tests
 {
     [TestFixture]
-    public class SeatsAllocatorShould
+    public class SeatAllocatorShould
     {
         [Test]
         public void Suggest_one_seat_when_Auditorium_contains_one_available_seat_only()
