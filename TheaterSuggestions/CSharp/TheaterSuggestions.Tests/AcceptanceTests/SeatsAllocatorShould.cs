@@ -64,7 +64,7 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
         }
 
         [Test]
-        public async Task Offer_adjacent_seats_nearer_the_middle_of_a_row()
+        public async Task Offer_seats_nearer_the_middle_of_a_row()
         {
             const string showId = "9";
             const int partyRequested = 1;
