@@ -75,7 +75,7 @@ namespace SeatsSuggestions.Tests.UnitTests
         }
 
         [Test]
-        public void Offer_group_of_adjacent_seats_when_row_contains_some_reserved_seats()
+        public void Offer_adjacent_seats_nearer_the_middle_of_the_row_when_the_middle_is_not_reserved()
         {
             int partySize = 3;
 
