@@ -40,7 +40,7 @@ namespace ExternalDependencies.AuditoriumLayoutRepository
 
         private static string GetExecutingAssemblyDirectoryFullPath()
         {
-            var directoryName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
+            var directoryName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             if (directoryName.StartsWith(@"file:\"))
             {
