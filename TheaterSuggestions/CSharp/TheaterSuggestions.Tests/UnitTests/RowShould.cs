@@ -27,7 +27,7 @@ namespace SeatsSuggestions.Tests.UnitTests
         }
 
         [Test]
-        public void Offer_seats_from_the_middle_of_the_row_when_row_size_is_even_party_and_size_is_greater_than_one()
+        public void Offer_seats_from_the_middle_of_the_row_when_the_row_size_is_even_party_and_size_is_greater_than_one()
         {
             var partySize = 2;
 
@@ -52,7 +52,7 @@ namespace SeatsSuggestions.Tests.UnitTests
 
 
         [Test]
-        public void Offer_seats_from_the_middle_of_the_row_when_row_size_odd_and_party_size_is_greater_than_one()
+        public void Offer_seats_from_the_middle_of_the_row_when_the_row_size_odd_and_party_size_is_greater_than_one()
         {
             var partySize = 5;
 
@@ -75,7 +75,7 @@ namespace SeatsSuggestions.Tests.UnitTests
         }
 
         [Test]
-        public void Offer_group_of_adjacent_seats_when_row_contains_some_reserved_seats()
+        public void Offer_adjacent_seats_nearer_the_middle_of_the_row_when_the_middle_is_not_reserved()
         {
             int partySize = 3;
 
