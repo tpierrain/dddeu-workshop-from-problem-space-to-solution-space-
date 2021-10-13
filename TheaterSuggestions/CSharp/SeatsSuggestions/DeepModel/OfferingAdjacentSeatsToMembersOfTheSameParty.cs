@@ -142,7 +142,7 @@ namespace SeatsSuggestions.DeepModel
             return groupsOfSeatDistance;
         }
 
-        private static IOrderedEnumerable<SeatWithTheDistanceFromTheMiddleOfTheRow> OrderSeatsByTheirNumberToGroupAjactents(IEnumerable<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistances)
+        private static IOrderedEnumerable<SeatWithTheDistanceFromTheMiddleOfTheRow> OrderSeatsByTheirNumberToGroupAdjacent(IEnumerable<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistances)
         {
             return seatsWithDistances.OrderBy(s => s.Seat.Number);
         }
