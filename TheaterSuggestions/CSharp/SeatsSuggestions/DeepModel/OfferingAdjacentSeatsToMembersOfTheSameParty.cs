@@ -106,7 +106,7 @@ namespace SeatsSuggestions.DeepModel
             var groupOfSeatDistance = new List<SeatWithTheDistanceFromTheMiddleOfTheRow>();
             var groupsOfSeatDistance = new List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>>();
 
-            using (var enumerator = OrderSeatsByTheirNumberToGroupAjactents(seatsWithDistances).GetEnumerator())
+            using (var enumerator = OrderSeatsByTheirNumberToGroupAdjacent(seatsWithDistances).GetEnumerator())
             {
                 SeatWithTheDistanceFromTheMiddleOfTheRow seatWithTheDistancePrevious = null;
 
