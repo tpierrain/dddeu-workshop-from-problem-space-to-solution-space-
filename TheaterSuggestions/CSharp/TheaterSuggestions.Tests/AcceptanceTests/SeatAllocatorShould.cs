@@ -86,6 +86,7 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
         public async Task Offer_adjacent_seats_nearer_the_middle_of_a_row()
         {
             // Mogador Auditorium-9
+            //
             //    1   2   3   4   5   6   7   8   9  10
             // A: 2   2   1   1  (1) (1) (1) (1)  2   2
             // B: 2   2   1   1   1   1   1   1   2   2
