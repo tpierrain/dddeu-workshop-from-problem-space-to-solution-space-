@@ -43,6 +43,7 @@ public class Row {
 
         return new SeatingOptionNotAvailable(suggestionRequest);
     }
+
     public List<Seat> offerAdjacentSeatsNearerTheMiddleOfRow(SuggestionRequest suggestionRequest)
     {
         // 1. offer seats from the middle of the row
