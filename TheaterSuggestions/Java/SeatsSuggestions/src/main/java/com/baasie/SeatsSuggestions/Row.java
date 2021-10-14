@@ -1,5 +1,7 @@
 package com.baasie.SeatsSuggestions;
 
+import com.baasie.SeatsSuggestions.DeepModel.OfferingSeatsNearerMiddleOfTheRow;
+import com.baasie.SeatsSuggestions.DeepModel.SeatWithTheDistanceFromTheMiddleOfTheRow;
 import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
@@ -30,7 +32,7 @@ public class Row {
 
         SeatingOptionSuggested seatingOptionSuggested = new SeatingOptionSuggested(suggestionRequest);
 
-        for (Seat seat : selectAvailableSeatsCompliantWith(suggestionRequest.pricingCategory())) {
+        for (Seat seat : offerAdjacentSeatsNearerTheMiddleOfRow(suggestionRequest)) {
             seatingOptionSuggested.addSeat(seat);
 
             if (seatingOptionSuggested.matchExpectation())
@@ -42,8 +44,14 @@ public class Row {
         return new SeatingOptionNotAvailable(suggestionRequest);
     }
 
-    private Iterable<Seat> selectAvailableSeatsCompliantWith(PricingCategory pricingCategory) {
-        return seats.stream().filter(seat -> seat.isAvailable() && seat.matchCategory(pricingCategory)).collect(Collectors.toList());
+    public List<Seat> offerAdjacentSeatsNearerTheMiddleOfRow(SuggestionRequest suggestionRequest)
+    {
+        // 1. offer seats from the middle of the row
+        List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatWithTheDistanceFromTheMiddleOfTheRows = new OfferingSeatsNearerMiddleOfTheRow(this).offerSeatsNearerTheMiddleOfTheRow(suggestionRequest);
+
+        return seatWithTheDistanceFromTheMiddleOfTheRows.stream()
+                .map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat)
+                .collect(Collectors.toList());
     }
 
     public Row allocate(Seat seat) {
