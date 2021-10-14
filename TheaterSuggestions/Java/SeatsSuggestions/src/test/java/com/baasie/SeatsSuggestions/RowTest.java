@@ -47,7 +47,7 @@ public class RowTest {
 
         List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistance = offerSeatsNearerTheMiddleOfTheRow(row, PricingCategory.Mixed).stream().limit(partySize).collect(Collectors.toList());
 
-        List<Seat> seats = seatsWithDistance.stream().map(SeatWithTheDistanceFromTheMiddleOfTheRow::getSeat).collect(Collectors.toList());
+        List<Seat> seats = seatsWithDistance.stream().map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat).collect(Collectors.toList());
 
         assertThat(seats).containsExactly(a5, a6);
     }
@@ -72,7 +72,7 @@ public class RowTest {
         List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistance =
                 offerSeatsNearerTheMiddleOfTheRow(row, PricingCategory.Mixed).stream().limit(partySize).collect(Collectors.toList());
 
-        List<Seat> seats = seatsWithDistance.stream().map(SeatWithTheDistanceFromTheMiddleOfTheRow::getSeat).sorted(Comparator.comparingInt(Seat::number)).collect(Collectors.toList());
+        List<Seat> seats = seatsWithDistance.stream().map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat).sorted(Comparator.comparingInt(Seat::number)).collect(Collectors.toList());
 
         assertThat(seats).containsExactly(a2, a3, a5, a6, a7);
     }
