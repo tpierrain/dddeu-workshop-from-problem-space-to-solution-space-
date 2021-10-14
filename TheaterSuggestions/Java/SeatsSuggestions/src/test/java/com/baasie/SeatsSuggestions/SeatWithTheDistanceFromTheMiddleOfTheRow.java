@@ -19,6 +19,6 @@ public class SeatWithTheDistanceFromTheMiddleOfTheRow {
 
     @Override
     public String toString() {
-        return String.format(this.seat.rowName() + this.seat.number() + " " + this.distanceFromTheMiddleOfTheRow);
+        return this.seat.rowName() + this.seat.number() + " " + this.distanceFromTheMiddleOfTheRow;
     }
 }
