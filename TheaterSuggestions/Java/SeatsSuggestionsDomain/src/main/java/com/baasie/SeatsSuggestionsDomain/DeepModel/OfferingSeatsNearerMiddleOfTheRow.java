@@ -3,10 +3,12 @@ package com.baasie.SeatsSuggestionsDomain.DeepModel;
 import com.baasie.SeatsSuggestionsDomain.Row;
 import com.baasie.SeatsSuggestionsDomain.Seat;
 import com.baasie.SeatsSuggestionsDomain.SuggestionRequest;
+import lombok.EqualsAndHashCode;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+@EqualsAndHashCode
 public class OfferingSeatsNearerMiddleOfTheRow {
     private final Row row;
 

@@ -1,11 +1,12 @@
 package com.baasie.SeatsSuggestionsDomain.DeepModel;
-
+import lombok.EqualsAndHashCode;
 import com.baasie.SeatsSuggestionsDomain.Seat;
 import com.baasie.SeatsSuggestionsDomain.SuggestionRequest;
-
+import lombok.EqualsAndHashCode;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@EqualsAndHashCode
 public class OfferingAdjacentSeatsToMembersOfTheSameParty {
     private final SuggestionRequest suggestionRequest;
     private static final List<Seat> noSeatSuggested = new ArrayList<>();

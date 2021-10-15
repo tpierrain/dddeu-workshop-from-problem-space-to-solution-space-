@@ -1,7 +1,8 @@
 package com.baasie.SeatsSuggestionsDomain.DeepModel;
-
+import lombok.EqualsAndHashCode;
 import com.baasie.SeatsSuggestionsDomain.Seat;
 
+@EqualsAndHashCode
 public class SeatWithTheDistanceFromTheMiddleOfTheRow {
     private final Seat seat;
     private final int distanceFromTheMiddleOfTheRow;

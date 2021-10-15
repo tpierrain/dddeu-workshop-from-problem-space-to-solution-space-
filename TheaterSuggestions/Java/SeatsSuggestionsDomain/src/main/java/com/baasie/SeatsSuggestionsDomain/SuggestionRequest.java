@@ -8,7 +8,7 @@ public class SuggestionRequest {
     int partyRequested;
     PricingCategory pricingCategory;
 
-    SuggestionRequest(int partyRequested, PricingCategory pricingCategory) {
+    public SuggestionRequest(int partyRequested, PricingCategory pricingCategory) {
         this.partyRequested = partyRequested;
         this.pricingCategory = pricingCategory;
     }
