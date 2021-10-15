@@ -11,7 +11,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 public class SeatsAllocatorShould {
 
-
     @Test
     public void return_SeatsNotAvailable_when_Auditorium_has_all_its_seats_already_reserved() throws IOException {
         // Madison Auditorium-5
@@ -81,7 +80,7 @@ public class SeatsAllocatorShould {
     }
 
     @Test
-    public void offer_seats_nearer_the_middle_of_a_row() throws IOException {
+    public void offer_adjacent_seats_nearer_the_middle_of_a_row() throws IOException {
         // FIX ME
 
         // Mogador Auditorium-9

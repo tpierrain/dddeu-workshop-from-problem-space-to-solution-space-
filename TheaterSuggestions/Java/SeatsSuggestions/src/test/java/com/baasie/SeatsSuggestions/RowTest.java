@@ -30,7 +30,7 @@ public class RowTest {
         assertThat(rowSecondInstance).isEqualTo(rowFirstInstance);
     }
     @Test
-    public void Offer_seats_from_the_middle_of_the_row_when_the_row_size_is_even_and_party_size_is_greater_than_one() {
+    public void offer_seats_from_the_middle_of_the_row_when_the_row_size_is_even_and_party_size_is_greater_than_one() {
         int partySize = 2;
 
         Seat a1 = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
@@ -46,8 +46,8 @@ public class RowTest {
 
         Row row = new Row("A", new ArrayList<>(Arrays.asList(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10)));
 
-        List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistance = new OfferingSeatsNearerMiddleOfTheRow(row)
-                .offerSeatsNearerTheMiddleOfTheRow(new SuggestionRequest(partySize, PricingCategory.Mixed)).stream().collect(Collectors.toList());
+        List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistance = new ArrayList<>(new OfferingSeatsNearerMiddleOfTheRow(row)
+                .offerSeatsNearerTheMiddleOfTheRow(new SuggestionRequest(partySize, PricingCategory.Mixed)));
 
         List<Seat> seats = seatsWithDistance.stream().map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat).limit(partySize).collect(Collectors.toList());
 
@@ -56,7 +56,7 @@ public class RowTest {
 
 
     @Test
-    public void Offer_seats_from_the_middle_of_the_row_when_with_the_row_size_is_odd_and_party_size_is_greater_than_one() {
+    public void offer_seats_from_the_middle_of_the_row_when_with_the_row_size_is_odd_and_party_size_is_greater_than_one() {
         int partySize = 5;
 
         Seat a1 = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
