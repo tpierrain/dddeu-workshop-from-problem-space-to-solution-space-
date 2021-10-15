@@ -1,7 +1,6 @@
 package com.baasie.SeatsSuggestionsDomain.DeepModel;
 
 import com.baasie.SeatsSuggestionsDomain.PricingCategory;
-import com.baasie.SeatsSuggestionsDomain.Row;
 import com.baasie.SeatsSuggestionsDomain.Seat;
 import com.baasie.SeatsSuggestionsDomain.SeatAvailability;
 import org.junit.Test;
