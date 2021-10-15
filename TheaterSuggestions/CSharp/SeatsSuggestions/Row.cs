@@ -45,10 +45,21 @@ namespace SeatsSuggestions
             // 1. offer seats from the middle of the row
             var seatsWithDistanceFromMiddleOfTheRow =
                 new OfferingSeatsNearerMiddleOfTheRow(this).OfferSeatsNearerTheMiddleOfTheRow(suggestionRequest).ToList();
+
+            if (DoNotLookForAdjacentSeatsWhenThePartyContainsOnlyOnePerson(suggestionRequest))
+            {
+                return seatsWithDistanceFromMiddleOfTheRow.Select(s => s.Seat).ToList();
+            }
+
             // 2. based on seats with distance from the middle of row,
-            //    we offer the best group (close to the middle) of adjacent seats
-            return new OfferingAdjacentSeatsToMembersOfTheSameParty(suggestionRequest).OfferAdjacentSeats(
+                //    we offer the best group (close to the middle) of adjacent seats
+                return new OfferingAdjacentSeatsToMembersOfTheSameParty(suggestionRequest).OfferAdjacentSeats(
                 seatsWithDistanceFromMiddleOfTheRow);
+        }
+
+        private static bool DoNotLookForAdjacentSeatsWhenThePartyContainsOnlyOnePerson(SuggestionRequest suggestionRequest)
+        {
+            return suggestionRequest.PartyRequested == 1;
         }
 
         public Row Allocate(Seat seat)

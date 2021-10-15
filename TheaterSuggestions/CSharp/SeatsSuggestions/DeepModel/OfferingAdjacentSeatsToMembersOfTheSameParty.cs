@@ -33,7 +33,8 @@ namespace SeatsSuggestions.DeepModel
 
             // To select the best group of adjacent seats, we sort them by their distances
             foreach (var seatsWithDistance in groupOfAdjacentSeats
-                .Select(seatWithDistances => seatWithDistances.OrderBy(s => s.DistanceFromTheMiddleOfTheRow).ToList())
+                .Select(seatWithDistances => seatWithDistances
+                    .OrderBy(s => s.DistanceFromTheMiddleOfTheRow).ToList())
                 .ToList())
             {
                 if (!IsMatchingPartyRequested(_suggestionRequest, seatsWithDistance)) continue;

@@ -74,10 +74,12 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
             var suggestionsMade = seatAllocator.MakeSuggestions(showId, partyRequested);
 
             Check.That(suggestionsMade.SeatNames(PricingCategory.First)).ContainsExactly("A5", "A6", "A4");
-            Check.That(suggestionsMade.SeatNames(PricingCategory.Second)).ContainsExactly("A2", "A1", "A9");
+            Check
+                .That(suggestionsMade.SeatNames(PricingCategory.Second)).ContainsExactly("A2", "A9", "A1");
             Check.That(suggestionsMade.SeatNames(PricingCategory.Third)).ContainsExactly("E5", "E6", "E4");
 
-            Check.That(suggestionsMade.SeatNames(PricingCategory.Mixed)).ContainsExactly("A5", "A6", "A4");
+            Check
+                .That(suggestionsMade.SeatNames(PricingCategory.Mixed)).ContainsExactly("A5", "A6", "A4");
         }
 
         [Test]
@@ -98,7 +100,8 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
 
             var suggestionsMade = seatAllocator.MakeSuggestions(showId, partyRequested);
 
-            Check.That(suggestionsMade.SeatNames(PricingCategory.First)).ContainsExactly("A4", "A3", "B5");
+            Check.That(suggestionsMade.SeatNames(PricingCategory.First))
+                .ContainsExactly("A4", "A3", "B5");
         }
 
         [Test]
