@@ -15,7 +15,7 @@ public class SeatWithTheDistanceFromTheMiddleOfTheRow {
         return this.seat;
     }
 
-    public Integer distanceFromTheMiddleOfTheRow() {
+    public int distanceFromTheMiddleOfTheRow() {
         return distanceFromTheMiddleOfTheRow;
     }
 }
