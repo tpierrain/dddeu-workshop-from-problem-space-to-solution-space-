@@ -24,11 +24,11 @@ public class Seat {
         this.distanceFromCentroid = distanceFromCentroid;
     }
 
-    boolean isAvailable() {
+    public boolean isAvailable() {
         return seatAvailability == SeatAvailability.Available;
     }
 
-    boolean matchCategory(PricingCategory pricingCategory) {
+    public boolean matchCategory(PricingCategory pricingCategory) {
         if (pricingCategory == PricingCategory.Mixed) {
             return true;
         }

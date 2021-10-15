@@ -1,12 +1,10 @@
 package com.baasie.SeatsSuggestionsDomain;
-
+import  com.baasie.SeatsSuggestionsDomain.DeepModel.*;
 import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.baasie.SeatsSuggestionsDomain.SeatCollectionExtensions.*;
 
 @EqualsAndHashCode
 public class Row {
@@ -21,7 +19,7 @@ public class Row {
                         s.rowName(),
                         s.number(),
                         s.pricingCategory(),
-                        s.seatAvailability(),
+                        s.seatAvailability()))
                         .collect(Collectors.toList());
     }
 
@@ -53,14 +51,14 @@ public class Row {
     public List<Seat> offerAdjacentSeatsNearerTheMiddleOfRow(SuggestionRequest suggestionRequest)
     {
         // 1. offer seats from the middle of the row
-        List<com.baasie.SeatsSuggestions.DeepModel.SeatWithTheDistanceFromTheMiddleOfTheRow> seatWithTheDistanceFromTheMiddleOfTheRows = new com.baasie.SeatsSuggestions.DeepModel.OfferingSeatsNearerMiddleOfTheRow(this).offerSeatsNearerTheMiddleOfTheRow(suggestionRequest);
+        List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatWithTheDistanceFromTheMiddleOfTheRows = new OfferingSeatsNearerMiddleOfTheRow(this).offerSeatsNearerTheMiddleOfTheRow(suggestionRequest);
 
         if (doNotLookForAdjacentSeatsWhenThePartyContainsOnlyOnePerson(suggestionRequest)) {
-            return seatWithTheDistanceFromTheMiddleOfTheRows.stream().map(com.baasie.SeatsSuggestions.DeepModel.SeatWithTheDistanceFromTheMiddleOfTheRow::seat).collect(Collectors.toList());
+            return seatWithTheDistanceFromTheMiddleOfTheRows.stream().map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat).collect(Collectors.toList());
         }
         // 2. based on seats with distance from the middle of row,
         //    we offer the best group (close to the middle) of adjacent seats
-        List<Seat> seats = new com.baasie.SeatsSuggestions.DeepModel.OfferingAdjacentSeatsToMembersOfTheSameParty(suggestionRequest).OfferAdjacentSeats(
+        List<Seat> seats = new OfferingAdjacentSeatsToMembersOfTheSameParty(suggestionRequest).OfferAdjacentSeats(
                 seatWithTheDistanceFromTheMiddleOfTheRows);
         return seats;
     }
