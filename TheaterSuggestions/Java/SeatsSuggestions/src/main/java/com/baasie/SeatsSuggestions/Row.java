@@ -56,7 +56,20 @@ public class Row {
 
         return new SeatingOptionNotAvailable(suggestionRequest);
     }
+    public List<Seat> offerAdjacentSeatsNearerTheMiddleOfRow(SuggestionRequest suggestionRequest)
+    {
+        // 1. offer seats from the middle of the row
+        List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatWithTheDistanceFromTheMiddleOfTheRows = new OfferingSeatsNearerMiddleOfTheRow(this).offerSeatsNearerTheMiddleOfTheRow(suggestionRequest);
 
+        if (doNotLookForAdjacentSeatsWhenThePartyContainsOnlyOnePerson(suggestionRequest)) {
+            return seatWithTheDistanceFromTheMiddleOfTheRows.stream().map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat).collect(Collectors.toList());
+        }
+        // 2. based on seats with distance from the middle of row,
+        //    we offer the best group (close to the middle) of adjacent seats
+        List<Seat> seats = new OfferingAdjacentSeatsToMembersOfTheSameParty(suggestionRequest).OfferAdjacentSeats(
+                seatWithTheDistanceFromTheMiddleOfTheRows);
+        return seats;
+    }
     public Row allocate(Seat seat) {
         List<Seat> newVersionOfSeats = new ArrayList<>();
 
