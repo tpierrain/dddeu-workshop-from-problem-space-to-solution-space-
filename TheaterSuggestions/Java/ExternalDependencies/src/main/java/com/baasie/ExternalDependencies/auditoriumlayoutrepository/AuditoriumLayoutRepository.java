@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class AuditoriumLayoutRepository {
 
-    private Map<String, AuditoriumDto> repository = new HashMap<>();
+    private final Map<String, AuditoriumDto> repository = new HashMap<>();
 
     public AuditoriumLayoutRepository() throws IOException {
         String jsonDirectory = Paths.get(System.getProperty("user.dir")).getParent().getParent().getParent().toString() + "/Stubs/AuditoriumLayouts";

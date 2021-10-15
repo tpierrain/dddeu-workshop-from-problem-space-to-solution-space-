@@ -9,10 +9,10 @@ public enum PricingCategory {
     Third(3),
     Mixed(4);
 
-    private int value;
-    private static Map map = new HashMap();
+    private final int value;
+    private static final Map map = new HashMap();
 
-    private PricingCategory(int value) {
+    PricingCategory(int value) {
         this.value = value;
     }
 

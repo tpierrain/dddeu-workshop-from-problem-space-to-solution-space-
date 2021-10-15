@@ -1,5 +1,6 @@
 package com.baasie.SeatsSuggestions;
 
+import com.baasie.SeatsSuggestions.DeepModel.OfferingAdjacentSeatsToMembersOfTheSameParty;
 import com.baasie.SeatsSuggestions.DeepModel.OfferingSeatsNearerMiddleOfTheRow;
 import com.baasie.SeatsSuggestions.DeepModel.SeatWithTheDistanceFromTheMiddleOfTheRow;
 import lombok.EqualsAndHashCode;
@@ -10,8 +11,8 @@ import java.util.stream.Collectors;
 
 @EqualsAndHashCode
 public class Row {
-    private String name;
-    private List<Seat> seats;
+    private final String name;
+    private final List<Seat> seats;
 
     public Row(String name, List<Seat> seats) {
         this.name = name;
@@ -49,9 +50,18 @@ public class Row {
         // 1. offer seats from the middle of the row
         List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatWithTheDistanceFromTheMiddleOfTheRows = new OfferingSeatsNearerMiddleOfTheRow(this).offerSeatsNearerTheMiddleOfTheRow(suggestionRequest);
 
-        return seatWithTheDistanceFromTheMiddleOfTheRows.stream()
-                .map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat)
-                .collect(Collectors.toList());
+        if (doNotLookForAdjacentSeatsWhenThePartyContainsOnlyOnePerson(suggestionRequest)) {
+            return seatWithTheDistanceFromTheMiddleOfTheRows.stream().map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat).collect(Collectors.toList());
+        }
+        // 2. based on seats with distance from the middle of row,
+        //    we offer the best group (close to the middle) of adjacent seats
+        List<Seat> seats = new OfferingAdjacentSeatsToMembersOfTheSameParty(suggestionRequest).OfferAdjacentSeats(
+                seatWithTheDistanceFromTheMiddleOfTheRows);
+        return seats;
+    }
+
+    private boolean doNotLookForAdjacentSeatsWhenThePartyContainsOnlyOnePerson(SuggestionRequest suggestionRequest) {
+        return suggestionRequest.partyRequested() == 1;
     }
 
     public Row allocate(Seat seat) {

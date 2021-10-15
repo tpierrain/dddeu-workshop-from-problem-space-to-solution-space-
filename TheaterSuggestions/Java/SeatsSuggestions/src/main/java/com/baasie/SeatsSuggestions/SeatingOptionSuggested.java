@@ -5,9 +5,9 @@ import java.util.List;
 
 public class SeatingOptionSuggested {
 
-    private PricingCategory pricingCategory;
-    private List<Seat> seats = new ArrayList<>();
-    private int partyRequested;
+    private final PricingCategory pricingCategory;
+    private final List<Seat> seats = new ArrayList<>();
+    private final int partyRequested;
 
     public SeatingOptionSuggested(SuggestionRequest suggestionRequest) {
         this.pricingCategory = suggestionRequest.pricingCategory();

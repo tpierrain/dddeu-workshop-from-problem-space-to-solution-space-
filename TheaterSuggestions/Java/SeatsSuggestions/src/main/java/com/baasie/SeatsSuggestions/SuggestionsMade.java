@@ -4,8 +4,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class SuggestionsMade {
-    private String showId;
-    private int partyRequested;
+    private final String showId;
+    private final int partyRequested;
 
     public Map<PricingCategory, List<SuggestionMade>> forCategory = new HashMap<>();
 
@@ -17,7 +17,7 @@ public class SuggestionsMade {
     }
 
     public List<String> seatNames(PricingCategory pricingCategory) {
-        return forCategory.get(pricingCategory).stream().map(SuggestionMade::seatNames).flatMap(Collection::stream).collect(Collectors.toList());
+        return forCategory.get(pricingCategory).stream().map(s -> String.join("-", s.seatNames())).collect(Collectors.toList());
     }
 
     private void instantiateAnEmptyListForEveryPricingCategory() {

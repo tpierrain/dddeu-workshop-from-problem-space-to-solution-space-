@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class ReservationsProvider {
 
-    private Map<String, ReservedSeatsDto> repository = new HashMap<>();
+    private final Map<String, ReservedSeatsDto> repository = new HashMap<>();
 
     public ReservationsProvider() throws IOException {
         String jsonDirectory = Paths.get(System.getProperty("user.dir")).getParent().getParent().getParent().toString() + "/Stubs/AuditoriumLayouts";

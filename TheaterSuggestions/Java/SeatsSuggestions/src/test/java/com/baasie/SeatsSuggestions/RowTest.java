@@ -47,8 +47,8 @@ public class RowTest {
 
         Row row = new Row("A", new ArrayList<>(Arrays.asList(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10)));
 
-        List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistance = new OfferingSeatsNearerMiddleOfTheRow(row)
-                .offerSeatsNearerTheMiddleOfTheRow(new SuggestionRequest(partySize, PricingCategory.Mixed)).stream().collect(Collectors.toList());
+        List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistance = new ArrayList<>(new OfferingSeatsNearerMiddleOfTheRow(row)
+                .offerSeatsNearerTheMiddleOfTheRow(new SuggestionRequest(partySize, PricingCategory.Mixed)));
 
         List<Seat> seats = seatsWithDistance.stream().map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat).limit(partySize).collect(Collectors.toList());
 
@@ -95,11 +95,10 @@ public class RowTest {
         Seat a9 = new Seat("A", 9, PricingCategory.Second, SeatAvailability.Available);
         Seat a10 = new Seat("A", 10, PricingCategory.Second, SeatAvailability.Available);
 
-        Row row = new Row("A", new ArrayList<>(Arrays.asList( a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 )));
-
         List<SeatWithTheDistanceFromTheMiddleOfTheRow>  seatsWithDistance =
-                new OfferingSeatsNearerMiddleOfTheRow(row).offerSeatsNearerTheMiddleOfTheRow(
-                        new SuggestionRequest(5, PricingCategory.Mixed));
+                new OfferingSeatsNearerMiddleOfTheRow(new Row("A", new ArrayList<>(Arrays.asList( a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 ))))
+                        .offerSeatsNearerTheMiddleOfTheRow(
+                        new SuggestionRequest(partySize, PricingCategory.Mixed));
 
         List<Seat> seats = new OfferingAdjacentSeatsToMembersOfTheSameParty(new SuggestionRequest(partySize, PricingCategory.Mixed))
                 .OfferAdjacentSeats(seatsWithDistance);
