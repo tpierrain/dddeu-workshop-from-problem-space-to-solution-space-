@@ -22,7 +22,7 @@ public class Row {
                         s.number(),
                         s.pricingCategory(),
                         s.seatAvailability(),
-                        s.computeDistanceFromRowCentroid(seats.size()))).collect(Collectors.toList());
+                        .collect(Collectors.toList());
     }
 
     public List<Seat> seats() {
@@ -39,15 +39,9 @@ public class Row {
 
         SeatingOptionSuggested seatingOptionSuggested = new SeatingOptionSuggested(suggestionRequest);
 
-        List<Seat> availableSeatsCompliant = selectAvailableSeatsCompliant(seats, suggestionRequest.pricingCategory());
 
-        List<AdjacentSeats> adjacentSeatsOfExpectedSize =
-                selectAdjacentSeats(availableSeatsCompliant, suggestionRequest.partyRequested());
-
-        List<AdjacentSeats> adjacentSeatsOrdered = orderByMiddleOfTheRow(adjacentSeatsOfExpectedSize, seats.size());
-
-        for (AdjacentSeats adjacentSeats : adjacentSeatsOrdered) {
-            seatingOptionSuggested.addSeats(adjacentSeats);
+        for (Seat seat : offerAdjacentSeatsNearerTheMiddleOfRow(suggestionRequest)) {
+            seatingOptionSuggested.addSeat(seat);
 
             if (seatingOptionSuggested.matchExpectation()) {
                 return seatingOptionSuggested;
@@ -55,6 +49,24 @@ public class Row {
         }
 
         return new SeatingOptionNotAvailable(suggestionRequest);
+    }
+    public List<Seat> offerAdjacentSeatsNearerTheMiddleOfRow(SuggestionRequest suggestionRequest)
+    {
+        // 1. offer seats from the middle of the row
+        List<com.baasie.SeatsSuggestions.DeepModel.SeatWithTheDistanceFromTheMiddleOfTheRow> seatWithTheDistanceFromTheMiddleOfTheRows = new com.baasie.SeatsSuggestions.DeepModel.OfferingSeatsNearerMiddleOfTheRow(this).offerSeatsNearerTheMiddleOfTheRow(suggestionRequest);
+
+        if (doNotLookForAdjacentSeatsWhenThePartyContainsOnlyOnePerson(suggestionRequest)) {
+            return seatWithTheDistanceFromTheMiddleOfTheRows.stream().map(com.baasie.SeatsSuggestions.DeepModel.SeatWithTheDistanceFromTheMiddleOfTheRow::seat).collect(Collectors.toList());
+        }
+        // 2. based on seats with distance from the middle of row,
+        //    we offer the best group (close to the middle) of adjacent seats
+        List<Seat> seats = new com.baasie.SeatsSuggestions.DeepModel.OfferingAdjacentSeatsToMembersOfTheSameParty(suggestionRequest).OfferAdjacentSeats(
+                seatWithTheDistanceFromTheMiddleOfTheRows);
+        return seats;
+    }
+
+    private boolean doNotLookForAdjacentSeatsWhenThePartyContainsOnlyOnePerson(SuggestionRequest suggestionRequest) {
+        return suggestionRequest.partyRequested() == 1;
     }
 
     public Row allocate(Seat seat) {

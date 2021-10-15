@@ -16,15 +16,15 @@ public class SeatingOptionSuggested {
         this.partyRequested = suggestionRequest.partyRequested();
     }
 
-    public void addSeats(AdjacentSeats adjacentSeats) {
-        seats.addAll(Lists.newArrayList(adjacentSeats));
-    }
-
     public boolean matchExpectation() {
         return seats.size() == partyRequested;
     }
 
     public List<Seat> seats() {
         return seats;
+    }
+
+    public void addSeat(Seat seat) {
+        this.seats.add(seat);
     }
 }
