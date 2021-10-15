@@ -7,34 +7,26 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.baasie.SeatsSuggestions.SeatCollectionExtensions.*;
-
 @EqualsAndHashCode
 public class Seat {
 
-    private String rowName;
-    private int number;
-    private PricingCategory pricingCategory;
-    private SeatAvailability seatAvailability;
-    private int distanceFromCentroid;
+    private final String rowName;
+    private final int number;
+    private final PricingCategory pricingCategory;
+    private final SeatAvailability seatAvailability;
 
     public Seat(String rowName, int number, PricingCategory pricingCategory, SeatAvailability seatAvailability) {
-        this(rowName, number, pricingCategory, seatAvailability, 0);
-    }
-
-    public Seat(String rowName, int number, PricingCategory pricingCategory, SeatAvailability seatAvailability, int distanceFromCentroid) {
         this.rowName = rowName;
         this.number = number;
         this.pricingCategory = pricingCategory;
         this.seatAvailability = seatAvailability;
-        this.distanceFromCentroid = distanceFromCentroid;
     }
 
-    boolean isAvailable() {
+    public boolean isAvailable() {
         return seatAvailability == SeatAvailability.Available;
     }
 
-    boolean matchCategory(PricingCategory pricingCategory) {
+    public boolean matchCategory(PricingCategory pricingCategory) {
         if (pricingCategory == PricingCategory.Mixed) {
             return true;
         }
@@ -70,24 +62,6 @@ public class Seat {
         return seatAvailability;
     }
 
-    public int computeDistanceFromRowCentroid(int rowSize) {
-        int seatLocation = number;
-
-        if (isOdd(rowSize)) {
-            return computeDistanceFromCentroid(seatLocation, rowSize);
-        }
-
-        if (isCentroid(seatLocation, rowSize)) {
-            return 0;
-        }
-
-        if (seatLocation < centroidIndex(rowSize)) {
-            return computeDistanceFromCentroid(seatLocation, rowSize);
-        }
-
-        return computeDistanceFromCentroid(seatLocation, rowSize) - 1;
-    }
-
     public String rowName() {
         return rowName;
     }
@@ -103,9 +77,5 @@ public class Seat {
     @Override
     public String toString() {
         return rowName + number;
-    }
-
-    public int distanceFromCentroid() {
-        return this.distanceFromCentroid;
     }
 }

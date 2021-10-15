@@ -9,7 +9,7 @@ public enum PricingCategory {
     Third(3),
     Mixed(4);
 
-    private static Map map = new HashMap();
+    private static final Map map = new HashMap();
 
     static {
         for (PricingCategory pageType : PricingCategory.values()) {
@@ -17,9 +17,9 @@ public enum PricingCategory {
         }
     }
 
-    private int value;
+    private final int value;
 
-    private PricingCategory(int value) {
+    PricingCategory(int value) {
         this.value = value;
     }
 

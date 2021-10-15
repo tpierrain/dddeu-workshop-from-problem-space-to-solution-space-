@@ -7,17 +7,13 @@ import java.util.List;
 
 public class SeatingOptionSuggested {
 
-    private PricingCategory pricingCategory;
-    private List<Seat> seats = new ArrayList<>();
-    private int partyRequested;
+    private final PricingCategory pricingCategory;
+    private final List<Seat> seats = new ArrayList<>();
+    private final int partyRequested;
 
     public SeatingOptionSuggested(SuggestionRequest suggestionRequest) {
         this.pricingCategory = suggestionRequest.pricingCategory();
         this.partyRequested = suggestionRequest.partyRequested();
-    }
-
-    public void addSeats(AdjacentSeats adjacentSeats) {
-        seats.addAll(Lists.newArrayList(adjacentSeats));
     }
 
     public boolean matchExpectation() {
@@ -26,5 +22,9 @@ public class SeatingOptionSuggested {
 
     public List<Seat> seats() {
         return seats;
+    }
+
+    public void addSeat(Seat seat) {
+        this.seats.add(seat);
     }
 }

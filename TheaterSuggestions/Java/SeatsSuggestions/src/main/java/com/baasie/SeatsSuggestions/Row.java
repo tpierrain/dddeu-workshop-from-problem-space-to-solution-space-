@@ -1,17 +1,19 @@
 package com.baasie.SeatsSuggestions;
 
+import com.baasie.SeatsSuggestions.DeepModel.OfferingAdjacentSeatsToMembersOfTheSameParty;
+import com.baasie.SeatsSuggestions.DeepModel.OfferingSeatsNearerMiddleOfTheRow;
+import com.baasie.SeatsSuggestions.DeepModel.SeatWithTheDistanceFromTheMiddleOfTheRow;
 import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.baasie.SeatsSuggestions.SeatCollectionExtensions.*;
 
 @EqualsAndHashCode
 public class Row {
-    private String name;
-    private List<Seat> seats;
+    private final String name;
+    private final List<Seat> seats;
 
     public Row(String name, List<Seat> seats) {
         this.name = name;
@@ -21,8 +23,7 @@ public class Row {
                         s.rowName(),
                         s.number(),
                         s.pricingCategory(),
-                        s.seatAvailability(),
-                        s.computeDistanceFromRowCentroid(seats.size()))).collect(Collectors.toList());
+                        s.seatAvailability())).collect(Collectors.toList());
     }
 
     public List<Seat> seats() {
@@ -39,15 +40,8 @@ public class Row {
 
         SeatingOptionSuggested seatingOptionSuggested = new SeatingOptionSuggested(suggestionRequest);
 
-        List<Seat> availableSeatsCompliant = selectAvailableSeatsCompliant(seats, suggestionRequest.pricingCategory());
-
-        List<AdjacentSeats> adjacentSeatsOfExpectedSize =
-                selectAdjacentSeats(availableSeatsCompliant, suggestionRequest.partyRequested());
-
-        List<AdjacentSeats> adjacentSeatsOrdered = orderByMiddleOfTheRow(adjacentSeatsOfExpectedSize, seats.size());
-
-        for (AdjacentSeats adjacentSeats : adjacentSeatsOrdered) {
-            seatingOptionSuggested.addSeats(adjacentSeats);
+        for (Seat seat : offerAdjacentSeatsNearerTheMiddleOfRow(suggestionRequest)) {
+            seatingOptionSuggested.addSeat(seat);
 
             if (seatingOptionSuggested.matchExpectation()) {
                 return seatingOptionSuggested;
@@ -70,6 +64,11 @@ public class Row {
                 seatWithTheDistanceFromTheMiddleOfTheRows);
         return seats;
     }
+
+    private boolean doNotLookForAdjacentSeatsWhenThePartyContainsOnlyOnePerson(SuggestionRequest suggestionRequest) {
+        return suggestionRequest.partyRequested() == 1;
+    }
+
     public Row allocate(Seat seat) {
         List<Seat> newVersionOfSeats = new ArrayList<>();
 

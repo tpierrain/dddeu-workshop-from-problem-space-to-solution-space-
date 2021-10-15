@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/data_for_reservation_seats")
 public class ReservationSeatsController {
 
-    private IProvideCurrentReservations provideCurrentReservations;
+    private final IProvideCurrentReservations provideCurrentReservations;
 
     public ReservationSeatsController(IProvideCurrentReservations provideCurrentReservations) {
         this.provideCurrentReservations = provideCurrentReservations;

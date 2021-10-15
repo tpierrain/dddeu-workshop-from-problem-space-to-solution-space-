@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/data_for_auditoriumSeating")
 public class AuditoriumSeatingController {
 
-    private IProvideAuditoriumLayouts provideAuditoriumLayouts;
+    private final IProvideAuditoriumLayouts provideAuditoriumLayouts;
 
     public AuditoriumSeatingController(IProvideAuditoriumLayouts provideAuditoriumLayouts) {
         this.provideAuditoriumLayouts = provideAuditoriumLayouts;
