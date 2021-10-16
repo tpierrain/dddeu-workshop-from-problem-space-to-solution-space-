@@ -13,7 +13,7 @@ public class SeatAllocatorShould {
      */
 
     @Test
-    public void Suggest_one_seat_when_Auditorium_contains_one_available_seat_only() {
+    public void suggest_one_seat_when_Auditorium_contains_one_available_seat_only() {
         // Ford Auditorium-1
         //
         //       1   2   3   4   5   6   7   8   9  10
@@ -23,7 +23,7 @@ public class SeatAllocatorShould {
     }
 
     @Test
-    public void Return_SeatsNotAvailable_when_Auditorium_has_all_its_seats_already_reserved() {
+    public void return_SeatsNotAvailable_when_Auditorium_has_all_its_seats_already_reserved() {
         // Madison Auditorium-5
         //      1   2   3   4   5   6   7   8   9  10
         // A : (2) (2) (1) (1) (1) (1) (1) (1) (2) (2)
