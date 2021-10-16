@@ -6,9 +6,9 @@ namespace SeatsSuggestions.Tests
     public class SeatAllocatorShould
     {
         /*
-         * By respecting the Outside In approach of Test-Driven Development,
-         * you should emerge the SeatAllocator service to produce your first seat suggestions
-         * for a given party and a show Id.
+         * By respecting the Outside/In approach of Test Driven Development with the emerging design,
+         * you should bring out the SeatAllocator service to produce your first seat suggestions
+         * for a given party and a given show Id.
          *
          * We offer you two concrete examples to allow you to realize
          * a happy path case and a failure case.
