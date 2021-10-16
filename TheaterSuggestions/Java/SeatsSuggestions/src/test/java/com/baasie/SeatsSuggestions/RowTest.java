@@ -29,7 +29,7 @@ public class RowTest {
     }
 
     @Test
-    public void Offer_seats_from_the_middle_of_the_row_when_the_row_size_is_even_and_party_size_is_greater_than_one() {
+    public void offer_seats_from_the_middle_of_the_row_when_the_row_size_is_even_and_party_size_is_greater_than_one() {
         int partySize = 2;
 
         Seat a1 = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
@@ -54,7 +54,7 @@ public class RowTest {
 
 
     @Test
-    public void Offer_seats_from_the_middle_of_the_row_when_with_the_row_size_is_odd_and_party_size_is_greater_than_one() {
+    public void offer_seats_from_the_middle_of_the_row_when_with_the_row_size_is_odd_and_party_size_is_greater_than_one() {
         int partySize = 5;
 
         Seat a1 = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
