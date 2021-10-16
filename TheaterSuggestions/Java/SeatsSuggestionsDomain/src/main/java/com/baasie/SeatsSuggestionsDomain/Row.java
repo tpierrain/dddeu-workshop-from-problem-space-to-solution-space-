@@ -81,4 +81,14 @@ public class Row {
 
         return new Row(seat.rowName(), newVersionOfSeats);
     }
+
+    public boolean rowSizeIsEven() {
+
+        return seats().size() % 2 == 0;
+    }
+
+    public int theMiddleOfRow() {
+
+        return rowSizeIsEven() ? seats().size() / 2 : Math.abs(seats().size() / 2) + 1;
+    }
 }
