@@ -1,19 +1,15 @@
 package com.baasie.SeatsSuggestions;
-
-import com.baasie.SeatsSuggestions.DeepModel.OfferingAdjacentSeatsToMembersOfTheSameParty;
-import com.baasie.SeatsSuggestions.DeepModel.OfferingSeatsNearerMiddleOfTheRow;
-import com.baasie.SeatsSuggestions.DeepModel.SeatWithTheDistanceFromTheMiddleOfTheRow;
+import  com.baasie.SeatsSuggestions.DeepModel.*;
 import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @EqualsAndHashCode
 public class Row {
-    private final String name;
-    private final List<Seat> seats;
+    private String name;
+    private List<Seat> seats;
 
     public Row(String name, List<Seat> seats) {
         this.name = name;
@@ -23,7 +19,8 @@ public class Row {
                         s.rowName(),
                         s.number(),
                         s.pricingCategory(),
-                        s.seatAvailability())).collect(Collectors.toList());
+                        s.seatAvailability()))
+                        .collect(Collectors.toList());
     }
 
     public List<Seat> seats() {
@@ -39,6 +36,7 @@ public class Row {
     public SeatingOptionSuggested suggestSeatingOption(SuggestionRequest suggestionRequest) {
 
         SeatingOptionSuggested seatingOptionSuggested = new SeatingOptionSuggested(suggestionRequest);
+
 
         for (Seat seat : offerAdjacentSeatsNearerTheMiddleOfRow(suggestionRequest)) {
             seatingOptionSuggested.addSeat(seat);
@@ -82,5 +80,15 @@ public class Row {
         });
 
         return new Row(seat.rowName(), newVersionOfSeats);
+    }
+
+    public boolean rowSizeIsEven() {
+
+        return seats().size() % 2 == 0;
+    }
+
+    public int theMiddleOfRow() {
+
+        return rowSizeIsEven() ? seats().size() / 2 : Math.abs(seats().size() / 2) + 1;
     }
 }
