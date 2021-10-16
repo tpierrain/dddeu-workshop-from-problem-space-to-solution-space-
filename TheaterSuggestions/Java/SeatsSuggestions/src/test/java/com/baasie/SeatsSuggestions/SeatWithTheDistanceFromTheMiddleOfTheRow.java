@@ -1,24 +1,23 @@
 package com.baasie.SeatsSuggestions;
 
 public class SeatWithTheDistanceFromTheMiddleOfTheRow {
-    Seat seat;
-    int distanceFromTheMiddleOfTheRow;
+    private Seat seat;
+    private int distanceFromTheMiddleOfTheRow;
 
     public SeatWithTheDistanceFromTheMiddleOfTheRow(Seat seat, int distanceFromTheMiddleOfTheRow) {
         this.seat = seat;
         this.distanceFromTheMiddleOfTheRow = distanceFromTheMiddleOfTheRow;
     }
 
-    public Seat getSeat() {
+    public Seat seat()
+    {
         return this.seat;
     }
 
-    public int getDistanceFromTheMiddleOfTheRow() {
-        return this.distanceFromTheMiddleOfTheRow;
-    }
-
-    @Override
-    public String toString() {
-        return this.seat.rowName() + this.seat.number() + " " + this.distanceFromTheMiddleOfTheRow;
+    public Integer distanceFromTheMiddleOfTheRow()
+    {
+        return distanceFromTheMiddleOfTheRow;
     }
 }
+
+
