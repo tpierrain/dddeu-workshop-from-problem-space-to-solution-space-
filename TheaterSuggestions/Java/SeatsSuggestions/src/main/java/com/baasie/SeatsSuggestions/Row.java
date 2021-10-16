@@ -1,8 +1,5 @@
 package com.baasie.SeatsSuggestions;
-
-import com.baasie.SeatsSuggestions.DeepModel.OfferingAdjacentSeatsToMembersOfTheSameParty;
-import com.baasie.SeatsSuggestions.DeepModel.OfferingSeatsNearerMiddleOfTheRow;
-import com.baasie.SeatsSuggestions.DeepModel.SeatWithTheDistanceFromTheMiddleOfTheRow;
+import  com.baasie.SeatsSuggestions.DeepModel.*;
 import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
@@ -11,12 +8,19 @@ import java.util.stream.Collectors;
 
 @EqualsAndHashCode
 public class Row {
-    private final String name;
-    private final List<Seat> seats;
+    private String name;
+    private List<Seat> seats;
 
     public Row(String name, List<Seat> seats) {
         this.name = name;
-        this.seats = seats;
+        this.seats = seats
+                .stream()
+                .map(s -> new Seat(
+                        s.rowName(),
+                        s.number(),
+                        s.pricingCategory(),
+                        s.seatAvailability()))
+                        .collect(Collectors.toList());
     }
 
     public List<Seat> seats() {
@@ -33,18 +37,17 @@ public class Row {
 
         SeatingOptionSuggested seatingOptionSuggested = new SeatingOptionSuggested(suggestionRequest);
 
+
         for (Seat seat : offerAdjacentSeatsNearerTheMiddleOfRow(suggestionRequest)) {
             seatingOptionSuggested.addSeat(seat);
 
-            if (seatingOptionSuggested.matchExpectation())
-            {
+            if (seatingOptionSuggested.matchExpectation()) {
                 return seatingOptionSuggested;
             }
         }
 
         return new SeatingOptionNotAvailable(suggestionRequest);
     }
-
     public List<Seat> offerAdjacentSeatsNearerTheMiddleOfRow(SuggestionRequest suggestionRequest)
     {
         // 1. offer seats from the middle of the row
@@ -77,5 +80,15 @@ public class Row {
         });
 
         return new Row(seat.rowName(), newVersionOfSeats);
+    }
+
+    public boolean rowSizeIsEven() {
+
+        return seats().size() % 2 == 0;
+    }
+
+    public int theMiddleOfRow() {
+
+        return rowSizeIsEven() ? seats().size() / 2 : Math.abs(seats().size() / 2) + 1;
     }
 }
