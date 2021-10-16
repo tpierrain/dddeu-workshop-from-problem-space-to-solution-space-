@@ -27,8 +27,8 @@ public class RowTest {
 
         // Should not mutate existing instance
         Seat A3 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
-        rowSecondInstance.addSeat(A3);
-        assertThat(rowSecondInstance).isEqualTo(rowFirstInstance);
+        Row newInstanceWithSameProperties = rowSecondInstance.addSeat(A3);
+        assertThat(rowSecondInstance).isEqualTo(newInstanceWithSameProperties);
     }
     @Test
     public void offer_seats_from_the_middle_of_the_row_when_the_row_size_is_even_and_party_size_is_greater_than_one() {

@@ -8,8 +8,8 @@ import java.util.stream.Collectors;
 
 @EqualsAndHashCode
 public class Row {
-    private String name;
-    private List<Seat> seats;
+    private final String name;
+    private final List<Seat> seats;
 
     public Row(String name, List<Seat> seats) {
         this.name = name;
@@ -58,9 +58,8 @@ public class Row {
         }
         // 2. based on seats with distance from the middle of row,
         //    we offer the best group (close to the middle) of adjacent seats
-        List<Seat> seats = new OfferingAdjacentSeatsToMembersOfTheSameParty(suggestionRequest).OfferAdjacentSeats(
+        return new OfferingAdjacentSeatsToMembersOfTheSameParty(suggestionRequest).OfferAdjacentSeats(
                 seatWithTheDistanceFromTheMiddleOfTheRows);
-        return seats;
     }
 
     private boolean doNotLookForAdjacentSeatsWhenThePartyContainsOnlyOnePerson(SuggestionRequest suggestionRequest) {
