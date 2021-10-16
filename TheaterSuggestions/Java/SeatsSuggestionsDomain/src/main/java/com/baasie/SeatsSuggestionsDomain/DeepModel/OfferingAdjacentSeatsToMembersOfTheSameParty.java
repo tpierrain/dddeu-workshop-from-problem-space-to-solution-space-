@@ -1,8 +1,9 @@
 package com.baasie.SeatsSuggestionsDomain.DeepModel;
-import lombok.EqualsAndHashCode;
+
 import com.baasie.SeatsSuggestionsDomain.Seat;
 import com.baasie.SeatsSuggestionsDomain.SuggestionRequest;
 import lombok.EqualsAndHashCode;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,7 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
             List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>> groupsOfAdjacentSeats) {
 
         TreeMap<Integer, List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>>>
-                bestDistanceNearerTheMiddleOfRowPerGroup = new TreeMap<>();
+                TheBestDistancesNearerToTheMiddleOfTheRowPerGroup = new TreeMap<>();
 
         for (List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistanceFromMiddleOfTheRow : groupsOfAdjacentSeats) {
 
@@ -37,16 +38,16 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
 
             if (!isMatchingPartyRequested(suggestionRequest, currentGroupOfAdjacentSeats)) continue;
 
-            int sumOfDistances = sumOfDistancesPerSeat(currentGroupOfAdjacentSeats);
+            int sumOfDistances = sumOfDistancesNearerTheMiddleOfTheRowPerSeat(currentGroupOfAdjacentSeats);
 
-            if (!bestDistanceNearerTheMiddleOfRowPerGroup.containsKey(sumOfDistances))
-                bestDistanceNearerTheMiddleOfRowPerGroup.put(sumOfDistances, new ArrayList<>());
+            if (!TheBestDistancesNearerToTheMiddleOfTheRowPerGroup.containsKey(sumOfDistances))
+                TheBestDistancesNearerToTheMiddleOfTheRowPerGroup.put(sumOfDistances, new ArrayList<>());
 
-            bestDistanceNearerTheMiddleOfRowPerGroup.get(sumOfDistances).add(currentGroupOfAdjacentSeats);
+            TheBestDistancesNearerToTheMiddleOfTheRowPerGroup.get(sumOfDistances).add(currentGroupOfAdjacentSeats);
         }
 
-        return any(bestDistanceNearerTheMiddleOfRowPerGroup)
-                ? selectTheBestGroup(bestDistanceNearerTheMiddleOfRowPerGroup) : noSeatSuggested();
+        return any(TheBestDistancesNearerToTheMiddleOfTheRowPerGroup)
+                ? selectTheBestGroup(TheBestDistancesNearerToTheMiddleOfTheRowPerGroup) : noSeatSuggested();
     }
 
     private List<SeatWithTheDistanceFromTheMiddleOfTheRow> SortSeatsByDistanceFromMiddleOfTheRow(List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistanceFromMiddleOfTheRow) {
@@ -55,7 +56,9 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
                 .collect(Collectors.toList());
     }
 
-    private Integer sumOfDistancesPerSeat(List<SeatWithTheDistanceFromTheMiddleOfTheRow> currentGroup) {
+    private Integer sumOfDistancesNearerTheMiddleOfTheRowPerSeat(
+            List<SeatWithTheDistanceFromTheMiddleOfTheRow> currentGroup) {
+
         return currentGroup.stream()
                 .map(SeatWithTheDistanceFromTheMiddleOfTheRow::distanceFromTheMiddleOfTheRow)
                 .reduce(0, Integer::sum);
@@ -114,7 +117,7 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
     private static List<Seat> selectTheOnlyBestGroup(TreeMap<Integer, List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>>> bestGroups) {
         if (any(bestGroups)) {
             NavigableMap<Integer, List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>>> integerListNavigableMap = bestGroups.descendingMap();
-            return integerListNavigableMap.firstEntry().getValue().get(0).stream().map(s -> s.seat()).collect(Collectors.toList());
+            return integerListNavigableMap.firstEntry().getValue().get(0).stream().map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat).collect(Collectors.toList());
         }
         return noSeatSuggested;
     }

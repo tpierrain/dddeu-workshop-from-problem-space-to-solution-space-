@@ -3,8 +3,8 @@ package com.baasie.SeatsSuggestionsDomain.DeepModel;
 import com.baasie.SeatsSuggestionsDomain.Row;
 import com.baasie.SeatsSuggestionsDomain.Seat;
 import com.baasie.SeatsSuggestionsDomain.SuggestionRequest;
-import lombok.EqualsAndHashCode;
 
+import lombok.EqualsAndHashCode;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -70,7 +70,7 @@ public class OfferingSeatsNearerMiddleOfTheRow {
         return row.seats().size() % 2 == 0;
     }
 
-    private boolean isMiddle(Seat seat) {
+    private boolean isTheMiddleOfRon(Seat seat) {
 
         int theMiddleOfRow = theMiddleOfRow();
 
@@ -87,32 +87,34 @@ public class OfferingSeatsNearerMiddleOfTheRow {
 
     private List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>> splitSeatsByDistanceNearerTheMiddleOfTheRow() {
 
-        List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatWithDistances = new ArrayList<>();
-        List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>> groupsSeatsWithDistance = new ArrayList<>();
+        List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistance = new ArrayList<>();
+        List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>> groupsOfSeatsWithDistance = new ArrayList<>();
 
         for (Seat seat : row.seats()) {
-            if (!isMiddle(seat)) {
-                seatWithDistances.add(new SeatWithTheDistanceFromTheMiddleOfTheRow(seat, distance(theMiddleOfRow(), seat)));
+            if (!isTheMiddleOfRon(seat)) {
+                seatsWithDistance
+                        .add(new SeatWithTheDistanceFromTheMiddleOfTheRow(seat, distanceFromTheMiddleOfRow(seat)));
             } else {
-                if (!seatWithDistances.isEmpty())
-                    groupsSeatsWithDistance.add(seatWithDistances);
-                seatWithDistances = new ArrayList<>();
+                if (!seatsWithDistance.isEmpty())
+                    groupsOfSeatsWithDistance.add(seatsWithDistance);
+                seatsWithDistance = new ArrayList<>();
             }
         }
-        if (!seatWithDistances.isEmpty())
-            groupsSeatsWithDistance.add(seatWithDistances);
+        if (!seatsWithDistance.isEmpty())
+            groupsOfSeatsWithDistance.add(seatsWithDistance);
 
-        return groupsSeatsWithDistance;
+        return groupsOfSeatsWithDistance;
     }
 
-    private int distance(int middle, Seat seat) {
+    private int distanceFromTheMiddleOfRow(Seat seat) {
         int distance;
+        int theMiddleOfRow = theMiddleOfRow();
         if (rowSizeIsEven())
-            distance = seat.number() - middle > 0
-                    ? Math.abs(seat.number() - middle)
-                    : Math.abs(seat.number() - (middle + 1));
+            distance = seat.number() - theMiddleOfRow > 0
+                    ? Math.abs(seat.number() - theMiddleOfRow)
+                    : Math.abs(seat.number() - (theMiddleOfRow + 1));
         else
-            distance = Math.abs(seat.number() - middle);
+            distance = Math.abs(seat.number() - theMiddleOfRow);
         return distance;
     }
 }
