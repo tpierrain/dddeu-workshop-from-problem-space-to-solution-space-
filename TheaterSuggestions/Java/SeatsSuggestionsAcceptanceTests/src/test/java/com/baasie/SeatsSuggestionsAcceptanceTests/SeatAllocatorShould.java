@@ -103,7 +103,7 @@ public class SeatAllocatorShould {
     }
 
     @Test
-    public void offer_adjacent_seats_nearer_the_middle_of_a_row_when_it_is_possible() throws IOException {
+    public void offer_4_adjacent_seats_nearer_the_middle_of_a_row_when_it_is_possible() throws IOException {
         // FIX ME
 
         //
@@ -134,5 +134,35 @@ public class SeatAllocatorShould {
                 .containsExactly("E4-E5-E6-E7", "F4-F5-F6-F7");
         assertThat(suggestionsMade.seatNames(PricingCategory.Mixed))
                 .containsExactly("A6-A7-A8-A9", "B1-B2-B3-B4", "C4-C5-C6-C7");
+    }
+    @Test
+    public void offer_3_adjacent_seats_nearer_the_middle_of_a_row_when_it_is_possible() throws IOException {
+        // Dock Street Auditorium-3
+        //
+        //      1   2   3   4   5   6   7   8   9  10
+        // A : (2) (2) (1) (1) (1)  1   1   1   2   2
+        // B :  2   2   1   1  (1) (1) (1) (1)  2   2
+        // C :  2   2   2   2   2   2   2   2   2   2
+        // D :  2   2   2   2   2   2   2   2   2   2
+        // E :  3   3   3   3   3   3   3   3   3   3
+        // F :  3   3   3   3   3   3   3   3   3   3
+        final String showId = "3";
+        final int partyRequested = 3;
+
+        AuditoriumSeatingAdapter auditoriumLayoutAdapter =
+                new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
+
+        SeatAllocator seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
+
+        SuggestionsMade suggestionsMade = seatAllocator.makeSuggestions(showId, partyRequested);
+
+        assertThat(suggestionsMade.seatNames(PricingCategory.First)).
+                containsExactly("A6-A7-A8");
+        assertThat(suggestionsMade.seatNames(PricingCategory.Second))
+                .containsExactly("C4-C5-C6", "C7-C8-C9", "C1-C2-C3");
+        assertThat(suggestionsMade.seatNames(PricingCategory.Third))
+                .containsExactly("E4-E5-E6", "E7-E8-E9", "E1-E2-E3");
+        assertThat(suggestionsMade.seatNames(PricingCategory.Mixed))
+                .containsExactly("A6-A7-A8", "B2-B3-B4", "C4-C5-C6");
     }
 }
