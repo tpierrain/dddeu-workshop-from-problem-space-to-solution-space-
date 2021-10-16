@@ -70,7 +70,7 @@ public class OfferingSeatsNearerMiddleOfTheRow {
         return row.seats().size() % 2 == 0;
     }
 
-    private boolean isTheMiddleOfRon(Seat seat) {
+    private boolean isTheMiddleOfRow(Seat seat) {
 
         int theMiddleOfRow = theMiddleOfRow();
 
@@ -91,7 +91,7 @@ public class OfferingSeatsNearerMiddleOfTheRow {
         List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>> groupsOfSeatsWithDistance = new ArrayList<>();
 
         for (Seat seat : row.seats()) {
-            if (!isTheMiddleOfRon(seat)) {
+            if (!isTheMiddleOfRow(seat)) {
                 seatsWithDistance
                         .add(new SeatWithTheDistanceFromTheMiddleOfTheRow(seat, distanceFromTheMiddleOfRow(seat)));
             } else {

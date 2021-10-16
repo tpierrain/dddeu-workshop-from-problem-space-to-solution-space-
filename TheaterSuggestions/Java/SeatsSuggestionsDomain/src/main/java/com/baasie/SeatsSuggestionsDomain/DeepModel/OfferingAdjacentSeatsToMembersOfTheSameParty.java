@@ -70,7 +70,7 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
 
             if (hasTheBestGroupWithoutConflict(bestGroups))
             {
-                return selectSeats(bestGroups);
+                return selectSeatsFrom(bestGroups);
             }
 
             return decideBetweenIdenticalScores(bestGroups);
@@ -94,30 +94,35 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
             for (List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatWithTheDistanceFromTheMiddleOfTheRows : listList) {
 
                 decideBetweenIdenticalScores.put(seatWithTheDistanceFromTheMiddleOfTheRows.size(),
-                        seatWithTheDistanceFromTheMiddleOfTheRows.stream()
-                                .map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat)
-                                .collect(Collectors.toList()));
+                        projectToSeats(seatWithTheDistanceFromTheMiddleOfTheRows));
             }
         }
         return decideBetweenIdenticalScores;
     }
 
-    private static List<Seat> selectSeats(TreeMap<Integer, List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>>> bestGroups) {
-        return bestGroups.get(bestGroups.firstKey()).get(0).stream().map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat).collect(Collectors.toList());
+    private static List<Seat> projectToSeats(List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatWithTheDistanceFromTheMiddleOfTheRows) {
+        return seatWithTheDistanceFromTheMiddleOfTheRows.stream()
+                .map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat)
+                .collect(Collectors.toList());
+    }
+
+    private static List<Seat> selectSeatsFrom(TreeMap<Integer, List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>>> bestGroups) {
+        return projectToSeats(bestGroups.get(bestGroups.firstKey()).get(0));
     }
 
     private static boolean hasTheBestGroupWithoutConflict(TreeMap<Integer, List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>>> bestGroups) {
+        // if the first entry is alone, there is no conflict
         return bestGroups.get(bestGroups.firstKey()).size() == 1;
     }
 
     private static List<Seat> selectTheGroupWhoseSizeIsTheLargestWithEqualScore(TreeMap<Integer, List<Seat>> groupsWithHighScore) {
-        return groupsWithHighScore.firstEntry().getValue();
+        return groupsWithHighScore.lastEntry().getValue();
     }
 
     private static List<Seat> selectTheOnlyBestGroup(TreeMap<Integer, List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>>> bestGroups) {
         if (any(bestGroups)) {
             NavigableMap<Integer, List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>>> integerListNavigableMap = bestGroups.descendingMap();
-            return integerListNavigableMap.firstEntry().getValue().get(0).stream().map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat).collect(Collectors.toList());
+            return projectToSeats(integerListNavigableMap.firstEntry().getValue().get(0));
         }
         return noSeatSuggested;
     }
