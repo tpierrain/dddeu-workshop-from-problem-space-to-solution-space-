@@ -11,7 +11,6 @@ import com.baasie.SeatsSuggestionsInfra.AuditoriumSeatingAdapter;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -105,7 +104,7 @@ public class SeatsAllocatorShould {
         assertThat(suggestionsMade.seatNames(PricingCategory.First)).containsExactly("A4", "A3", "B5");
     }
     @Test
-    public void offer_4_adjacent_seats_nearer_the_middle_of_a_row_when_it_is_possible() throws IOException, URISyntaxException {
+    public void offer_4_adjacent_seats_nearer_the_middle_of_a_row_when_it_is_possible() throws IOException {
         // Dock Street Auditorium-3
         //
         //      1   2   3   4   5   6   7   8   9  10
@@ -136,7 +135,7 @@ public class SeatsAllocatorShould {
 
 
     @Test
-    public void offer_3_adjacent_seats_nearer_the_middle_of_a_row_when_it_is_possible() throws IOException, URISyntaxException {
+    public void offer_3_adjacent_seats_nearer_the_middle_of_a_row_when_it_is_possible() throws IOException {
         // Dock Street Auditorium-3
         //
         //      1   2   3   4   5   6   7   8   9  10
