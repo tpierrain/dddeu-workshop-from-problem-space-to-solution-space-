@@ -2,6 +2,11 @@ package com.baasie.SeatsSuggestions;
 
 import lombok.EqualsAndHashCode;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @EqualsAndHashCode
 public class Seat {
 
@@ -29,7 +34,7 @@ public class Seat {
         return this.pricingCategory == pricingCategory;
     }
 
-    public Seat allocate() {
+    Seat allocate() {
         if (seatAvailability == SeatAvailability.Available) {
             return new Seat(rowName, number, pricingCategory, SeatAvailability.Allocated);
         }
@@ -38,6 +43,23 @@ public class Seat {
 
     public boolean sameSeatLocation(Seat seat) {
         return rowName.equals(seat.rowName) && number == seat.number;
+    }
+
+    boolean isAdjacentWith(List<Seat> seats) {
+
+        List<Seat> orderedSeats = seats.stream()
+                .sorted(Comparator.comparing(Seat::number))
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        for (Seat seat : orderedSeats) {
+            if (number + 1 == seat.number || number - 1 == seat.number)
+                return true;
+        }
+        return false;
+    }
+
+    public SeatAvailability seatAvailability() {
+        return seatAvailability;
     }
 
     public String rowName() {
