@@ -45,16 +45,6 @@ namespace SeatsSuggestions.Domain
             return RowName == seat.RowName && Number == seat.Number;
         }
 
-        protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
-        {
-            return new object[] { RowName, Number, PricingCategory, SeatAvailability };
-        }
-
-        public override string ToString()
-        {
-            return $"{RowName}{Number}";
-        }
-
         public bool IsAdjacentWith(List<Seat> seats)
         {
             var orderedSeats = seats.OrderBy(s => s.Number).ToList();
@@ -67,6 +57,16 @@ namespace SeatsSuggestions.Domain
             seat = seats.Last();
 
             return Number + 1 == seat.Number || Number - 1 == seat.Number;
+        }
+
+        public override string ToString()
+        {
+            return $"{RowName}{Number}";
+        }
+
+        protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
+        {
+            return new object[] { RowName, Number, PricingCategory, SeatAvailability };
         }
     }
 }
