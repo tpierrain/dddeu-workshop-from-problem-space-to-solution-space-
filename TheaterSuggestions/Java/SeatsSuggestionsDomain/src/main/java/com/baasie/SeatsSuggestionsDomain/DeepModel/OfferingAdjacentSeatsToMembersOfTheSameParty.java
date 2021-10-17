@@ -25,10 +25,10 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
 
     private static List<Seat> decideBetweenIdenticalScores(TreeMap<Integer, List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>>> bestGroups) {
 
-        return populateTheBestGroups(bestGroups);
+        return decideTheBestGroup(bestGroups);
     }
 
-    private static List<Seat> populateTheBestGroups(TreeMap<Integer, List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>>> bestGroups) {
+    private static List<Seat> decideTheBestGroup(TreeMap<Integer, List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>>> bestGroups) {
 
         TreeMap<Integer, List<Seat>> decideBetweenIdenticalScores = new TreeMap<>();
 
@@ -57,6 +57,7 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
                 }
             }
         }
+        
         return decideBetweenIdenticalScores.lastEntry().getValue();
     }
 
@@ -73,10 +74,6 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
     private static boolean hasTheBestGroupWithoutConflict(TreeMap<Integer, List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>>> bestGroups) {
         // if the first entry is alone, there is no conflict
         return bestGroups.get(bestGroups.firstKey()).size() == 1;
-    }
-
-    private static List<Seat> selectTheGroupWhoseSizeIsTheLargestWithEqualScore(TreeMap<Integer, List<Seat>> groupsWithHighScore) {
-        return groupsWithHighScore.lastEntry().getValue();
     }
 
     private static List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>> splitInGroupsOfAdjacentSeats(
