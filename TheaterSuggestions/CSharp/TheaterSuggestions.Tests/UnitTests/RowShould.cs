@@ -21,10 +21,10 @@ namespace SeatsSuggestions.Tests.UnitTests
 
             // Should not mutate existing instance 
             var a3 = new Seat("A", 3, PricingCategory.Second, SeatAvailability.Available);
-            var newRowWithNewSeat = rowSecondInstance.AddSeat(a3);
+            var newRowWithNewSeatAdded = rowSecondInstance.AddSeat(a3);
 
             Check.That(rowSecondInstance).IsEqualTo(rowFirstInstance);
-            Check.That(newRowWithNewSeat).IsNotEqualTo(rowFirstInstance);
+            Check.That(newRowWithNewSeatAdded).IsNotEqualTo(rowFirstInstance);
         }
     }
 }
