@@ -18,10 +18,7 @@ public class OfferingSeatsNearerMiddleOfTheRow {
 
     public List<SeatWithTheDistanceFromTheMiddleOfTheRow> offerSeatsNearerTheMiddleOfTheRow(SuggestionRequest suggestionRequest) {
 
-        List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatWithTheDistanceFromTheMiddleOfTheRows =
-                computeDistancesNearerTheMiddleOfTheRow();
-
-        return seatWithTheDistanceFromTheMiddleOfTheRows
+        return computeDistancesNearerTheMiddleOfTheRow()
                 .stream()
                 .filter(seatWithTheDistanceFromTheMiddleOfTheRow ->
                         seatWithTheDistanceFromTheMiddleOfTheRow.seat().matchCategory(suggestionRequest.pricingCategory()))
@@ -60,30 +57,15 @@ public class OfferingSeatsNearerMiddleOfTheRow {
                 : new ArrayList<>(Collections.singletonList(seats.get(middle - 1)));
     }
 
-    private boolean isTheMiddleOfRow(Seat seat) {
-
-        int theMiddleOfRow = row.theMiddleOfRow();
-
-        if (row.rowSizeIsEven()) {
-            if (Math.abs(seat.number() - theMiddleOfRow) == 0) {
-                return true;
-            }
-            if (seat.number() - (theMiddleOfRow + 1) == 0) {
-                return true;
-            }
-        }
-        return Math.abs(seat.number() - theMiddleOfRow) == 0;
-    }
-
     private List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>> splitSeatsByDistanceNearerTheMiddleOfTheRow() {
 
         List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistance = new ArrayList<>();
         List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>> groupsOfSeatsWithDistance = new ArrayList<>();
 
         for (Seat seat : row.seats()) {
-            if (!isTheMiddleOfRow(seat)) {
+            if (!row.isTheMiddleOfRow(seat)) {
                 seatsWithDistance
-                        .add(new SeatWithTheDistanceFromTheMiddleOfTheRow(seat, distanceFromTheMiddleOfRow(seat)));
+                        .add(new SeatWithTheDistanceFromTheMiddleOfTheRow(seat, row.distanceFromTheMiddleOfRow(seat)));
             } else {
                 if (!seatsWithDistance.isEmpty())
                     groupsOfSeatsWithDistance.add(seatsWithDistance);
@@ -96,15 +78,4 @@ public class OfferingSeatsNearerMiddleOfTheRow {
         return groupsOfSeatsWithDistance;
     }
 
-    private int distanceFromTheMiddleOfRow(Seat seat) {
-        int distance;
-        int theMiddleOfRow = row.theMiddleOfRow();
-        if (row.rowSizeIsEven())
-            distance = seat.number() - theMiddleOfRow > 0
-                    ? Math.abs(seat.number() - theMiddleOfRow)
-                    : Math.abs(seat.number() - (theMiddleOfRow + 1));
-        else
-            distance = Math.abs(seat.number() - theMiddleOfRow);
-        return distance;
-    }
 }
