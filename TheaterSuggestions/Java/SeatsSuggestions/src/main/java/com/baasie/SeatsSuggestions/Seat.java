@@ -48,6 +48,8 @@ public class Seat {
         return number;
     }
 
+    public SeatAvailability seatAvailability() { return this.seatAvailability; }
+
     public PricingCategory pricingCategory() {
         return pricingCategory;
     }
