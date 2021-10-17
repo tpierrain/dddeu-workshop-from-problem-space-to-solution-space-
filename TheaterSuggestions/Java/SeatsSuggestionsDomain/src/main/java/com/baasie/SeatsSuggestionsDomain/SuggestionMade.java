@@ -8,9 +8,9 @@ import java.util.stream.Collectors;
 
 public class SuggestionMade {
 
-    private ImmutableList<Seat> suggestedSeats;
-    private PartyRequested partyRequested;
-    private PricingCategory pricingCategory;
+    private final ImmutableList<Seat> suggestedSeats;
+    private final PartyRequested partyRequested;
+    private final PricingCategory pricingCategory;
 
     public SuggestionMade(List<Seat> suggestedSeats, PartyRequested partyRequested, PricingCategory pricingCategory) {
         this.suggestedSeats = ImmutableList.copyOf(suggestedSeats);

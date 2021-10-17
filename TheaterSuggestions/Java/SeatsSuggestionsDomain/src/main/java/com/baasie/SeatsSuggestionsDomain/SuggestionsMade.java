@@ -8,8 +8,8 @@ import java.util.stream.Collectors;
 
 public class SuggestionsMade {
     public Map<PricingCategory, List<SuggestionMade>> forCategory = new HashMap<>();
-    private ShowId showId;
-    private PartyRequested partyRequested;
+    private final ShowId showId;
+    private final PartyRequested partyRequested;
 
     public SuggestionsMade(ShowId showId, PartyRequested partyRequested) {
         this.showId = showId;
@@ -17,6 +17,10 @@ public class SuggestionsMade {
 
         instantiateAnEmptyListForEveryPricingCategory();
     }
+
+    public ShowId showId() { return showId; }
+
+    public PartyRequested partyRequested() { return partyRequested; }
 
     //.sorted(Comparator.comparing(Seat::number))
     public Iterable<String> seatNames(PricingCategory pricingCategory) {

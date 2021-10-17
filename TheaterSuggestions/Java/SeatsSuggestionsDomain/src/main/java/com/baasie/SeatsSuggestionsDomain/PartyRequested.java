@@ -11,7 +11,7 @@ public class PartyRequested {
     public PartyRequested(int partySize)
     {
         if (partySize <= 0 || partySize > MAX_PARTY_SIZE)
-            throw new IllegalArgumentException(String.format("Parameter 'partySize' should be greater than zero and less than 20"));
+            throw new IllegalArgumentException("Parameter 'partySize' should be greater than zero and less than 20");
 
         _partySize = partySize;
     }

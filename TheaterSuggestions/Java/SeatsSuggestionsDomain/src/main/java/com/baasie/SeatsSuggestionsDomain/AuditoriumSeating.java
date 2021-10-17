@@ -10,7 +10,7 @@ import java.util.Map;
 @EqualsAndHashCode
 public class AuditoriumSeating {
 
-    private ImmutableMap<String, Row> rows;
+    private final ImmutableMap<String, Row> rows;
 
     public AuditoriumSeating(Map<String, Row> rows) {
         this.rows = ImmutableMap.copyOf(rows);
@@ -21,7 +21,7 @@ public class AuditoriumSeating {
             SeatingOptionSuggested seatingOptionSuggested = row.suggestSeatingOption(suggestionRequest);
 
             if (seatingOptionSuggested.matchExpectation()) {
-                // Cool, we mark the seat as Allocated (that we turns into a SuggestionMade)
+                // Cool, we mark the seat as Allocated (that we turn into a SuggestionMade)
                 return seatingOptionSuggested;
             }
         }

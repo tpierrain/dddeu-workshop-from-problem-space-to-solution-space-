@@ -10,12 +10,12 @@ public class ShowId {
     public ShowId(String id)
     {
         if (id == null || id.isEmpty()) {
-            throw new IllegalArgumentException(String.format("Parameter 'id' cannot be null"));
+            throw new IllegalArgumentException("Parameter 'id' cannot be null");
         }
 
-        if (id.chars().filter(c -> Character.isDigit(c)).count() != id.length())
+        if (id.chars().filter(Character::isDigit).count() != id.length())
         {
-            throw new IllegalArgumentException(String.format("Parameter 'id' should be a number"));
+            throw new IllegalArgumentException("Parameter 'id' should be a number");
         }
         _id  = id;
     }
