@@ -3,6 +3,7 @@ import  com.baasie.SeatsSuggestionsDomain.DeepModel.*;
 import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,9 +29,9 @@ public class Row {
     }
 
     public Row addSeat(Seat seat) {
-        List<Seat> updatedList = seats.stream().map(s -> s.equals(seat) ? seat : s).collect(Collectors.toList());
-
-        return new Row(name, updatedList);
+        ArrayList<Seat> newSeats = new ArrayList<>(this.seats);
+        newSeats.add(seat);
+        return new Row(name, newSeats);
     }
 
     public SeatingOptionSuggested suggestSeatingOption(SuggestionRequest suggestionRequest) {

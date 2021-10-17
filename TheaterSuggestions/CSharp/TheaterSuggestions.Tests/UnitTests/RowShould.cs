@@ -24,7 +24,7 @@ namespace SeatsSuggestions.Tests.UnitTests
             var newRowWithNewSeat = rowSecondInstance.AddSeat(a3);
 
             Check.That(rowSecondInstance).IsEqualTo(rowFirstInstance);
-            Check.That(newRowWithNewSeat).Not.Equals(rowFirstInstance);
+            Check.That(newRowWithNewSeat).IsNotEqualTo(rowFirstInstance);
         }
     }
 }

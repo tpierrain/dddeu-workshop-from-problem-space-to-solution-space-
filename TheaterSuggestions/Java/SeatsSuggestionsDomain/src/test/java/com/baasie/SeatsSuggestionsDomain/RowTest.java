@@ -20,8 +20,8 @@ public class RowTest {
 
         // Should not mutate existing instance
         Seat a3 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
-        Row newCloneOfSecondInstance = rowSecondInstance.addSeat(a3);
-        assertThat(newCloneOfSecondInstance).isEqualTo(rowFirstInstance);
+        Row newRowWithNewSeat = rowSecondInstance.addSeat(a3);
+        assertThat(newRowWithNewSeat).isNotEqualTo(rowFirstInstance);
     }
 
 }
