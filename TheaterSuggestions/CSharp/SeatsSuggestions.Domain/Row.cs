@@ -53,10 +53,11 @@ namespace SeatsSuggestions.Domain
                 seatsWithDistanceFromMiddleOfTheRow);
         }
 
-        private bool DoNotLookForAdjacentSeatsWhenThePartyContainsOnlyOnePerson(SuggestionRequest suggestionRequest)
+        private static bool DoNotLookForAdjacentSeatsWhenThePartyContainsOnlyOnePerson(SuggestionRequest suggestionRequest)
         {
             return suggestionRequest.PartyRequested.PartySize == 1;
         }
+
         public Row Allocate(Seat seat)
         {
             var newVersionOfSeats = new List<Seat>();

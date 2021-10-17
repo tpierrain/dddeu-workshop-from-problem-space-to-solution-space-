@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Value;
 
 namespace SeatsSuggestions.Domain
 {
     public class Seat : ValueType<Seat>
     {
-        public Seat(string rowName, uint number, PricingCategory pricingCategory, SeatAvailability seatAvailability,
-            int distanceFromRowCentroid = 0)
+        public Seat(string rowName, uint number, PricingCategory pricingCategory, SeatAvailability seatAvailability)
         {
             RowName = rowName;
             Number = number;
@@ -43,20 +41,6 @@ namespace SeatsSuggestions.Domain
         public bool SameSeatLocation(Seat seat)
         {
             return RowName == seat.RowName && Number == seat.Number;
-        }
-
-        public bool IsAdjacentWith(List<Seat> seats)
-        {
-            var orderedSeats = seats.OrderBy(s => s.Number).ToList();
-
-            var seat = orderedSeats.First();
-
-            if (Number + 1 == seat.Number || Number - 1 == seat.Number)
-                return true;
-
-            seat = seats.Last();
-
-            return Number + 1 == seat.Number || Number - 1 == seat.Number;
         }
 
         public override string ToString()
