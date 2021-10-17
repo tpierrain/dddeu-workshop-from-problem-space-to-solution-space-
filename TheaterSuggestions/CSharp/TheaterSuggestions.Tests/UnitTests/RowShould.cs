@@ -99,11 +99,14 @@ namespace SeatsSuggestions.Tests.UnitTests
                     suggestionRequest);
 
             var seats =
-                new OfferingAdjacentSeatsToMembersOfTheSameParty(suggestionRequest).OfferAdjacentSeats(
-                    seatsWithDistance);
+                OfferAdjacentSeats(seatsWithDistance, partySize); 
 
             Check.That(seats).ContainsExactly(a5, a6, a7);
         }
 
+        public IEnumerable<Seat> OfferAdjacentSeats(IEnumerable<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistances, int partySize)
+        {
+            return new List<Seat>();
+        }
     }
 }
