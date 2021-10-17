@@ -19,9 +19,9 @@ public class RowTest {
         assertThat(rowSecondInstance).isEqualTo(rowFirstInstance);
 
         // Should not mutate existing instance
-        Seat A3 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
-        rowSecondInstance.addSeat(A3);
-        assertThat(rowSecondInstance).isEqualTo(rowFirstInstance);
+        Seat a3 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
+        Row newRowWithNewSeatAdded = rowSecondInstance.addSeat(a3);
+        assertThat(newRowWithNewSeatAdded).isNotEqualTo(rowFirstInstance);
     }
 
 }

@@ -21,9 +21,9 @@ public class Row {
     }
 
     public Row addSeat(Seat seat) {
-        List<Seat> updatedList = seats.stream().map(s -> s.equals(seat) ? seat : s).collect(Collectors.toList());
-
-        return new Row(name, updatedList);
+        ArrayList<Seat> newSeats = new ArrayList<>(this.seats);
+        newSeats.add(seat);
+        return new Row(name, newSeats);
     }
 
     public SeatingOptionSuggested suggestSeatingOption(int partyRequested, PricingCategory pricingCategory) {
