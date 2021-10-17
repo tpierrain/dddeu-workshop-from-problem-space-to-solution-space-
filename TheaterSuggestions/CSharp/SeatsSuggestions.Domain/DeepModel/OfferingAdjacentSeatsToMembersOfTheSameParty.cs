@@ -86,15 +86,16 @@ namespace SeatsSuggestions.Domain.DeepModel
                 if (decideBetweenIdenticalScores.ContainsKey(seatWithTheDistanceFromTheMiddleOfTheRows.Count))
                 {
                     // Groups are equivalents, the domain expert have decided to select the group with the smallest seat numbers
-                    var bestGroup =
-                        seatWithTheDistanceFromTheMiddleOfTheRows.Sum(s => s.DistanceFromTheMiddleOfTheRow);
+                    // =========================================================================================================
+                    var bestGroupScore =
+                        seatWithTheDistanceFromTheMiddleOfTheRows.Sum(s => s.Seat.Number);
 
                     var seatWithTheDistanceFromTheMiddleOfTheRowsContained =
                         decideBetweenIdenticalScores[seatWithTheDistanceFromTheMiddleOfTheRows.Count];
 
-                    var bestGroupContained = seatWithTheDistanceFromTheMiddleOfTheRowsContained.Sum(s => s.Number);
+                    var bestGroupScoreForContained = seatWithTheDistanceFromTheMiddleOfTheRowsContained.Sum(s => s.Number);
 
-                    if (bestGroup < bestGroupContained)
+                    if (bestGroupScore < bestGroupScoreForContained)
                         decideBetweenIdenticalScores[seatWithTheDistanceFromTheMiddleOfTheRows.Count] =
                             ProjectToSeats(seatWithTheDistanceFromTheMiddleOfTheRows);
                 }
