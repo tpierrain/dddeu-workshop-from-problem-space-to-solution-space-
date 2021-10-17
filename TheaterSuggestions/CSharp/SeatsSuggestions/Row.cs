@@ -17,9 +17,7 @@ namespace SeatsSuggestions
 
         public Row AddSeat(Seat seat)
         {
-            var updatedList = Seats.Select(s => s == seat ? seat : s).ToList();
-
-            return new Row(Name, updatedList);
+            return new Row(Name, new List<Seat>(Seats) { seat });
         }
 
         public SeatingOptionSuggested SuggestSeatingOption(SuggestionRequest suggestionRequest)
