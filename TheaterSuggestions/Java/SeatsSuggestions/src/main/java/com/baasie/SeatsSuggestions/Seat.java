@@ -56,4 +56,6 @@ public class Seat {
     public String toString() {
         return rowName + number;
     }
+
+    public SeatAvailability seatAvailability() { return this.seatAvailability; }
 }

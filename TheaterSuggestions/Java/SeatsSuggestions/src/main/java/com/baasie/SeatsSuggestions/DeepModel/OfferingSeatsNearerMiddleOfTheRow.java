@@ -4,9 +4,11 @@ import com.baasie.SeatsSuggestions.Row;
 import com.baasie.SeatsSuggestions.Seat;
 import com.baasie.SeatsSuggestions.SuggestionRequest;
 
+import lombok.EqualsAndHashCode;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@EqualsAndHashCode
 public class OfferingSeatsNearerMiddleOfTheRow {
     private final Row row;
 
@@ -16,10 +18,7 @@ public class OfferingSeatsNearerMiddleOfTheRow {
 
     public List<SeatWithTheDistanceFromTheMiddleOfTheRow> offerSeatsNearerTheMiddleOfTheRow(SuggestionRequest suggestionRequest) {
 
-        List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatWithTheDistanceFromTheMiddleOfTheRows =
-                computeDistancesNearerTheMiddleOfTheRow();
-
-        return seatWithTheDistanceFromTheMiddleOfTheRows
+        return computeDistancesNearerTheMiddleOfTheRow()
                 .stream()
                 .filter(seatWithTheDistanceFromTheMiddleOfTheRow ->
                         seatWithTheDistanceFromTheMiddleOfTheRow.seat().matchCategory(suggestionRequest.pricingCategory()))
@@ -45,7 +44,7 @@ public class OfferingSeatsNearerMiddleOfTheRow {
 
     private List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsInTheMiddleOfTheRow() {
 
-        return seatsInTheMiddleOfTheRow(row.seats(), theMiddleOfRow())
+        return seatsInTheMiddleOfTheRow(row.seats(), row.theMiddleOfRow())
                 .stream()
                 .map(s -> new SeatWithTheDistanceFromTheMiddleOfTheRow(s, 0))
                 .collect(Collectors.toList());
@@ -58,59 +57,25 @@ public class OfferingSeatsNearerMiddleOfTheRow {
                 : new ArrayList<>(Collections.singletonList(seats.get(middle - 1)));
     }
 
-    private int theMiddleOfRow() {
-
-        return rowSizeIsEven() ? row.seats().size() / 2 : Math.abs(row.seats().size() / 2) + 1;
-    }
-
-    private boolean rowSizeIsEven() {
-
-        return row.seats().size() % 2 == 0;
-    }
-
-    private boolean isMiddle(Seat seat) {
-
-        int theMiddleOfRow = theMiddleOfRow();
-
-        if (rowSizeIsEven()) {
-            if (Math.abs(seat.number() - theMiddleOfRow) == 0) {
-                return true;
-            }
-            if (seat.number() - (theMiddleOfRow + 1) == 0) {
-                return true;
-            }
-        }
-        return Math.abs(seat.number() - theMiddleOfRow) == 0;
-    }
-
     private List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>> splitSeatsByDistanceNearerTheMiddleOfTheRow() {
 
-        List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatWithDistances = new ArrayList<>();
-        List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>> groupsSeatsWithDistance = new ArrayList<>();
+        List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistance = new ArrayList<>();
+        List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>> groupsOfSeatsWithDistance = new ArrayList<>();
 
         for (Seat seat : row.seats()) {
-            if (!isMiddle(seat)) {
-                seatWithDistances.add(new SeatWithTheDistanceFromTheMiddleOfTheRow(seat, distance(theMiddleOfRow(), seat)));
+            if (!row.isTheMiddleOfRow(seat)) {
+                seatsWithDistance
+                        .add(new SeatWithTheDistanceFromTheMiddleOfTheRow(seat, row.distanceFromTheMiddleOfRow(seat)));
             } else {
-                if (!seatWithDistances.isEmpty())
-                    groupsSeatsWithDistance.add(seatWithDistances);
-                seatWithDistances = new ArrayList<>();
+                if (!seatsWithDistance.isEmpty())
+                    groupsOfSeatsWithDistance.add(seatsWithDistance);
+                seatsWithDistance = new ArrayList<>();
             }
         }
-        if (!seatWithDistances.isEmpty())
-            groupsSeatsWithDistance.add(seatWithDistances);
+        if (!seatsWithDistance.isEmpty())
+            groupsOfSeatsWithDistance.add(seatsWithDistance);
 
-        return groupsSeatsWithDistance;
+        return groupsOfSeatsWithDistance;
     }
 
-    private int distance(int middle, Seat seat) {
-        int distance;
-        if (rowSizeIsEven())
-            distance = seat.number() - middle > 0
-                    ? Math.abs(seat.number() - middle)
-                    : Math.abs(seat.number() - (middle + 1));
-        else
-            distance = Math.abs(seat.number() - middle);
-        return distance;
-    }
 }
