@@ -92,18 +92,18 @@ namespace SeatsSuggestions.Tests.UnitTests
 
             var row = new Row("A", new List<Seat> { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 });
 
+            var suggestionRequest = new SuggestionRequest(partySize, PricingCategory.Mixed);
+
             var seatsWithDistance =
                 new OfferingSeatsNearerMiddleOfTheRow(row).OfferSeatsNearerTheMiddleOfTheRow(
-                    new SuggestionRequest(5, PricingCategory.Mixed));
+                    suggestionRequest);
 
-            var seats = OfferAdjacentSeats(seatsWithDistance, partySize);
+            var seats =
+                new OfferingAdjacentSeatsToMembersOfTheSameParty(suggestionRequest).OfferAdjacentSeats(
+                    seatsWithDistance);
 
             Check.That(seats).ContainsExactly(a5, a6, a7);
         }
 
-        public IEnumerable<Seat> OfferAdjacentSeats(IEnumerable<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistances, int partySize)
-        {
-            return new List<Seat>();
-        }
     }
 }

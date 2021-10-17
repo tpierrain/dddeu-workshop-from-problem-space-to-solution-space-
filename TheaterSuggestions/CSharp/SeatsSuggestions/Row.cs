@@ -1,26 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using Value;
 using SeatsSuggestions.DeepModel;
+using Value;
 
 namespace SeatsSuggestions
 {
     public class Row : ValueType<Row>
     {
-        public string Name { get; }
-        public List<Seat> Seats { get; }
-
-        public Row(string name, List<Seat> seats)
+        public Row(string name, IReadOnlyList<Seat> seats)
         {
             Name = name;
             Seats = seats;
         }
 
+        public string Name { get; }
+        public IReadOnlyList<Seat> Seats { get; }
+
         public Row AddSeat(Seat seat)
         {
-            var updatedList = Seats.Select(s => s == seat ? seat : s).ToList();
-
-            return new Row(Name, updatedList);
+            return new Row(Name, new List<Seat>(Seats) { seat });
         }
 
         public SeatingOptionSuggested SuggestSeatingOption(SuggestionRequest suggestionRequest)
@@ -31,10 +30,7 @@ namespace SeatsSuggestions
             {
                 seatingOptionSuggested.AddSeat(seat);
 
-                if (seatingOptionSuggested.MatchExpectation())
-                {
-                    return seatingOptionSuggested;
-                }
+                if (seatingOptionSuggested.MatchExpectation()) return seatingOptionSuggested;
             }
 
             return new SeatingOptionNotAvailable(suggestionRequest);
@@ -43,34 +39,68 @@ namespace SeatsSuggestions
         public IEnumerable<Seat> OfferAdjacentSeatsNearerTheMiddleOfRow(SuggestionRequest suggestionRequest)
         {
             // 1. offer seats from the middle of the row
-            var seatsWithDistanceFromMiddleOfTheRow = new OfferingSeatsNearerMiddleOfTheRow(this).OfferSeatsNearerTheMiddleOfTheRow(suggestionRequest);
+            var seatsWithDistanceFromMiddleOfTheRow =
+                new OfferingSeatsNearerMiddleOfTheRow(this).OfferSeatsNearerTheMiddleOfTheRow(suggestionRequest);
 
-            return seatsWithDistanceFromMiddleOfTheRow.Select(seatWithTheDistanceFromTheMiddleOfTheRow => seatWithTheDistanceFromTheMiddleOfTheRow.Seat).ToList();
+            if (DoNotLookForAdjacentSeatsWhenThePartyContainsOnlyOnePerson(suggestionRequest))
+            {
+                return seatsWithDistanceFromMiddleOfTheRow.Select(seatWithTheDistanceFromTheMiddleOfTheRow => seatWithTheDistanceFromTheMiddleOfTheRow.Seat);
+            }
+
+            // 2. based on seats with distance from the middle of row,
+            //    we offer the best group (close to the middle) of adjacent seats
+            return new OfferingAdjacentSeatsToMembersOfTheSameParty(suggestionRequest).OfferAdjacentSeats(
+                seatsWithDistanceFromMiddleOfTheRow);
         }
 
+        private bool DoNotLookForAdjacentSeatsWhenThePartyContainsOnlyOnePerson(SuggestionRequest suggestionRequest)
+        {
+            return suggestionRequest.PartyRequested == 1;
+        }
         public Row Allocate(Seat seat)
         {
             var newVersionOfSeats = new List<Seat>();
 
             foreach (var currentSeat in Seats)
-            {
                 if (currentSeat.SameSeatLocation(seat))
-                {
                     newVersionOfSeats.Add(new Seat(seat.RowName, seat.Number, seat.PricingCategory,
                         SeatAvailability.Allocated));
-                }
                 else
-                {
                     newVersionOfSeats.Add(currentSeat);
-                }
-            }
 
             return new Row(seat.RowName, newVersionOfSeats);
         }
 
+        public int TheMiddleOfRow => Seats.Count % 2 == 0 ? Seats.Count / 2 : Math.Abs(Seats.Count / 2) + 1;
+
+        public bool RowSizeIsEven => Seats.Count % 2 == 0;
+
+        public bool IsMiddleOfTheRow(Seat seat)
+        {
+            if (RowSizeIsEven)
+            {
+                if (Math.Abs(seat.Number - TheMiddleOfRow) == 0 || seat.Number - (TheMiddleOfRow + 1) == 0)
+                {
+                    return true;
+                }
+            }
+
+            return Math.Abs(seat.Number - TheMiddleOfRow) == 0;
+        }
+
+        public int DistanceFromTheMiddleOfRow(Seat seat)
+        {
+            if (RowSizeIsEven)
+                return seat.Number - TheMiddleOfRow > 0
+                    ? Math.Abs((int)(seat.Number - TheMiddleOfRow))
+                    : Math.Abs((int)(seat.Number - (TheMiddleOfRow + 1)));
+
+            return Math.Abs((int)(seat.Number - TheMiddleOfRow));
+        }
+
         protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
         {
-            return new object[] {Name, new ListByValue<Seat>(Seats)};
+            return new object[] { Name, new ListByValue<Seat>(new List<Seat>(Seats)) };
         }
     }
 }
