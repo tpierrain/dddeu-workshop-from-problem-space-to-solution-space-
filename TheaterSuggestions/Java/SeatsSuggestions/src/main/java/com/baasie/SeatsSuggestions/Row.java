@@ -8,8 +8,8 @@ import java.util.stream.Collectors;
 
 @EqualsAndHashCode
 public class Row {
-    private String name;
-    private List<Seat> seats;
+    private final String name;
+    private final List<Seat> seats;
 
     public Row(String name, List<Seat> seats) {
         this.name = name;
@@ -37,7 +37,6 @@ public class Row {
 
         SeatingOptionSuggested seatingOptionSuggested = new SeatingOptionSuggested(suggestionRequest);
 
-
         for (Seat seat : offerAdjacentSeatsNearerTheMiddleOfRow(suggestionRequest)) {
             seatingOptionSuggested.addSeat(seat);
 
@@ -58,9 +57,8 @@ public class Row {
         }
         // 2. based on seats with distance from the middle of row,
         //    we offer the best group (close to the middle) of adjacent seats
-        List<Seat> seats = new OfferingAdjacentSeatsToMembersOfTheSameParty(suggestionRequest).OfferAdjacentSeats(
+        return new OfferingAdjacentSeatsToMembersOfTheSameParty(suggestionRequest).OfferAdjacentSeats(
                 seatWithTheDistanceFromTheMiddleOfTheRows);
-        return seats;
     }
 
     private boolean doNotLookForAdjacentSeatsWhenThePartyContainsOnlyOnePerson(SuggestionRequest suggestionRequest) {
@@ -90,5 +88,27 @@ public class Row {
     public int theMiddleOfRow() {
 
         return rowSizeIsEven() ? seats().size() / 2 : Math.abs(seats().size() / 2) + 1;
+    }
+
+    public boolean isTheMiddleOfRow(Seat seat) {
+
+        int theMiddleOfRow = theMiddleOfRow();
+
+        if (rowSizeIsEven()) {
+            if (Math.abs(seat.number() - theMiddleOfRow) == 0 || seat.number() - (theMiddleOfRow + 1) == 0) {
+                return true;
+            }
+        }
+        return Math.abs(seat.number() - theMiddleOfRow) == 0;
+    }
+
+    public int distanceFromTheMiddleOfRow(Seat seat) {
+
+        if (rowSizeIsEven())
+            return seat.number() - theMiddleOfRow() > 0
+                    ? Math.abs(seat.number() - theMiddleOfRow())
+                    : Math.abs(seat.number() - (theMiddleOfRow() + 1));
+
+        return Math.abs(seat.number() - theMiddleOfRow());
     }
 }
