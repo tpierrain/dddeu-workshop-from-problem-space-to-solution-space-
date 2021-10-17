@@ -13,10 +13,10 @@ namespace SeatsSuggestions
             SeatAvailability = seatAvailability;
         }
 
-        public string RowName { get; }
-        public uint Number { get; }
-        public PricingCategory PricingCategory { get; }
-        public SeatAvailability SeatAvailability { get; }
+        public string RowName { get; init; }
+        public uint Number { get; init; }
+        public PricingCategory PricingCategory { get; init; }
+        public SeatAvailability SeatAvailability { get; init; }
 
         public bool IsAvailable()
         {

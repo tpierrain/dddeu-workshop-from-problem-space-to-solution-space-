@@ -14,8 +14,8 @@ namespace SeatsSuggestions
             Seats = seats;
         }
 
-        public string Name { get; }
-        public IReadOnlyList<Seat> Seats { get; }
+        public string Name { get; init; }
+        public IReadOnlyList<Seat> Seats { get; init; }
 
         public Row AddSeat(Seat seat)
         {

@@ -20,8 +20,8 @@ namespace SeatsSuggestions.DeepModel
             DistanceFromTheMiddleOfTheRow = distanceFromTheMiddleOfTheRow;
         }
 
-        public Seat Seat { get; }
-        public int DistanceFromTheMiddleOfTheRow { get; }
+        public Seat Seat { get; init; }
+        public int DistanceFromTheMiddleOfTheRow { get; init; }
 
         public override string ToString()
         {
