@@ -6,8 +6,8 @@ namespace SeatsSuggestions
 {
     public class Row : ValueType<Row>
     {
-        public string Name { get; }
-        public List<Seat> Seats { get; }
+        public string Name { get; init; }
+        public List<Seat> Seats { get; init; }
 
         public Row(string name, List<Seat> seats)
         {
