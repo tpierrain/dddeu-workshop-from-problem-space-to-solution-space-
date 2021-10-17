@@ -16,7 +16,7 @@ public class SeatAllocator implements IProvideAuditoriumSeating {
     }
 
     private static List<SuggestionMade> giveMeSuggestionsFor(
-            AuditoriumSeating auditoriumSeating, int partyRequested, PricingCategory pricingCategory) {
+            AuditoriumSeating auditoriumSeating, PartyRequested partyRequested, PricingCategory pricingCategory) {
 
         SuggestionRequest suggestionRequest = new SuggestionRequest(partyRequested, pricingCategory);
         List<SuggestionMade> foundedSuggestions = new ArrayList<>();
@@ -33,7 +33,7 @@ public class SeatAllocator implements IProvideAuditoriumSeating {
         return ImmutableList.copyOf(foundedSuggestions);
     }
 
-    public SuggestionsMade makeSuggestions(String showId, int partyRequested) {
+    public SuggestionsMade makeSuggestions(ShowId showId, PartyRequested partyRequested) {
 
         AuditoriumSeating auditoriumSeating = iAdaptAuditoriumSeating.getAuditoriumSeating(showId);
 

@@ -162,7 +162,7 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
     }
 
     private static boolean isMatchingPartyRequested(SuggestionRequest suggestionRequest, List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatWithDistances) {
-        return seatWithDistances.size() >= suggestionRequest.partyRequested();
+        return seatWithDistances.size() >= suggestionRequest.partyRequested().partySize();
     }
 
     private List<Seat> noSeatSuggested() {

@@ -35,7 +35,7 @@ public class OfferingSeatsNearerMiddleOfTheRowTest {
 
     @Test
     public void offer_seats_from_the_middle_of_the_row_when_the_row_size_is_even_and_party_size_is_greater_than_one() {
-        int partySize = 2;
+        PartyRequested partyRequested = new PartyRequested(2);
 
         Seat a1 = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
         Seat a2 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
@@ -51,16 +51,16 @@ public class OfferingSeatsNearerMiddleOfTheRowTest {
         Row row = new Row("A", new ArrayList<>(Arrays.asList(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10)));
 
         List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistance = new ArrayList<>(new OfferingSeatsNearerMiddleOfTheRow(row)
-                .offerSeatsNearerTheMiddleOfTheRow(new SuggestionRequest(partySize, PricingCategory.Mixed)));
+                .offerSeatsNearerTheMiddleOfTheRow(new SuggestionRequest(partyRequested, PricingCategory.Mixed)));
 
-        List<Seat> seats = seatsWithDistance.stream().map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat).limit(partySize).collect(Collectors.toList());
+        List<Seat> seats = seatsWithDistance.stream().map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat).limit(partyRequested.partySize()).collect(Collectors.toList());
 
         assertThat(seats).containsExactly(a5, a6);
     }
 
     @Test
     public void offer_seats_from_the_middle_of_the_row_when_with_the_row_size_is_odd_and_party_size_is_greater_than_one() {
-        int partySize = 5;
+        PartyRequested partyRequested = new PartyRequested(5);
 
         Seat a1 = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
         Seat a2 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
@@ -75,7 +75,7 @@ public class OfferingSeatsNearerMiddleOfTheRowTest {
         Row row = new Row("A", new ArrayList<>(Arrays.asList(a1, a2, a3, a4, a5, a6, a7, a8, a9)));
 
         List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistance = new OfferingSeatsNearerMiddleOfTheRow(row)
-                .offerSeatsNearerTheMiddleOfTheRow(new SuggestionRequest(partySize, PricingCategory.Mixed)).stream().limit(partySize).collect(Collectors.toList());
+                .offerSeatsNearerTheMiddleOfTheRow(new SuggestionRequest(partyRequested, PricingCategory.Mixed)).stream().limit(partyRequested.partySize()).collect(Collectors.toList());
 
         List<Seat> seats = seatsWithDistance.stream().map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat).sorted(Comparator.comparingInt(Seat::number)).collect(Collectors.toList());
 

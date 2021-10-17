@@ -1,12 +1,11 @@
 package com.baasie.ExternalDependencies.reservationsprovider;
 
 import com.baasie.ExternalDependencies.IProvideCurrentReservations;
+import com.baasie.SeatsSuggestionsDomain.ShowId;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,9 +32,9 @@ public class ReservationsProvider implements IProvideCurrentReservations {
         }
     }
 
-    public ReservedSeatsDto getReservedSeats(String showId) {
-        if (repository.containsKey(showId)) {
-            return repository.get(showId);
+    public ReservedSeatsDto getReservedSeats(ShowId showId) {
+        if (repository.containsKey(showId.ID())) {
+            return repository.get(showId.ID());
         }
         return new ReservedSeatsDto();
     }

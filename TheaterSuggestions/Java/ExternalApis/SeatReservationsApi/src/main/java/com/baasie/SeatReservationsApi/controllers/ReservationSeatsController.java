@@ -3,6 +3,7 @@ package com.baasie.SeatReservationsApi.controllers;
 
 import com.baasie.ExternalDependencies.IProvideCurrentReservations;
 import com.baasie.ExternalDependencies.reservationsprovider.ReservedSeatsDto;
+import com.baasie.SeatsSuggestionsDomain.ShowId;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/data_for_reservation_seats")
 public class ReservationSeatsController {
 
-    private IProvideCurrentReservations provideCurrentReservations;
+    private final IProvideCurrentReservations provideCurrentReservations;
 
     public ReservationSeatsController(IProvideCurrentReservations provideCurrentReservations) {
         this.provideCurrentReservations = provideCurrentReservations;
@@ -21,6 +22,6 @@ public class ReservationSeatsController {
     // GET api/data_for_reservation_seats/5
     @GetMapping(value = "/{showId}", produces = "application/json")
     public ReservedSeatsDto get(@PathVariable String showId) {
-        return provideCurrentReservations.getReservedSeats(showId);
+        return provideCurrentReservations.getReservedSeats(new ShowId(showId));
     }
 }

@@ -9,7 +9,7 @@ public class SeatingOptionSuggested {
 
     private PricingCategory pricingCategory;
     private List<Seat> seats = new ArrayList<>();
-    private int partyRequested;
+    private PartyRequested partyRequested;
 
     public SeatingOptionSuggested(SuggestionRequest suggestionRequest) {
         this.pricingCategory = suggestionRequest.pricingCategory();
@@ -17,7 +17,7 @@ public class SeatingOptionSuggested {
     }
 
     public boolean matchExpectation() {
-        return seats.size() == partyRequested;
+        return seats.size() == partyRequested.partySize();
     }
 
     public List<Seat> seats() {

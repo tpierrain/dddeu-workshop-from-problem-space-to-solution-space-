@@ -5,10 +5,10 @@ import lombok.Value;
 @Value
 public class SuggestionRequest {
 
-    int partyRequested;
+    PartyRequested partyRequested;
     PricingCategory pricingCategory;
 
-    public SuggestionRequest(int partyRequested, PricingCategory pricingCategory) {
+    public SuggestionRequest(PartyRequested partyRequested, PricingCategory pricingCategory) {
         this.partyRequested = partyRequested;
         this.pricingCategory = pricingCategory;
     }
@@ -22,7 +22,7 @@ public class SuggestionRequest {
         return pricingCategory;
     }
 
-    public int partyRequested() {
+    public PartyRequested partyRequested() {
         return partyRequested;
     }
 }

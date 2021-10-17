@@ -1,6 +1,7 @@
 package com.baasie.ExternalDependencies.auditoriumlayoutrepository;
 
 import com.baasie.ExternalDependencies.IProvideAuditoriumLayouts;
+import com.baasie.SeatsSuggestionsDomain.ShowId;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 
@@ -30,7 +31,7 @@ public class AuditoriumLayoutRepository implements IProvideAuditoriumLayouts {
         }
     }
 
-    public AuditoriumDto GetAuditoriumLayoutFor(String showId) {
+    public AuditoriumDto GetAuditoriumLayoutFor(ShowId showId) {
         if (repository.containsKey(showId)) {
             return repository.get(showId);
         }

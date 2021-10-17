@@ -2,10 +2,7 @@ package com.baasie.SeatsSuggestionsAcceptanceTests;
 
 import com.baasie.ExternalDependencies.auditoriumlayoutrepository.AuditoriumLayoutRepository;
 import com.baasie.ExternalDependencies.reservationsprovider.ReservationsProvider;
-import com.baasie.SeatsSuggestionsDomain.PricingCategory;
-import com.baasie.SeatsSuggestionsDomain.SeatAllocator;
-import com.baasie.SeatsSuggestionsDomain.SuggestionNotAvailable;
-import com.baasie.SeatsSuggestionsDomain.SuggestionsMade;
+import com.baasie.SeatsSuggestionsDomain.*;
 import com.baasie.SeatsSuggestionsDomain.port.IAdaptAuditoriumSeating;
 import com.baasie.SeatsSuggestionsInfra.AuditoriumSeatingAdapter;
 import org.junit.Test;
@@ -23,8 +20,8 @@ public class SeatsAllocatorShould {
         //      1   2   3   4   5   6   7   8   9  10
         // A : (2) (2) (1) (1) (1) (1) (1) (1) (2) (2)
         // B : (2) (2) (1) (1) (1) (1) (1) (1) (2) (2)
-        final String showId = "5";
-        final int partyRequested = 1;
+        final ShowId showId = new ShowId("5");
+        final PartyRequested partyRequested = new PartyRequested(1);
 
         IAdaptAuditoriumSeating auditoriumLayoutAdapter =
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
@@ -43,8 +40,8 @@ public class SeatsAllocatorShould {
         //       1   2   3   4   5   6   7   8   9  10
         //  A : (2) (2)  1  (1) (1) (1) (1) (1) (2) (2)
         //  B : (2) (2) (1) (1) (1) (1) (1) (1) (2) (2)
-        final String showId = "1";
-        final int partyRequested = 1;
+        final ShowId showId = new ShowId("1");
+        final PartyRequested partyRequested = new PartyRequested(1);
 
         IAdaptAuditoriumSeating auditoriumLayoutAdapter =
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
@@ -67,8 +64,8 @@ public class SeatsAllocatorShould {
         //  D: 2   2   2   2   2   2   2   2   2   2
         //  E: 3   3   3   3   3   3   3   3   3   3
         //  F: 3   3   3   3   3   3   3   3   3   3
-        final String showId = "18";
-        final int partyRequested = 1;
+        final ShowId showId = new ShowId("18");
+        final PartyRequested partyRequested = new PartyRequested(1);
 
         IAdaptAuditoriumSeating auditoriumLayoutAdapter =
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
@@ -91,8 +88,8 @@ public class SeatsAllocatorShould {
         //    1   2   3   4   5   6   7   8   9  10
         // A: 2   2   1   1  (1) (1) (1) (1)  2   2
         // B: 2   2   1   1   1   1   1   1   2   2
-        final String showId = "9";
-        final int partyRequested = 1;
+        final ShowId showId = new ShowId("9");
+        final PartyRequested partyRequested = new PartyRequested(1);
 
         IAdaptAuditoriumSeating auditoriumLayoutAdapter =
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
@@ -114,8 +111,8 @@ public class SeatsAllocatorShould {
         // D :  2   2   2   2   2   2   2   2   2   2
         // E :  3   3   3   3   3   3   3   3   3   3
         // F :  3   3   3   3   3   3   3   3   3   3
-        final String showId = "3";
-        final int partyRequested = 4;
+        final ShowId showId = new ShowId("3");
+        final PartyRequested partyRequested = new PartyRequested(4);
 
         IAdaptAuditoriumSeating auditoriumLayoutAdapter =
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
@@ -145,8 +142,8 @@ public class SeatsAllocatorShould {
         // D :  2   2   2   2   2   2   2   2   2   2
         // E :  3   3   3   3   3   3   3   3   3   3
         // F :  3   3   3   3   3   3   3   3   3   3
-        final String showId = "3";
-        final int partyRequested = 3;
+        final ShowId showId = new ShowId("3");
+        final PartyRequested partyRequested = new PartyRequested(3);
 
         IAdaptAuditoriumSeating auditoriumLayoutAdapter =
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());

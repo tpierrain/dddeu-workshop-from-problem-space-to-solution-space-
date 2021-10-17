@@ -63,7 +63,7 @@ public class Row {
     }
 
     private boolean doNotLookForAdjacentSeatsWhenThePartyContainsOnlyOnePerson(SuggestionRequest suggestionRequest) {
-        return suggestionRequest.partyRequested() == 1;
+        return suggestionRequest.partyRequested().partySize() == 1;
     }
 
     public Row allocate(Seat seat) {

@@ -9,10 +9,10 @@ import java.util.stream.Collectors;
 public class SuggestionMade {
 
     private ImmutableList<Seat> suggestedSeats;
-    private int partyRequested;
+    private PartyRequested partyRequested;
     private PricingCategory pricingCategory;
 
-    public SuggestionMade(List<Seat> suggestedSeats, int partyRequested, PricingCategory pricingCategory) {
+    public SuggestionMade(List<Seat> suggestedSeats, PartyRequested partyRequested, PricingCategory pricingCategory) {
         this.suggestedSeats = ImmutableList.copyOf(suggestedSeats);
         this.partyRequested = partyRequested;
         this.pricingCategory = pricingCategory;
@@ -23,7 +23,7 @@ public class SuggestionMade {
     }
 
     public boolean MatchExpectation() {
-        return suggestedSeats.size() == partyRequested;
+        return suggestedSeats.size() == partyRequested.partySize();
     }
 
     public PricingCategory pricingCategory() {

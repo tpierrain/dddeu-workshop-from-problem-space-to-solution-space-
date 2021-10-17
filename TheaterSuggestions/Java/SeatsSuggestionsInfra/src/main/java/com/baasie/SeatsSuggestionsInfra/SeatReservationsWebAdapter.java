@@ -1,8 +1,8 @@
 package com.baasie.SeatsSuggestionsInfra;
 
 import com.baasie.ExternalDependencies.IProvideCurrentReservations;
-import com.baasie.ExternalDependencies.auditoriumlayoutrepository.AuditoriumDto;
 import com.baasie.ExternalDependencies.reservationsprovider.ReservedSeatsDto;
+import com.baasie.SeatsSuggestionsDomain.ShowId;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ public class SeatReservationsWebAdapter implements IProvideCurrentReservations {
     }
 
     @Override
-    public ReservedSeatsDto getReservedSeats(String showId) {
+    public ReservedSeatsDto getReservedSeats(ShowId showId) {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response
                 = restTemplate.getForEntity(uriSeatReservationService + "/api/data_for_reservation_seats/" + showId, String.class);

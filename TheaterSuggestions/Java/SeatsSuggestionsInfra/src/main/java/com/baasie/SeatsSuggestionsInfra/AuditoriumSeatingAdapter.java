@@ -34,8 +34,8 @@ public class AuditoriumSeatingAdapter implements IAdaptAuditoriumSeating {
         return Integer.parseUnsignedInt(name.substring(1));
     }
 
-    public AuditoriumSeating getAuditoriumSeating(String showId) {
-        return adapt(auditoriumLayoutRepository.getAuditoriumSeatingFor(showId),
+    public AuditoriumSeating getAuditoriumSeating(ShowId showId) {
+        return adapt(auditoriumLayoutRepository.getAuditoriumSeatingFor(showId.ID()),
                 reservedSeatsRepository.getReservedSeats(showId));
 
     }

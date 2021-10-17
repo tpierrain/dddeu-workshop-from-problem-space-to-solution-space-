@@ -8,10 +8,10 @@ import java.util.stream.Collectors;
 
 public class SuggestionsMade {
     public Map<PricingCategory, List<SuggestionMade>> forCategory = new HashMap<>();
-    private String showId;
-    private int partyRequested;
+    private ShowId showId;
+    private PartyRequested partyRequested;
 
-    public SuggestionsMade(String showId, int partyRequested) {
+    public SuggestionsMade(ShowId showId, PartyRequested partyRequested) {
         this.showId = showId;
         this.partyRequested = partyRequested;
 

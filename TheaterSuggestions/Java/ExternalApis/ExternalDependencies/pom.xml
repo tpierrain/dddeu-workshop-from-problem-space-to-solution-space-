@@ -70,7 +70,11 @@
 			<artifactId>truth-java8-extension</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>com.baasie</groupId>
+            <artifactId>SeatsSuggestionsDomain</artifactId>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>
