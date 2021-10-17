@@ -64,7 +64,7 @@ namespace SeatsSuggestions.Domain.DeepModel
             SortedDictionary<int, List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>>> bestGroups)
         {
             return HasTheBestGroupWithoutConflict(bestGroups)
-                ? SelectSeatsFrom(bestGroups)
+                ? ProjectToSeats(bestGroups)
                 : DecideBetweenIdenticalScores(bestGroups);
         }
 
@@ -88,7 +88,7 @@ namespace SeatsSuggestions.Domain.DeepModel
             return decideBetweenIdenticalScores;
         }
 
-        private static IEnumerable<Seat> SelectSeatsFrom(
+        private static IEnumerable<Seat> ProjectToSeats(
             SortedDictionary<int, List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>>> bestGroups)
         {
             return ProjectToSeats(bestGroups.Values.First()[0]);
