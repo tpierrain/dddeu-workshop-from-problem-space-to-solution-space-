@@ -25,12 +25,10 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
 
     private static List<Seat> decideBetweenIdenticalScores(TreeMap<Integer, List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>>> bestGroups) {
 
-        TreeMap<Integer, List<Seat>> decideBetweenIdenticalScores = populateTheBestGroups(bestGroups);
-
-        return selectTheGroupWhoseSizeIsTheLargestWithEqualScore(decideBetweenIdenticalScores);
+        return populateTheBestGroups(bestGroups);
     }
 
-    private static TreeMap<Integer, List<Seat>> populateTheBestGroups(TreeMap<Integer, List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>>> bestGroups) {
+    private static List<Seat> populateTheBestGroups(TreeMap<Integer, List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>>> bestGroups) {
 
         TreeMap<Integer, List<Seat>> decideBetweenIdenticalScores = new TreeMap<>();
 
@@ -40,11 +38,26 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
             for (List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatWithTheDistanceFromTheMiddleOfTheRows :
                     collectionOfSeatWithTheDistanceFromTheMiddleOfTheRows) {
 
-                decideBetweenIdenticalScores.put(seatWithTheDistanceFromTheMiddleOfTheRows.size(),
-                        projectToSeats(seatWithTheDistanceFromTheMiddleOfTheRows));
+                if (decideBetweenIdenticalScores.containsKey(seatWithTheDistanceFromTheMiddleOfTheRows.size())) {
+
+                    // Groups are equivalents, the domain expert have decided to select the group with the smallest seat numbers
+                    // =========================================================================================================
+                    Integer bestGroupScore = seatWithTheDistanceFromTheMiddleOfTheRows.stream().map(s -> s.seat().number())
+                            .reduce(0, Integer::sum);
+
+                    List<Seat> seatWithTheDistanceFromTheMiddleOfTheRowsContained = decideBetweenIdenticalScores.get(seatWithTheDistanceFromTheMiddleOfTheRows.size());
+                    Integer bestGroupScoreForContained = seatWithTheDistanceFromTheMiddleOfTheRowsContained.stream().map(s -> s.number()).reduce(0, Integer::sum);
+                    if (bestGroupScore < bestGroupScoreForContained)
+                        decideBetweenIdenticalScores.put(seatWithTheDistanceFromTheMiddleOfTheRows.size(),
+                            projectToSeats(seatWithTheDistanceFromTheMiddleOfTheRows));
+                }
+                else {
+                    decideBetweenIdenticalScores.put(seatWithTheDistanceFromTheMiddleOfTheRows.size(),
+                            projectToSeats(seatWithTheDistanceFromTheMiddleOfTheRows));
+                }
             }
         }
-        return decideBetweenIdenticalScores;
+        return decideBetweenIdenticalScores.lastEntry().getValue();
     }
 
     private static List<Seat> projectToSeats(List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatWithTheDistanceFromTheMiddleOfTheRows) {
