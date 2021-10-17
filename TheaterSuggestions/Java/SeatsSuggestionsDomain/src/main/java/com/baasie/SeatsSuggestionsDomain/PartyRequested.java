@@ -1,5 +1,8 @@
 package com.baasie.SeatsSuggestionsDomain;
 
+import lombok.EqualsAndHashCode;
+
+@EqualsAndHashCode
 public class PartyRequested {
 
     public static final int MAX_PARTY_SIZE = 20;

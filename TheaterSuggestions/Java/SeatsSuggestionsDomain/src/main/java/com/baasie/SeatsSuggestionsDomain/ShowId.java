@@ -1,7 +1,8 @@
 package com.baasie.SeatsSuggestionsDomain;
 
-import java.util.stream.IntStream;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode
 public class ShowId {
 
     private final String _id;
