@@ -34,9 +34,11 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
 
         TreeMap<Integer, List<Seat>> decideBetweenIdenticalScores = new TreeMap<>();
 
-        for (List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>> listList : bestGroups.values()) {
+        for (List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>> collectionOfSeatWithTheDistanceFromTheMiddleOfTheRows :
+                bestGroups.values()) {
 
-            for (List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatWithTheDistanceFromTheMiddleOfTheRows : listList) {
+            for (List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatWithTheDistanceFromTheMiddleOfTheRows :
+                    collectionOfSeatWithTheDistanceFromTheMiddleOfTheRows) {
 
                 decideBetweenIdenticalScores.put(seatWithTheDistanceFromTheMiddleOfTheRows.size(),
                         projectToSeats(seatWithTheDistanceFromTheMiddleOfTheRows));
