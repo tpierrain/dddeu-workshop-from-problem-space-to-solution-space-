@@ -37,7 +37,7 @@ public class Row {
 
         SeatingOptionSuggested seatingOptionSuggested = new SeatingOptionSuggested(suggestionRequest);
 
-        for (Seat seat : offerAdjacentSeatsNearerTheMiddleOfRow(suggestionRequest)) {
+        for (Seat seat : offerAdjacentSeatsNearerTheMiddleOfTheRow(suggestionRequest)) {
             seatingOptionSuggested.addSeat(seat);
 
             if (seatingOptionSuggested.matchExpectation()) {
@@ -47,7 +47,7 @@ public class Row {
 
         return new SeatingOptionNotAvailable(suggestionRequest);
     }
-    public List<Seat> offerAdjacentSeatsNearerTheMiddleOfRow(SuggestionRequest suggestionRequest)
+    public List<Seat> offerAdjacentSeatsNearerTheMiddleOfTheRow(SuggestionRequest suggestionRequest)
     {
         // 1. offer seats from the middle of the row
         List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatWithTheDistanceFromTheMiddleOfTheRows = new OfferingSeatsNearerMiddleOfTheRow(this).offerSeatsNearerTheMiddleOfTheRow(suggestionRequest);

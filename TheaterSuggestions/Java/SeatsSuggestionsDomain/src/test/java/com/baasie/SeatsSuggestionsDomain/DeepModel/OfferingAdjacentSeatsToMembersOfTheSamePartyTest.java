@@ -62,7 +62,7 @@ public class OfferingAdjacentSeatsToMembersOfTheSamePartyTest {
 
         Row row = new Row("A", new ArrayList<>(Arrays.asList( a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 )));
 
-        assertThat(row.offerAdjacentSeatsNearerTheMiddleOfRow(new SuggestionRequest(new PartyRequested(2)
+        assertThat(row.offerAdjacentSeatsNearerTheMiddleOfTheRow(new SuggestionRequest(new PartyRequested(2)
                         , PricingCategory.Mixed)))
                 .containsExactly(a2, a1);
     }
