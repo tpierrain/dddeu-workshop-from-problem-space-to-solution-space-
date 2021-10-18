@@ -14,7 +14,7 @@ namespace SeatsSuggestions.Domain
             Seats = seats;
         }
 
-        public string Name { get; }
+        private string Name { get; }
         public IReadOnlyList<Seat> Seats { get; }
 
         public Row AddSeat(Seat seat)
@@ -74,7 +74,7 @@ namespace SeatsSuggestions.Domain
 
         public int TheMiddleOfRow => Seats.Count % 2 == 0 ? Seats.Count / 2 : Math.Abs(Seats.Count / 2) + 1;
 
-        public bool RowSizeIsEven => Seats.Count % 2 == 0;
+        private bool RowSizeIsEven => Seats.Count % 2 == 0;
 
         public bool IsMiddleOfTheRow(Seat seat)
         {
