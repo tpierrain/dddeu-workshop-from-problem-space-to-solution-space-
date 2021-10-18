@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using NFluent;
 using NUnit.Framework;
 using SeatsSuggestions.Domain.DeepModel;
@@ -13,9 +12,11 @@ namespace SeatsSuggestions.Tests.UnitTests.DeepModel
         public void Be_a_Value_Type()
         {
             var firstInstance =
-                new OfferingAdjacentSeatsToMembersOfTheSameParty(new SuggestionRequest(new PartyRequested(3), PricingCategory.Mixed));
+                new OfferingAdjacentSeatsToMembersOfTheSameParty(new SuggestionRequest(new PartyRequested(3),
+                    PricingCategory.Mixed));
             var secondInstance =
-                new OfferingAdjacentSeatsToMembersOfTheSameParty(new SuggestionRequest(new PartyRequested(3), PricingCategory.Mixed));
+                new OfferingAdjacentSeatsToMembersOfTheSameParty(new SuggestionRequest(new PartyRequested(3),
+                    PricingCategory.Mixed));
 
             Check.That(firstInstance).IsEqualTo(secondInstance);
         }
@@ -36,7 +37,8 @@ namespace SeatsSuggestions.Tests.UnitTests.DeepModel
 
             var row = new Row("A", new List<Seat> { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 });
 
-            Check.That(row.OfferAdjacentSeatsNearerTheMiddleOfRow(new SuggestionRequest(new PartyRequested(3), PricingCategory.Mixed)))
+            Check.That(row.OfferAdjacentSeatsNearerTheMiddleOfTheRow(new SuggestionRequest(new PartyRequested(3),
+                    PricingCategory.Mixed)))
                 .ContainsExactly(a5, a6, a7);
         }
 
@@ -56,7 +58,7 @@ namespace SeatsSuggestions.Tests.UnitTests.DeepModel
 
             var row = new Row("A", new List<Seat> { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 });
 
-            Check.That(row.OfferAdjacentSeatsNearerTheMiddleOfRow(new SuggestionRequest(new PartyRequested(2)
+            Check.That(row.OfferAdjacentSeatsNearerTheMiddleOfTheRow(new SuggestionRequest(new PartyRequested(2)
                     , PricingCategory.Mixed)))
                 .ContainsExactly(a2, a1);
         }

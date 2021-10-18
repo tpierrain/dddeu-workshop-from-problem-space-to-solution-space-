@@ -26,7 +26,7 @@ namespace SeatsSuggestions.Domain
         {
             var seatingOptionSuggested = new SeatingOptionSuggested(suggestionRequest);
 
-            foreach (var seat in OfferAdjacentSeatsNearerTheMiddleOfRow(suggestionRequest))
+            foreach (var seat in OfferAdjacentSeatsNearerTheMiddleOfTheRow(suggestionRequest))
             {
                 seatingOptionSuggested.AddSeat(seat);
 
@@ -36,7 +36,7 @@ namespace SeatsSuggestions.Domain
             return new SeatingOptionNotAvailable(suggestionRequest);
         }
 
-        public IEnumerable<Seat> OfferAdjacentSeatsNearerTheMiddleOfRow(SuggestionRequest suggestionRequest)
+        public IEnumerable<Seat> OfferAdjacentSeatsNearerTheMiddleOfTheRow(SuggestionRequest suggestionRequest)
         {
             // 1. offer seats from the middle of the row
             var seatsWithDistanceFromMiddleOfTheRow =

@@ -57,7 +57,7 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
                 }
             }
         }
-        
+
         return decideBetweenIdenticalScores.lastEntry().getValue();
     }
 
