@@ -19,7 +19,7 @@ public enum PricingCategory {
 
     private final int value;
 
-    private PricingCategory(int value) {
+    PricingCategory(int value) {
         this.value = value;
     }
 
