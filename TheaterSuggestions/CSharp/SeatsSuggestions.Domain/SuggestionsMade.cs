@@ -21,7 +21,7 @@ namespace SeatsSuggestions.Domain
         public PartyRequested PartyRequested { get; }
 
         private Dictionary<PricingCategory, List<SuggestionMade>> ForCategory { get; } =
-            new Dictionary<PricingCategory, List<SuggestionMade>>();
+            new();
 
         public IEnumerable<string> SeatsInFirstPricingCategory => SeatNames(PricingCategory.First);
         public IEnumerable<string> SeatsInSecondPricingCategory => SeatNames(PricingCategory.Second);

@@ -36,7 +36,7 @@ namespace SeatsSuggestions.Infra.Adapter
 
                 var auditoriumSeatingDto = JsonConvert
                     .DeserializeObject<AuditoriumDto>(jsonAuditoriumSeating,
-                        new JsonSerializerSettings {ContractResolver = new CamelCasePropertyNamesContractResolver()});
+                        new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
 
                 return auditoriumSeatingDto;
             }

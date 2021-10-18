@@ -17,6 +17,10 @@ namespace SeatsSuggestions.Domain
         private string Name { get; }
         public IReadOnlyList<Seat> Seats { get; }
 
+        public int TheMiddleOfRow => Seats.Count % 2 == 0 ? Seats.Count / 2 : Math.Abs(Seats.Count / 2) + 1;
+
+        private bool RowSizeIsEven => Seats.Count % 2 == 0;
+
         public Row AddSeat(Seat seat)
         {
             return new Row(Name, new List<Seat>(Seats) { seat });
@@ -43,9 +47,8 @@ namespace SeatsSuggestions.Domain
                 new OfferingSeatsNearerMiddleOfTheRow(this).OfferSeatsNearerTheMiddleOfTheRow(suggestionRequest);
 
             if (DoNotLookForAdjacentSeatsWhenThePartyContainsOnlyOnePerson(suggestionRequest))
-            {
-                return seatsWithDistanceFromMiddleOfTheRow.Select(seatWithTheDistanceFromTheMiddleOfTheRow => seatWithTheDistanceFromTheMiddleOfTheRow.Seat);
-            }
+                return seatsWithDistanceFromMiddleOfTheRow.Select(seatWithTheDistanceFromTheMiddleOfTheRow =>
+                    seatWithTheDistanceFromTheMiddleOfTheRow.Seat);
 
             // 2. based on seats with distance from the middle of row,
             //    we offer the best group (close to the middle) of adjacent seats
@@ -53,7 +56,8 @@ namespace SeatsSuggestions.Domain
                 seatsWithDistanceFromMiddleOfTheRow);
         }
 
-        private static bool DoNotLookForAdjacentSeatsWhenThePartyContainsOnlyOnePerson(SuggestionRequest suggestionRequest)
+        private static bool DoNotLookForAdjacentSeatsWhenThePartyContainsOnlyOnePerson(
+            SuggestionRequest suggestionRequest)
         {
             return suggestionRequest.PartyRequested.PartySize == 1;
         }
@@ -72,19 +76,11 @@ namespace SeatsSuggestions.Domain
             return new Row(seat.RowName, newVersionOfSeats);
         }
 
-        public int TheMiddleOfRow => Seats.Count % 2 == 0 ? Seats.Count / 2 : Math.Abs(Seats.Count / 2) + 1;
-
-        private bool RowSizeIsEven => Seats.Count % 2 == 0;
-
         public bool IsMiddleOfTheRow(Seat seat)
         {
             if (RowSizeIsEven)
-            {
                 if (Math.Abs(seat.Number - TheMiddleOfRow) == 0 || seat.Number - (TheMiddleOfRow + 1) == 0)
-                {
                     return true;
-                }
-            }
 
             return Math.Abs(seat.Number - TheMiddleOfRow) == 0;
         }

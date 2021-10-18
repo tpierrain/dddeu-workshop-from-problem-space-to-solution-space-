@@ -7,12 +7,13 @@ namespace SeatsSuggestions.Domain
     public class AuditoriumSeating : ValueType<AuditoriumSeating>
     {
         private readonly Dictionary<string, Row> _rows;
-        public IReadOnlyDictionary<string, Row> Rows => _rows;
 
         public AuditoriumSeating(Dictionary<string, Row> rows)
         {
             _rows = rows;
         }
+
+        public IReadOnlyDictionary<string, Row> Rows => _rows;
 
         public SeatingOptionSuggested SuggestSeatingOptionFor(SuggestionRequest suggestionRequest)
         {
@@ -36,7 +37,7 @@ namespace SeatsSuggestions.Domain
 
         protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
         {
-            return new object[] {new DictionaryByValue<string, Row>(_rows)};
+            return new object[] { new DictionaryByValue<string, Row>(_rows) };
         }
 
         private AuditoriumSeating AllocateSeats(IEnumerable<Seat> updatedSeats)

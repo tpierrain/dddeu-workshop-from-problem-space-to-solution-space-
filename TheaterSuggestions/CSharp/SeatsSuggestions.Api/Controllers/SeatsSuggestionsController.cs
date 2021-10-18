@@ -21,7 +21,7 @@ namespace SeatsSuggestions.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<string>> Get([FromQuery(Name = "showId")] string showId,
             [FromQuery(Name = "party")] int party)
-        {           
+        {
             // Infra => Domain
             var id = new ShowId(showId);
             var partyRequested = new PartyRequested(party);

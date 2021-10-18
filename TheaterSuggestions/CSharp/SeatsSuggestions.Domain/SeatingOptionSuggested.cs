@@ -11,7 +11,7 @@ namespace SeatsSuggestions.Domain
         }
 
         public PricingCategory PricingCategory { get; }
-        public List<Seat> Seats { get; } = new List<Seat>();
+        public List<Seat> Seats { get; } = new();
         public PartyRequested PartyRequested { get; }
 
         public bool MatchExpectation()

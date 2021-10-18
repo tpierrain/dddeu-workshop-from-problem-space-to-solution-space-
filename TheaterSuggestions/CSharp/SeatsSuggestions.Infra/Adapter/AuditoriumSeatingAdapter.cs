@@ -12,21 +12,21 @@ namespace SeatsSuggestions.Infra.Adapter
     /// </summary>
     public class AuditoriumSeatingAdapter : IAdaptAuditoriumSeating
     {
-        private readonly IProvideCurrentReservations _reservationsProvider;
         private readonly IProvideAuditoriumLayouts _auditoriumSeatingRepository;
-
-        public async Task<AuditoriumSeating> GetAuditoriumSeating(ShowId showId)
-        {
-            var auditoriumDto = await _auditoriumSeatingRepository.GetAuditoriumSeatingFor(showId.Id);
-            var reservedSeatsDto = await _reservationsProvider.GetReservedSeats(showId.Id);
-            return AdaptAuditoriumSeatingDto(auditoriumDto, reservedSeatsDto);
-        }
+        private readonly IProvideCurrentReservations _reservationsProvider;
 
         public AuditoriumSeatingAdapter(IProvideAuditoriumLayouts auditoriumSeatingRepository,
             IProvideCurrentReservations reservationsProvider)
         {
             _auditoriumSeatingRepository = auditoriumSeatingRepository;
             _reservationsProvider = reservationsProvider;
+        }
+
+        public async Task<AuditoriumSeating> GetAuditoriumSeating(ShowId showId)
+        {
+            var auditoriumDto = await _auditoriumSeatingRepository.GetAuditoriumSeatingFor(showId.Id);
+            var reservedSeatsDto = await _reservationsProvider.GetReservedSeats(showId.Id);
+            return AdaptAuditoriumSeatingDto(auditoriumDto, reservedSeatsDto);
         }
 
 
@@ -57,7 +57,7 @@ namespace SeatsSuggestions.Infra.Adapter
 
         private static PricingCategory ConvertCategory(int dtoPricingCategory)
         {
-            return (PricingCategory) dtoPricingCategory;
+            return (PricingCategory)dtoPricingCategory;
         }
 
         private static uint ExtractSeatNumber(string seatName)

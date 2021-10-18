@@ -26,7 +26,7 @@ namespace SeatsSuggestions.Infra.Adapter
 
             var reservationsSeatsDto = JsonConvert
                 .DeserializeObject<ReservedSeatsDto>(jsonSeatReservations,
-                    new JsonSerializerSettings {ContractResolver = new CamelCasePropertyNamesContractResolver()});
+                    new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
 
             return reservationsSeatsDto;
         }

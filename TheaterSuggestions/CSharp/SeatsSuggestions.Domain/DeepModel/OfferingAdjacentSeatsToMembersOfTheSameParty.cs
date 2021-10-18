@@ -66,23 +66,25 @@ namespace SeatsSuggestions.Domain.DeepModel
         {
             return HasOnlyOneBestGroup(bestGroups)
                 ? ProjectToSeats(bestGroups)
-                : DecideTheBestGroup(bestGroups);
+                : DecideWhichGroupIsTheBestWhenDistancesAreEqual(bestGroups);
         }
 
-        private static IEnumerable<Seat> DecideTheBestGroup(
+        private static IEnumerable<Seat> DecideWhichGroupIsTheBestWhenDistancesAreEqual(
             SortedDictionary<int, List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>>> bestGroups)
         {
             SortedDictionary<int, IEnumerable<Seat>> decideBetweenIdenticalScores = new();
-            
+
             foreach (var seatWithTheDistanceFromTheMiddleOfTheRows in bestGroups
                 .Values.SelectMany(collectionOfSeatWithTheDistanceFromTheMiddleOfTheRows =>
                     collectionOfSeatWithTheDistanceFromTheMiddleOfTheRows))
-                SelectTheBestScoreBetweenGroups(decideBetweenIdenticalScores, seatWithTheDistanceFromTheMiddleOfTheRows);
+                SelectTheBestScoreBetweenGroups(decideBetweenIdenticalScores,
+                    seatWithTheDistanceFromTheMiddleOfTheRows);
 
             return decideBetweenIdenticalScores.LastOrDefault().Value;
         }
 
-        private static void SelectTheBestScoreBetweenGroups(SortedDictionary<int, IEnumerable<Seat>> decideBetweenIdenticalScores,
+        private static void SelectTheBestScoreBetweenGroups(
+            SortedDictionary<int, IEnumerable<Seat>> decideBetweenIdenticalScores,
             List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatWithTheDistanceFromTheMiddleOfTheRows)
         {
             if (decideBetweenIdenticalScores.ContainsKey(seatWithTheDistanceFromTheMiddleOfTheRows.Count))
@@ -101,12 +103,13 @@ namespace SeatsSuggestions.Domain.DeepModel
             }
         }
 
-        private static (long bestGroupScore, long bestGroupScoreForContained) ExtractScores(List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatWithTheDistanceFromTheMiddleOfTheRows,
+        private static (long bestGroupScore, long bestGroupScoreForContained) ExtractScores(
+            List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatWithTheDistanceFromTheMiddleOfTheRows,
             IReadOnlyDictionary<int, IEnumerable<Seat>> decideBetweenIdenticalScores)
         {
             // Groups are equivalents, the domain expert have decided to select the group with the smallest seat numbers
             // =========================================================================================================
-            return (bestGroupScore: seatWithTheDistanceFromTheMiddleOfTheRows.Sum(s => s.Seat.Number), 
+            return (bestGroupScore: seatWithTheDistanceFromTheMiddleOfTheRows.Sum(s => s.Seat.Number),
                 decideBetweenIdenticalScores[seatWithTheDistanceFromTheMiddleOfTheRows.Count].Sum(s => s.Number));
         }
 
@@ -116,7 +119,8 @@ namespace SeatsSuggestions.Domain.DeepModel
             return ProjectToSeats(FirstValues(bestGroups)[0]);
         }
 
-        private static List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>> FirstValues(SortedDictionary<int, List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>>> bestGroups)
+        private static List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>> FirstValues(
+            SortedDictionary<int, List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>>> bestGroups)
         {
             return bestGroups.Values.First();
         }

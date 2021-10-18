@@ -23,12 +23,14 @@ namespace SeatsSuggestions.Domain.DeepModel
             return ComputeDistancesNearerTheMiddleOfTheRow()
                 .Where(seatWithTheDistanceFromTheMiddleOfTheRow =>
                     seatWithTheDistanceFromTheMiddleOfTheRow.Seat.MatchCategory(suggestionRequest.PricingCategory))
-                .Where(seatWithTheDistanceFromTheMiddleOfTheRow => seatWithTheDistanceFromTheMiddleOfTheRow.Seat.IsAvailable());
+                .Where(seatWithTheDistanceFromTheMiddleOfTheRow =>
+                    seatWithTheDistanceFromTheMiddleOfTheRow.Seat.IsAvailable());
         }
 
         private IEnumerable<SeatWithTheDistanceFromTheMiddleOfTheRow> ComputeDistancesNearerTheMiddleOfTheRow()
         {
-            var seatsWithDistancesFromTheMiddle = SplitSeatsByDistanceNearerTheMiddleOfTheRow(seat => _row.IsMiddleOfTheRow(seat));
+            var seatsWithDistancesFromTheMiddle =
+                SplitSeatsByDistanceNearerTheMiddleOfTheRow(seat => _row.IsMiddleOfTheRow(seat));
 
             return seatsWithDistancesFromTheMiddle.Append(GetSeatsInTheMiddleOfTheRow())
                 .SelectMany(seatWithDistanceFromTheMiddleOfTheRows => seatWithDistanceFromTheMiddleOfTheRows)
@@ -52,7 +54,7 @@ namespace SeatsSuggestions.Domain.DeepModel
             Func<Seat, bool> predicate)
         {
             var seatWithDistances = new List<SeatWithTheDistanceFromTheMiddleOfTheRow>();
-            
+
             foreach (var seat in _row.Seats)
                 if (!predicate(seat))
                 {

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using NFluent;
 using NUnit.Framework;
-using SeatsSuggestions.Domain.DeepModel;
 using SeatsSuggestions.Domain;
+using SeatsSuggestions.Domain.DeepModel;
 
 namespace SeatsSuggestions.Tests.UnitTests.DeepModel
 {
