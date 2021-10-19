@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 @EqualsAndHashCode
 public class OfferingAdjacentSeatsToMembersOfTheSameParty {
-    private static final List<Seat> noSeatSuggested = new ArrayList<>();
+    private static final List<Seat> noSeatFound = new ArrayList<>();
     private final SuggestionRequest suggestionRequest;
 
     public OfferingAdjacentSeatsToMembersOfTheSameParty(SuggestionRequest suggestionRequest) {
@@ -48,10 +48,12 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
 
     private static List<Integer> ExtractScores(TreeMap<Integer, List<Seat>> decideBetweenIdenticalScores,
                                                AdjacentSeats seatWithTheDistanceFromTheMiddleOfTheRows) {
-        Integer bestGroupScore = seatWithTheDistanceFromTheMiddleOfTheRows.seatsWithDistance
+        var bestGroupScore = seatWithTheDistanceFromTheMiddleOfTheRows.seatsWithDistance
                 .stream().map(s -> s.seat().number()).reduce(0, Integer::sum);
-        List<Seat> seatWithTheDistanceFromTheMiddleOfTheRowsContained = decideBetweenIdenticalScores.get(seatWithTheDistanceFromTheMiddleOfTheRows.seatsWithDistance.size());
-        Integer bestGroupScoreForContained = seatWithTheDistanceFromTheMiddleOfTheRowsContained.stream().map(Seat::number).reduce(0, Integer::sum);
+        var seatWithTheDistanceFromTheMiddleOfTheRowsContained = decideBetweenIdenticalScores
+                .get(seatWithTheDistanceFromTheMiddleOfTheRows.seatsWithDistance.size());
+        Integer bestGroupScoreForContained = seatWithTheDistanceFromTheMiddleOfTheRowsContained
+                .stream().map(Seat::number).reduce(0, Integer::sum);
         return new ArrayList<>(Arrays.asList(bestGroupScore, bestGroupScoreForContained));
 
     }
@@ -59,7 +61,7 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
     private static void selectTheBestScoreBetweenGroups(TreeMap<Integer, List<Seat>> decideBetweenIdenticalScores,
                                                         AdjacentSeats seatWithTheDistanceFromTheMiddleOfTheRows) {
 
-        List<Integer> scores = ExtractScores(decideBetweenIdenticalScores, seatWithTheDistanceFromTheMiddleOfTheRows);
+        var scores = ExtractScores(decideBetweenIdenticalScores, seatWithTheDistanceFromTheMiddleOfTheRows);
 
         long bestGroupScore = scores.get(0);
         long bestGroupScoreForContained = scores.get(1);
@@ -135,8 +137,7 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
     public List<Seat> OfferAdjacentSeats(
             List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistances) {
 
-       var groupOfAdjacentSeats =
-                splitInGroupsOfAdjacentSeats(seatsWithDistances);
+       var groupOfAdjacentSeats = splitInGroupsOfAdjacentSeats(seatsWithDistances);
 
         return selectAdjacentSeatsWithShorterDistanceFromTheMiddleOfTheRow(groupOfAdjacentSeats);
     }
@@ -160,7 +161,7 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
         }
 
         return any(theBestDistancesNearerToTheMiddleOfTheRowPerGroup)
-                ? selectTheBestGroup(theBestDistancesNearerToTheMiddleOfTheRowPerGroup) : noSeatSuggested();
+                ? selectTheBestGroup(theBestDistancesNearerToTheMiddleOfTheRowPerGroup) : noSeatFound;
     }
 
     private Integer sumOfDistancesNearerTheMiddleOfTheRowPerSeat(
@@ -171,7 +172,4 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
                 .reduce(0, Integer::sum);
     }
 
-    private List<Seat> noSeatSuggested() {
-        return noSeatSuggested;
-    }
 }
