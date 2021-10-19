@@ -163,5 +163,37 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
             Check.That(suggestionsMade.SeatNames(PricingCategory.Mixed))
                 .ContainsExactly("A6-A7-A8", "B2-B3-B4", "C4-C5-C6");
         }
+
+        [Test]
+        public async Task Offer_2_adjacent_seats_nearer_the_middle_of_a_row_when_it_is_possible()
+        {
+            // Dock Street Auditorium-3
+            //
+            //      1   2   3   4   5   6   7   8   9  10
+            // A:  (2) (2) (1) (1) (1)  1   1   1   2   2
+            // B:   2   2   1   1  (1) (1) (1) (1)  2   2
+            // C:   2   2   2   2   2   2   2   2   2   2
+            // D:   2   2   2   2   2   2   2   2   2   2
+            // E:   3   3   3   3   3   3   3   3   3   3
+            // F:   3   3   3   3   3   3   3   3   3   3
+            var showId = "3";
+            var partyRequested = 2;
+
+            var auditoriumLayoutAdapter =
+                new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
+
+            var seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
+
+            var suggestionsMade = await seatAllocator.MakeSuggestions(showId, partyRequested);
+
+            Check.That(suggestionsMade.SeatNames(PricingCategory.First))
+                .ContainsExactly("A6-A7", "B3-B4");
+            Check.That(suggestionsMade.SeatNames(PricingCategory.Second))
+                .ContainsExactly("A9-A10", "B1-B2", "B9-B10");
+            Check.That(suggestionsMade.SeatNames(PricingCategory.Third))
+                .ContainsExactly("E5-E6", "E3-E4", "E7-E8");
+            Check.That(suggestionsMade.SeatNames(PricingCategory.Mixed))
+                .ContainsExactly("A6-A7", "A8-A9", "B3-B4");
+        }
     }
 }
