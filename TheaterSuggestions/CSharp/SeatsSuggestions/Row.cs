@@ -7,7 +7,7 @@ namespace SeatsSuggestions
 {
     public class Row : ValueType<Row>
     {
-        public string Name { get; init; }
+        private string Name { get; init; }
         public List<Seat> Seats { get; init; }
 
         public Row(string name, List<Seat> seats)
@@ -38,11 +38,14 @@ namespace SeatsSuggestions
             return new SeatingOptionNotAvailable(suggestionRequest);
         }
 
-        public IEnumerable<Seat> OfferAdjacentSeatsNearerTheMiddleOfRow(SuggestionRequest suggestionRequest)
+        private IEnumerable<Seat> OfferAdjacentSeatsNearerTheMiddleOfRow(SuggestionRequest suggestionRequest)
         {
             // 1. offer seats from the middle of the row
             var seatsWithDistanceFromMiddleOfTheRow =
                 new OfferingSeatsNearerMiddleOfTheRow(this).OfferSeatsNearerTheMiddleOfTheRow(suggestionRequest).ToList();
+
+            if (seatsWithDistanceFromMiddleOfTheRow.Count < suggestionRequest.PartyRequested)
+                return new List<Seat>();
 
             if (DoNotLookForAdjacentSeatsWhenThePartyContainsOnlyOnePerson(suggestionRequest))
             {
@@ -51,8 +54,9 @@ namespace SeatsSuggestions
 
             // 2. based on seats with distance from the middle of row,
                 //    we offer the best group (close to the middle) of adjacent seats
-                return new OfferingAdjacentSeatsToMembersOfTheSameParty(suggestionRequest).OfferAdjacentSeats(
-                seatsWithDistanceFromMiddleOfTheRow);
+                return OfferingAdjacentSeatsToMembersOfTheSameParty.OfferAdjacentSeats(
+                    suggestionRequest,
+                    seatsWithDistanceFromMiddleOfTheRow);
         }
 
         private static bool DoNotLookForAdjacentSeatsWhenThePartyContainsOnlyOnePerson(SuggestionRequest suggestionRequest)

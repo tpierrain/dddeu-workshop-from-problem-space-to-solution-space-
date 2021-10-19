@@ -20,9 +20,9 @@ namespace SeatsSuggestions.DeepModel
         public IEnumerable<SeatWithTheDistanceFromTheMiddleOfTheRow> OfferSeatsNearerTheMiddleOfTheRow(
             SuggestionRequest suggestionRequest)
         {
-            return ComputeDistancesNearerTheMiddleOfTheRow().Where(seatWithDistance =>
-                    seatWithDistance.Seat.MatchCategory(suggestionRequest.PricingCategory))
-                .Where(seatWithDistance => seatWithDistance.Seat.IsAvailable());
+            return ComputeDistancesNearerTheMiddleOfTheRow()
+                .Where(seatWithDistance => seatWithDistance.Seat.IsAvailable())
+                .Where(seatWithDistance => seatWithDistance.Seat.MatchCategory(suggestionRequest.PricingCategory));
         }
 
         private IEnumerable<SeatWithTheDistanceFromTheMiddleOfTheRow> ComputeDistancesNearerTheMiddleOfTheRow()
