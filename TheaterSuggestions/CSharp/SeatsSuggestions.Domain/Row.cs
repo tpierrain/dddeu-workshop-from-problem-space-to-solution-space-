@@ -52,7 +52,7 @@ namespace SeatsSuggestions.Domain
 
             // 2. based on seats with distance from the middle of row,
             //    we offer the best group (close to the middle) of adjacent seats
-            return new OfferingAdjacentSeatsToMembersOfTheSameParty(suggestionRequest).OfferAdjacentSeats(
+            return OfferingAdjacentSeatsToMembersOfTheSameParty.OfferAdjacentSeats(suggestionRequest,
                 seatsWithDistanceFromMiddleOfTheRow);
         }
 

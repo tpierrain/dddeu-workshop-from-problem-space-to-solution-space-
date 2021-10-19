@@ -9,19 +9,6 @@ namespace SeatsSuggestions.Tests.UnitTests.DeepModel
     internal class OfferingAdjacentSeatsToMembersOfTheSamePartyShould
     {
         [Test]
-        public void Be_a_Value_Type()
-        {
-            var firstInstance =
-                new OfferingAdjacentSeatsToMembersOfTheSameParty(new SuggestionRequest(new PartyRequested(3),
-                    PricingCategory.Mixed));
-            var secondInstance =
-                new OfferingAdjacentSeatsToMembersOfTheSameParty(new SuggestionRequest(new PartyRequested(3),
-                    PricingCategory.Mixed));
-
-            Check.That(firstInstance).IsEqualTo(secondInstance);
-        }
-
-        [Test]
         public void Offer_adjacent_seats_nearer_the_middle_of_the_row_when_the_middle_is_not_reserved()
         {
             var a1 = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
