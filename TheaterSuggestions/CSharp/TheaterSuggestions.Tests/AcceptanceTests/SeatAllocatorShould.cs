@@ -154,11 +154,12 @@ namespace SeatsSuggestions.Tests.AcceptanceTests
 
             var suggestionsMade = await seatAllocator.MakeSuggestions(showId, partyRequested);
 
-            Check.That(suggestionsMade.SeatNames(PricingCategory.First)).ContainsExactly("A6-A7-A8");
+            Check.That(suggestionsMade.SeatNames(PricingCategory.First))
+                .ContainsExactly("A6-A7-A8");
             Check.That(suggestionsMade.SeatNames(PricingCategory.Second))
-                .ContainsExactly("C4-C5-C6", "C1-C2-C3", "C7-C8-C9");
+                .ContainsExactly("C4-C5-C6", "C7-C8-C9", "C1-C2-C3");
             Check.That(suggestionsMade.SeatNames(PricingCategory.Third))
-                .ContainsExactly("E4-E5-E6", "E1-E2-E3", "E7-E8-E9");
+                .ContainsExactly("E4-E5-E6", "E7-E8-E9", "E1-E2-E3");
             Check.That(suggestionsMade.SeatNames(PricingCategory.Mixed))
                 .ContainsExactly("A6-A7-A8", "B2-B3-B4", "C4-C5-C6");
         }
