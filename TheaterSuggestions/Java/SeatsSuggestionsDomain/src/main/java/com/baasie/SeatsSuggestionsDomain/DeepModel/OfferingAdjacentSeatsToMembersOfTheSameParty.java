@@ -12,18 +12,21 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
     private static final List<Seat> noSeatFound = new ArrayList<>();
     private final SuggestionRequest suggestionRequest;
 
-    public OfferingAdjacentSeatsToMembersOfTheSameParty(SuggestionRequest suggestionRequest) {
+    public
+    OfferingAdjacentSeatsToMembersOfTheSameParty(SuggestionRequest suggestionRequest) {
         this.suggestionRequest = suggestionRequest;
     }
 
-    private static List<Seat> selectTheBestGroup(TreeMap<Integer, List<AdjacentSeats>> bestGroups) {
+    private static List<Seat>
+    selectTheBestGroup(TreeMap<Integer, List<AdjacentSeats>> bestGroups) {
 
         return hasOnlyOneBestGroup(bestGroups) ?
                 projectToSeats(bestGroups) :
                 decideWhichGroupIsTheBestWhenDistancesAreEqual(bestGroups);
     }
 
-    private static List<Seat> decideWhichGroupIsTheBestWhenDistancesAreEqual(TreeMap<Integer, List<AdjacentSeats>> bestGroups) {
+    private static List<Seat>
+    decideWhichGroupIsTheBestWhenDistancesAreEqual(TreeMap<Integer, List<AdjacentSeats>> bestGroups) {
 
         TreeMap<Integer, List<Seat>> decideBetweenIdenticalScores = new TreeMap<>();
 
@@ -33,9 +36,10 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
         return decideBetweenIdenticalScores.lastEntry().getValue();
     }
 
-    private static void SelectTheBestScoreBetweenGroups(TreeMap<Integer, List<Seat>> decideBetweenIdenticalScores, List<AdjacentSeats> collectionOfSeatWithTheDistanceFromTheMiddleOfTheRows) {
+    private static void
+    SelectTheBestScoreBetweenGroups(TreeMap<Integer, List<Seat>> decideBetweenIdenticalScores, List<AdjacentSeats> adjacentSeatsList) {
         for (var seatWithTheDistanceFromTheMiddleOfTheRows :
-                collectionOfSeatWithTheDistanceFromTheMiddleOfTheRows) {
+                adjacentSeatsList) {
 
             if (decideBetweenIdenticalScores.containsKey(seatWithTheDistanceFromTheMiddleOfTheRows.seatsWithDistance.size())) {
                 selectTheBestScoreBetweenGroups(decideBetweenIdenticalScores, seatWithTheDistanceFromTheMiddleOfTheRows);
@@ -46,49 +50,52 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
         }
     }
 
-    private static List<Integer> ExtractScores(TreeMap<Integer, List<Seat>> decideBetweenIdenticalScores,
-                                               AdjacentSeats seatWithTheDistanceFromTheMiddleOfTheRows) {
-        var bestGroupScore = seatWithTheDistanceFromTheMiddleOfTheRows.seatsWithDistance
+    private static
+    List<Integer> ExtractScores(TreeMap<Integer, List<Seat>> decideBetweenIdenticalScores, AdjacentSeats adjacentSeats) {
+        var bestGroupScore = adjacentSeats.seatsWithDistance
                 .stream().map(s -> s.seat().number()).reduce(0, Integer::sum);
         var seatWithTheDistanceFromTheMiddleOfTheRowsContained = decideBetweenIdenticalScores
-                .get(seatWithTheDistanceFromTheMiddleOfTheRows.seatsWithDistance.size());
+                .get(adjacentSeats.seatsWithDistance.size());
         Integer bestGroupScoreForContained = seatWithTheDistanceFromTheMiddleOfTheRowsContained
                 .stream().map(Seat::number).reduce(0, Integer::sum);
         return new ArrayList<>(Arrays.asList(bestGroupScore, bestGroupScoreForContained));
 
     }
 
-    private static void selectTheBestScoreBetweenGroups(TreeMap<Integer, List<Seat>> decideBetweenIdenticalScores,
-                                                        AdjacentSeats seatWithTheDistanceFromTheMiddleOfTheRows) {
+    private static void
+    selectTheBestScoreBetweenGroups(TreeMap<Integer, List<Seat>> decideBetweenIdenticalScores, AdjacentSeats adjacentSeats) {
 
-        var scores = ExtractScores(decideBetweenIdenticalScores, seatWithTheDistanceFromTheMiddleOfTheRows);
+        var scores = ExtractScores(decideBetweenIdenticalScores, adjacentSeats);
 
         long bestGroupScore = scores.get(0);
         long bestGroupScoreForContained = scores.get(1);
 
         if (bestGroupScore < bestGroupScoreForContained)
-            decideBetweenIdenticalScores.put(seatWithTheDistanceFromTheMiddleOfTheRows.seatsWithDistance.size(),
-                    projectToSeats(seatWithTheDistanceFromTheMiddleOfTheRows));
+            decideBetweenIdenticalScores.put(adjacentSeats.seatsWithDistance.size(),
+                    projectToSeats(adjacentSeats));
     }
 
-    private static List<Seat> projectToSeats(AdjacentSeats seatWithTheDistanceFromTheMiddleOfTheRows) {
-        return seatWithTheDistanceFromTheMiddleOfTheRows.seatsWithDistance.stream()
+    private static List<Seat>
+    projectToSeats(AdjacentSeats adjacentSeats) {
+        return adjacentSeats.seatsWithDistance.stream()
                 .map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat)
                 .collect(Collectors.toList());
     }
 
-    private static List<Seat> projectToSeats(TreeMap<Integer, List<AdjacentSeats>> bestGroups) {
+    private static List<Seat>
+    projectToSeats(TreeMap<Integer, List<AdjacentSeats>> bestGroups) {
         List<AdjacentSeats> adjacentSeats = bestGroups.get(bestGroups.firstKey());
         List<SeatWithTheDistanceFromTheMiddleOfTheRow> collect = adjacentSeats.stream().map(s -> s.seatsWithDistance).flatMap(List::stream).collect(Collectors.toList());
         return collect.stream().map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat).collect(Collectors.toList());
     }
 
-    private static boolean hasOnlyOneBestGroup(TreeMap<Integer, List<AdjacentSeats>> bestGroups) {
+    private static boolean
+    hasOnlyOneBestGroup(TreeMap<Integer, List<AdjacentSeats>> bestGroups) {
         return bestGroups.get(bestGroups.firstKey()).size() == 1;
     }
 
-    private static AdjacentSeatsGroups splitInGroupsOfAdjacentSeats(
-            List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistances) {
+    private static AdjacentSeatsGroups
+    splitInGroupsOfAdjacentSeats(List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistances) {
 
         var adjacentSeats = new AdjacentSeats();
         var  adjacentSeatsGroups = new AdjacentSeatsGroups();
@@ -116,19 +123,23 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
         return adjacentSeatsGroups;
     }
 
-    private static AdjacentSeats buildAdjacentSeatsSortedByDistanceFromMiddleOfTheRow(AdjacentSeats adjacentSeats) {
+    private static AdjacentSeats
+    buildAdjacentSeatsSortedByDistanceFromMiddleOfTheRow(AdjacentSeats adjacentSeats) {
         return new AdjacentSeats(adjacentSeats.seatsWithDistance.stream().sorted(Comparator.comparing(SeatWithTheDistanceFromTheMiddleOfTheRow::distanceFromTheMiddleOfTheRow)).collect(Collectors.toList()));
     }
 
-    private static boolean any(TreeMap<Integer, List<AdjacentSeats>> bestGroups) {
+    private static boolean
+    any(TreeMap<Integer, List<AdjacentSeats>> bestGroups) {
         return !bestGroups.isEmpty();
     }
 
-    private static boolean isMatchingPartyRequested(SuggestionRequest suggestionRequest, List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatWithDistances) {
-        return seatWithDistances.size() >= suggestionRequest.partyRequested().partySize();
+    private static boolean
+    isMatchingPartyRequested(SuggestionRequest suggestionRequest, AdjacentSeats adjacentSeats) {
+        return adjacentSeats.seatsWithDistance.size() >= suggestionRequest.partyRequested().partySize();
     }
 
-    private static List<SeatWithTheDistanceFromTheMiddleOfTheRow> orderSeatsByTheirNumberToGroupAdjacent(List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistances) {
+    private static List<SeatWithTheDistanceFromTheMiddleOfTheRow>
+    orderSeatsByTheirNumberToGroupAdjacent(List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistances) {
         return seatsWithDistances.stream()
                 .sorted(Comparator.comparing(s -> s.seat().number()))
                 .collect(Collectors.toList());
@@ -142,22 +153,25 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
         return selectAdjacentSeatsWithShorterDistanceFromTheMiddleOfTheRow(groupOfAdjacentSeats);
     }
 
-    private List<Seat> selectAdjacentSeatsWithShorterDistanceFromTheMiddleOfTheRow(
-           AdjacentSeatsGroups groupsOfAdjacentSeats) {
+    private List<Seat>
+    selectAdjacentSeatsWithShorterDistanceFromTheMiddleOfTheRow(AdjacentSeatsGroups adjacentSeatsGroups) {
 
         TreeMap<Integer, List<AdjacentSeats>>
                 theBestDistancesNearerToTheMiddleOfTheRowPerGroup = new TreeMap<>();
 
-        for (var currentGroupOfAdjacentSeats : groupsOfAdjacentSeats.groups.stream().map(s -> s.seatsWithDistance).collect(Collectors.toList())) {
+        for (var currentAdjacentSeats : adjacentSeatsGroups.groups
+                .stream().map(s -> s.seatsWithDistance.stream()
+                        .limit(suggestionRequest.partyRequested().partySize())
+                        .collect(Collectors.toList())).map(AdjacentSeats::new).collect(Collectors.toList())) {
 
-            if (!isMatchingPartyRequested(suggestionRequest, currentGroupOfAdjacentSeats)) continue;
+            if (!isMatchingPartyRequested(suggestionRequest, currentAdjacentSeats)) continue;
 
-            var sumOfDistances = sumOfDistancesNearerTheMiddleOfTheRowPerSeat(currentGroupOfAdjacentSeats);
+            var sumOfDistances = sumOfDistancesNearerTheMiddleOfTheRowPerSeat(currentAdjacentSeats);
 
             if (!theBestDistancesNearerToTheMiddleOfTheRowPerGroup.containsKey(sumOfDistances))
                 theBestDistancesNearerToTheMiddleOfTheRowPerGroup.put(sumOfDistances, new ArrayList<>());
 
-            theBestDistancesNearerToTheMiddleOfTheRowPerGroup.get(sumOfDistances).add(new AdjacentSeats(currentGroupOfAdjacentSeats));
+            theBestDistancesNearerToTheMiddleOfTheRowPerGroup.get(sumOfDistances).add(currentAdjacentSeats);
         }
 
         return any(theBestDistancesNearerToTheMiddleOfTheRowPerGroup)
@@ -165,9 +179,9 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
     }
 
     private Integer sumOfDistancesNearerTheMiddleOfTheRowPerSeat(
-            List<SeatWithTheDistanceFromTheMiddleOfTheRow> currentGroup) {
+            AdjacentSeats adjacentSeats) {
 
-        return currentGroup.stream()
+        return adjacentSeats.seatsWithDistance.stream()
                 .map(SeatWithTheDistanceFromTheMiddleOfTheRow::distanceFromTheMiddleOfTheRow)
                 .reduce(0, Integer::sum);
     }
