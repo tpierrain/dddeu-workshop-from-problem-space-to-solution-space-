@@ -23,10 +23,10 @@ public class SeatsAllocatorShould {
         final ShowId showId = new ShowId("5");
         final PartyRequested partyRequested = new PartyRequested(1);
 
-        IAdaptAuditoriumSeating auditoriumLayoutAdapter =
+        var auditoriumLayoutAdapter =
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
 
-        SeatAllocator seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
+        var seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
 
         SuggestionsMade suggestionsMade = seatAllocator.makeSuggestions(showId, partyRequested);
 
@@ -119,7 +119,7 @@ public class SeatsAllocatorShould {
 
         var seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
 
-        SuggestionsMade suggestionsMade = seatAllocator.makeSuggestions(showId, partyRequested);
+        var suggestionsMade = seatAllocator.makeSuggestions(showId, partyRequested);
 
         assertThat(suggestionsMade.seatNames(PricingCategory.First)).isEmpty();
         assertThat(suggestionsMade.seatNames(PricingCategory.Second))

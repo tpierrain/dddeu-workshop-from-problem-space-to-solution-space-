@@ -26,7 +26,7 @@ public class OfferingSeatsNearerMiddleOfTheRowTest {
         var a9 = new Seat("A", 9, PricingCategory.Second, SeatAvailability.Available);
         var a10 = new Seat("A", 10, PricingCategory.Second, SeatAvailability.Available);
 
-        Row row = new Row("A", new ArrayList<>(Arrays.asList(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10)));
+        var row = new Row("A", new ArrayList<>(Arrays.asList(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10)));
 
         // Two different instances with same values should be equals
         assertThat(new OfferingSeatsNearerMiddleOfTheRow(row))

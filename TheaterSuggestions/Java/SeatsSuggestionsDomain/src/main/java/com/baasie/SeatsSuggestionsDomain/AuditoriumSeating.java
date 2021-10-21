@@ -43,8 +43,8 @@ public class AuditoriumSeating {
         Map<String, Row> newVersionOfRows = Maps.newHashMap(rows);
 
         for (var updatedSeat : updatedSeats) {
-            Row formerRow = newVersionOfRows.get(updatedSeat.rowName());
-            Row newVersionOfRow = formerRow.allocate(updatedSeat);
+            var formerRow = newVersionOfRows.get(updatedSeat.rowName());
+            var newVersionOfRow = formerRow.allocate(updatedSeat);
             newVersionOfRows.put(updatedSeat.rowName(), newVersionOfRow);
         }
 
