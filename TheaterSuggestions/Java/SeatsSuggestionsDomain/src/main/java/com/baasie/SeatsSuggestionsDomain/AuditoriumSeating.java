@@ -12,11 +12,14 @@ public class AuditoriumSeating {
 
     private final ImmutableMap<String, Row> rows;
 
-    public AuditoriumSeating(Map<String, Row> rows) {
+    public
+    AuditoriumSeating(Map<String, Row> rows) {
         this.rows = ImmutableMap.copyOf(rows);
     }
 
-    public SeatingOptionSuggested suggestSeatingOptionFor(SuggestionRequest suggestionRequest) {
+    public SeatingOptionSuggested
+    suggestSeatingOptionFor(SuggestionRequest suggestionRequest) {
+
         for (Row row : rows.values()) {
             SeatingOptionSuggested seatingOptionSuggested = row.suggestSeatingOption(suggestionRequest);
 
@@ -29,12 +32,14 @@ public class AuditoriumSeating {
         return new SeatingOptionNotAvailable(suggestionRequest);
     }
 
-    public AuditoriumSeating allocate(SeatingOptionSuggested seatingOptionSuggested) {
+    public AuditoriumSeating
+    allocate(SeatingOptionSuggested seatingOptionSuggested) {
         // Update the seat references in the Auditorium
         return allocateSeats(seatingOptionSuggested.seats());
     }
 
-    private AuditoriumSeating allocateSeats(List<Seat> updatedSeats) {
+    private AuditoriumSeating
+    allocateSeats(List<Seat> updatedSeats) {
         Map<String, Row> newVersionOfRows = Maps.newHashMap(rows);
 
         for (Seat updatedSeat : updatedSeats) {
@@ -46,7 +51,8 @@ public class AuditoriumSeating {
         return new AuditoriumSeating(newVersionOfRows);
     }
 
-    public ImmutableMap<String, Row> rows() {
+    public ImmutableMap<String, Row>
+    rows() {
         return rows;
     }
 }

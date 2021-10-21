@@ -11,7 +11,9 @@ public class Row {
     private final String name;
     private final List<Seat> seats;
 
-    public Row(String name, List<Seat> seats) {
+    public
+    Row(String name, List<Seat> seats) {
+
         this.name = name;
         this.seats = seats
                 .stream()
@@ -23,17 +25,21 @@ public class Row {
                         .collect(Collectors.toList());
     }
 
-    public List<Seat> seats() {
+    public List<Seat>
+    seats() {
         return seats;
     }
 
-    public Row addSeat(Seat seat) {
+    public Row
+    addSeat(Seat seat) {
+
         ArrayList<Seat> newSeats = new ArrayList<>(this.seats);
         newSeats.add(seat);
         return new Row(name, newSeats);
     }
 
-    public SeatingOptionSuggested suggestSeatingOption(SuggestionRequest suggestionRequest) {
+    public SeatingOptionSuggested
+    suggestSeatingOption(SuggestionRequest suggestionRequest) {
 
         SeatingOptionSuggested seatingOptionSuggested = new SeatingOptionSuggested(suggestionRequest);
 
@@ -47,7 +53,9 @@ public class Row {
 
         return new SeatingOptionNotAvailable(suggestionRequest);
     }
-    public List<Seat> offerAdjacentSeatsNearerTheMiddleOfTheRow(SuggestionRequest suggestionRequest)
+
+    public List<Seat>
+    offerAdjacentSeatsNearerTheMiddleOfTheRow(SuggestionRequest suggestionRequest)
     {
         // 1. offer seats from the middle of the row
         List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatWithTheDistanceFromTheMiddleOfTheRows = new OfferingSeatsNearerMiddleOfTheRow(this).offerSeatsNearerTheMiddleOfTheRow(suggestionRequest);
@@ -61,11 +69,13 @@ public class Row {
                 seatWithTheDistanceFromTheMiddleOfTheRows);
     }
 
-    private boolean doNotLookForAdjacentSeatsWhenThePartyContainsOnlyOnePerson(SuggestionRequest suggestionRequest) {
+    private boolean
+    doNotLookForAdjacentSeatsWhenThePartyContainsOnlyOnePerson(SuggestionRequest suggestionRequest) {
         return suggestionRequest.partyRequested().partySize() == 1;
     }
 
-    public Row allocate(Seat seat) {
+    public Row
+    allocate(Seat seat) {
         List<Seat> newVersionOfSeats = new ArrayList<>();
 
         seats.forEach(currentSeat -> {
@@ -80,17 +90,20 @@ public class Row {
         return new Row(seat.rowName(), newVersionOfSeats);
     }
 
-    public boolean rowSizeIsEven() {
+    public boolean
+    rowSizeIsEven() {
 
         return seats().size() % 2 == 0;
     }
 
-    public int theMiddleOfRow() {
+    public int
+    theMiddleOfRow() {
 
         return rowSizeIsEven() ? seats().size() / 2 : Math.abs(seats().size() / 2) + 1;
     }
 
-    public boolean isTheMiddleOfRow(Seat seat) {
+    public boolean
+    isTheMiddleOfRow(Seat seat) {
 
         int theMiddleOfRow = theMiddleOfRow();
 
@@ -102,7 +115,8 @@ public class Row {
         return Math.abs(seat.number() - theMiddleOfRow) == 0;
     }
 
-    public int distanceFromTheMiddleOfRow(Seat seat) {
+    public int
+    distanceFromTheMiddleOfRow(Seat seat) {
 
         if (rowSizeIsEven())
             return seat.number() - theMiddleOfRow() > 0

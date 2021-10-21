@@ -113,6 +113,7 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
                     AdjacentSeats seats = buildAdjacentSeatsSortedByDistanceFromMiddleOfTheRow(adjacentSeats);
                     adjacentSeatsGroups.groups.add(seats);
                     adjacentSeats = new AdjacentSeats();
+                    adjacentSeats.addSeat(seat);
                     seatWithTheDistancePrevious = null;
                 }
             }
@@ -160,9 +161,7 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
                 theBestDistancesNearerToTheMiddleOfTheRowPerGroup = new TreeMap<>();
 
         for (var currentAdjacentSeats : adjacentSeatsGroups.groups
-                .stream().map(s -> s.seatsWithDistance.stream()
-                        .limit(suggestionRequest.partyRequested().partySize())
-                        .collect(Collectors.toList())).map(AdjacentSeats::new).collect(Collectors.toList())) {
+                .stream().map(s -> new ArrayList<>(s.seatsWithDistance)).map(AdjacentSeats::new).collect(Collectors.toList())) {
 
             if (!isMatchingPartyRequested(suggestionRequest, currentAdjacentSeats)) continue;
 
