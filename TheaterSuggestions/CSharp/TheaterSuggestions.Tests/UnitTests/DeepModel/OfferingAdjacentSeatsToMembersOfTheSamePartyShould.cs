@@ -9,7 +9,7 @@ namespace SeatsSuggestions.Tests.UnitTests.DeepModel
     internal class OfferingAdjacentSeatsToMembersOfTheSamePartyShould
     {
         [Test]
-        public void Offer_adjacent_seats_nearer_the_middle_of_the_row_when_the_middle_is_not_reserved()
+        public void Offer_3_adjacent_seats_nearer_the_middle_of_the_row_when_the_middle_is_not_reserved()
         {
             var a1 = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
             var a2 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
@@ -30,7 +30,7 @@ namespace SeatsSuggestions.Tests.UnitTests.DeepModel
         }
 
         [Test]
-        public void Offer_adjacent_seats_nearer_the_middle_of_the_row_when_the_middle_is_already_reserved()
+        public void Offer_2_adjacent_seats_nearer_the_middle_of_the_row_when_the_middle_is_already_reserved()
         {
             var a1 = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
             var a2 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
