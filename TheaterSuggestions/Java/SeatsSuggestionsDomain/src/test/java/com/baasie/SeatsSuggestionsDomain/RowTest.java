@@ -10,17 +10,17 @@ public class RowTest {
 
     @Test
     public void be_a_Value_Type() {
-        Seat a1 = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
-        Seat a2 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
+        var a1 = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
+        var a2 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
 
         // Two different instances with same values should be equals
-        Row rowFirstInstance = new Row("A", Arrays.asList(a1, a2));
-        Row rowSecondInstance = new Row("A", Arrays.asList(a1, a2));
+       var rowFirstInstance = new Row("A", Arrays.asList(a1, a2));
+       var rowSecondInstance = new Row("A", Arrays.asList(a1, a2));
         assertThat(rowSecondInstance).isEqualTo(rowFirstInstance);
 
         // Should not mutate existing instance
-        Seat a3 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
-        Row newRowWithNewSeatAdded = rowSecondInstance.addSeat(a3);
+        var a3 = new Seat("A", 2, PricingCategory.Second, SeatAvailability.Available);
+        var newRowWithNewSeatAdded = rowSecondInstance.addSeat(a3);
         assertThat(newRowWithNewSeatAdded).isNotEqualTo(rowFirstInstance);
     }
 

@@ -9,8 +9,8 @@ public class SeatTest {
 
     @Test
     public void Be_a_Value_Type() {
-        Seat firstInstance = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
-        Seat secondInstance = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
+        var firstInstance = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
+        var secondInstance = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
 
         // Two different instances with same values should be equals
         assertThat(secondInstance).isEqualTo(firstInstance);

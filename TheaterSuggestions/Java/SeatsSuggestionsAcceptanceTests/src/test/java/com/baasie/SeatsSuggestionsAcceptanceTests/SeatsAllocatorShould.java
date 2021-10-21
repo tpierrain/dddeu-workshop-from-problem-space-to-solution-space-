@@ -43,12 +43,12 @@ public class SeatsAllocatorShould {
         final ShowId showId = new ShowId("1");
         final PartyRequested partyRequested = new PartyRequested(1);
 
-        IAdaptAuditoriumSeating auditoriumLayoutAdapter =
+        var auditoriumLayoutAdapter =
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
 
-        SeatAllocator seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
+        var seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
 
-        SuggestionsMade suggestionsMade = seatAllocator.makeSuggestions(showId, partyRequested);
+        var suggestionsMade = seatAllocator.makeSuggestions(showId, partyRequested);
 
         assertThat(suggestionsMade.seatNames(PricingCategory.First)).containsExactly("A3");
     }
@@ -67,12 +67,12 @@ public class SeatsAllocatorShould {
         final ShowId showId = new ShowId("18");
         final PartyRequested partyRequested = new PartyRequested(1);
 
-        IAdaptAuditoriumSeating auditoriumLayoutAdapter =
+        var auditoriumLayoutAdapter =
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
 
-        SeatAllocator seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
+        var seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
 
-        SuggestionsMade suggestionsMade = seatAllocator.makeSuggestions(showId, partyRequested);
+        var suggestionsMade = seatAllocator.makeSuggestions(showId, partyRequested);
 
         assertThat(suggestionsMade.seatNames(PricingCategory.First)).containsExactly("A5", "A6", "A4");
         assertThat(suggestionsMade.seatNames(PricingCategory.Second)).containsExactly("A2", "A9", "A1");
@@ -91,12 +91,12 @@ public class SeatsAllocatorShould {
         final ShowId showId = new ShowId("9");
         final PartyRequested partyRequested = new PartyRequested(1);
 
-        IAdaptAuditoriumSeating auditoriumLayoutAdapter =
+        var auditoriumLayoutAdapter =
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
 
-        SeatAllocator seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
+        var seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
 
-        SuggestionsMade suggestionsMade = seatAllocator.makeSuggestions(showId, partyRequested);
+        var suggestionsMade = seatAllocator.makeSuggestions(showId, partyRequested);
 
         assertThat(suggestionsMade.seatNames(PricingCategory.First)).containsExactly("A4", "A3", "B5");
     }
@@ -114,10 +114,10 @@ public class SeatsAllocatorShould {
         final ShowId showId = new ShowId("3");
         final PartyRequested partyRequested = new PartyRequested(4);
 
-        IAdaptAuditoriumSeating auditoriumLayoutAdapter =
+        var auditoriumLayoutAdapter =
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
 
-        SeatAllocator seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
+        var seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
 
         SuggestionsMade suggestionsMade = seatAllocator.makeSuggestions(showId, partyRequested);
 
@@ -145,12 +145,12 @@ public class SeatsAllocatorShould {
         final ShowId showId = new ShowId("3");
         final PartyRequested partyRequested = new PartyRequested(3);
 
-        IAdaptAuditoriumSeating auditoriumLayoutAdapter =
+        var auditoriumLayoutAdapter =
                 new AuditoriumSeatingAdapter(new AuditoriumLayoutRepository(), new ReservationsProvider());
 
-        SeatAllocator seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
+        var seatAllocator = new SeatAllocator(auditoriumLayoutAdapter);
 
-        SuggestionsMade suggestionsMade = seatAllocator.makeSuggestions(showId, partyRequested);
+        var suggestionsMade = seatAllocator.makeSuggestions(showId, partyRequested);
 
         assertThat(suggestionsMade.seatNames(PricingCategory.First)).
                 containsExactly("A6-A7-A8");

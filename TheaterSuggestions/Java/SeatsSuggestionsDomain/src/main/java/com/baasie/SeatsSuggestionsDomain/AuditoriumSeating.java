@@ -21,7 +21,7 @@ public class AuditoriumSeating {
     suggestSeatingOptionFor(SuggestionRequest suggestionRequest) {
 
         for (Row row : rows.values()) {
-            SeatingOptionSuggested seatingOptionSuggested = row.suggestSeatingOption(suggestionRequest);
+            var seatingOptionSuggested = row.suggestSeatingOption(suggestionRequest);
 
             if (seatingOptionSuggested.matchExpectation()) {
                 // Cool, we mark the seat as Allocated (that we turn into a SuggestionMade)
@@ -42,7 +42,7 @@ public class AuditoriumSeating {
     allocateSeats(List<Seat> updatedSeats) {
         Map<String, Row> newVersionOfRows = Maps.newHashMap(rows);
 
-        for (Seat updatedSeat : updatedSeats) {
+        for (var updatedSeat : updatedSeats) {
             Row formerRow = newVersionOfRows.get(updatedSeat.rowName());
             Row newVersionOfRow = formerRow.allocate(updatedSeat);
             newVersionOfRows.put(updatedSeat.rowName(), newVersionOfRow);

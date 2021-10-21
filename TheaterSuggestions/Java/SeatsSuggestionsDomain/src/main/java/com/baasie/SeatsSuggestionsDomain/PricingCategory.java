@@ -12,7 +12,7 @@ public enum PricingCategory {
     private static final Map map = new HashMap();
 
     static {
-        for (PricingCategory pageType : PricingCategory.values()) {
+        for (var pageType : PricingCategory.values()) {
             map.put(pageType.value, pageType);
         }
     }

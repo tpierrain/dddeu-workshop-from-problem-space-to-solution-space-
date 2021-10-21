@@ -14,10 +14,6 @@ public class AdjacentSeats {
         seatsWithDistance.addAll(seats);
     }
 
-    public void addSeat(AdjacentSeats adjacentSeats)
-    {
-        seatsWithDistance.addAll(adjacentSeats.seatsWithDistance);
-    }
     public void addSeat(SeatWithTheDistanceFromTheMiddleOfTheRow seatWithTheDistance)
     {
         seatsWithDistance.add(seatWithTheDistance);

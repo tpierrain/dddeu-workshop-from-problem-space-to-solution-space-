@@ -18,9 +18,9 @@ public class SeatAllocator implements IProvideAuditoriumSeating {
     private static List<SuggestionMade> giveMeSuggestionsFor(
             AuditoriumSeating auditoriumSeating, PartyRequested partyRequested, PricingCategory pricingCategory) {
 
-        SuggestionRequest suggestionRequest = new SuggestionRequest(partyRequested, pricingCategory);
+        var suggestionRequest = new SuggestionRequest(partyRequested, pricingCategory);
         List<SuggestionMade> foundedSuggestions = new ArrayList<>();
-        for (int i = 0; i < NUMBER_OF_SUGGESTIONS; i++) {
+        for (var i = 0; i < NUMBER_OF_SUGGESTIONS; i++) {
             SeatingOptionSuggested seatingOptionSuggested = auditoriumSeating.suggestSeatingOptionFor(suggestionRequest);
 
             if (seatingOptionSuggested.matchExpectation()) {
@@ -35,9 +35,9 @@ public class SeatAllocator implements IProvideAuditoriumSeating {
 
     public SuggestionsMade makeSuggestions(ShowId showId, PartyRequested partyRequested) {
 
-        AuditoriumSeating auditoriumSeating = iAdaptAuditoriumSeating.getAuditoriumSeating(showId);
+        var auditoriumSeating = iAdaptAuditoriumSeating.getAuditoriumSeating(showId);
 
-        SuggestionsMade suggestionsMade = new SuggestionsMade(showId, partyRequested);
+        var suggestionsMade = new SuggestionsMade(showId, partyRequested);
 
         suggestionsMade.add(giveMeSuggestionsFor(auditoriumSeating, partyRequested,
                 PricingCategory.First));

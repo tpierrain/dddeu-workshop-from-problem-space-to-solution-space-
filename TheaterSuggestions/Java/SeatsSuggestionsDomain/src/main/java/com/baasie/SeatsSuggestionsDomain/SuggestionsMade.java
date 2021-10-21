@@ -24,7 +24,7 @@ public class SuggestionsMade {
 
     //.sorted(Comparator.comparing(Seat::number))
     public Iterable<String> seatNames(PricingCategory pricingCategory) {
-        List<SuggestionMade> suggestionsMade = forCategory.get(pricingCategory);
+        var suggestionsMade = forCategory.get(pricingCategory);
         return suggestionsMade.stream().map(s -> String.join("-", s.seatNames())).collect(Collectors.toList());
     }
 

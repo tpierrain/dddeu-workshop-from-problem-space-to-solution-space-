@@ -58,15 +58,15 @@ public class Row {
     offerAdjacentSeatsNearerTheMiddleOfTheRow(SuggestionRequest suggestionRequest)
     {
         // 1. offer seats from the middle of the row
-        List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatWithTheDistanceFromTheMiddleOfTheRows = new OfferingSeatsNearerMiddleOfTheRow(this).offerSeatsNearerTheMiddleOfTheRow(suggestionRequest);
+        var seatWithTheDistanceFromTheMiddleOfTheRows =
+                new OfferingSeatsNearerMiddleOfTheRow(this).offerSeatsNearerTheMiddleOfTheRow(suggestionRequest);
 
         if (doNotLookForAdjacentSeatsWhenThePartyContainsOnlyOnePerson(suggestionRequest)) {
             return seatWithTheDistanceFromTheMiddleOfTheRows.stream().map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat).collect(Collectors.toList());
         }
         // 2. based on seats with distance from the middle of row,
         //    we offer the best group (close to the middle) of adjacent seats
-        return new OfferingAdjacentSeatsToMembersOfTheSameParty(suggestionRequest).OfferAdjacentSeats(
-                seatWithTheDistanceFromTheMiddleOfTheRows);
+        return OfferingAdjacentSeatsToMembersOfTheSameParty.OfferAdjacentSeats(suggestionRequest, seatWithTheDistanceFromTheMiddleOfTheRows);
     }
 
     private boolean
@@ -105,7 +105,7 @@ public class Row {
     public boolean
     isTheMiddleOfRow(Seat seat) {
 
-        int theMiddleOfRow = theMiddleOfRow();
+        var theMiddleOfRow = theMiddleOfRow();
 
         if (rowSizeIsEven()) {
             if (Math.abs(seat.number() - theMiddleOfRow) == 0 || seat.number() - (theMiddleOfRow + 1) == 0) {

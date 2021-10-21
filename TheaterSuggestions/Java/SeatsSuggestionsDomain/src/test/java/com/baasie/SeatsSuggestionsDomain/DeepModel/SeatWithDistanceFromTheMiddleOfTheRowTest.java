@@ -11,9 +11,9 @@ public class SeatWithDistanceFromTheMiddleOfTheRowTest {
     @Test
     public void be_a_Value_Type() {
         // Two different instances with same values should be equals
-        Seat a1 = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
-        SeatWithTheDistanceFromTheMiddleOfTheRow firstInstance = new SeatWithTheDistanceFromTheMiddleOfTheRow(a1, 5);
-        SeatWithTheDistanceFromTheMiddleOfTheRow secondInstance = new SeatWithTheDistanceFromTheMiddleOfTheRow(a1, 5);
+        var a1 = new Seat("A", 1, PricingCategory.Second, SeatAvailability.Available);
+        var firstInstance = new SeatWithTheDistanceFromTheMiddleOfTheRow(a1, 5);
+        var secondInstance = new SeatWithTheDistanceFromTheMiddleOfTheRow(a1, 5);
         assertThat(secondInstance).isEqualTo(firstInstance);
     }
 }
