@@ -6,6 +6,10 @@ namespace SeatsSuggestions.Domain.DeepModel
     {
         public List<SeatWithTheDistanceFromTheMiddleOfTheRow> SeatsWithDistance { get; } = new();
 
+        public AdjacentSeats()
+        {
+        }
+
         public AdjacentSeats(IEnumerable<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithTheDistance)
         {
             SeatsWithDistance.AddRange(seatsWithTheDistance);
