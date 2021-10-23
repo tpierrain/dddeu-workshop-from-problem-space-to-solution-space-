@@ -13,7 +13,7 @@ import java.io.IOException;
 @Service
 public class AuditoriumWebRepository implements IProvideAuditoriumLayouts {
 
-    private String uriAuditoriumSeatingRepository;
+    private final String uriAuditoriumSeatingRepository;
 
     public AuditoriumWebRepository(String uriAuditoriumSeatingRepository) {
         this.uriAuditoriumSeatingRepository = uriAuditoriumSeatingRepository;

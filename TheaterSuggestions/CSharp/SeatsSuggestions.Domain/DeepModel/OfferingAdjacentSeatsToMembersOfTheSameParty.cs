@@ -23,7 +23,8 @@ namespace SeatsSuggestions.Domain.DeepModel
         }
 
 
-        private static IEnumerable<Seat> AdaptAdjacentSeats(this AdjacentSeats adjacentSeats)
+        private static IEnumerable<Seat> 
+            AdaptAdjacentSeats(this AdjacentSeats adjacentSeats)
         {
             return adjacentSeats.SeatsWithDistance.Select(s => s.Seat);
         }
@@ -43,8 +44,7 @@ namespace SeatsSuggestions.Domain.DeepModel
 
                 if (!theBestDistancesNearerTheMiddleOfTheRowPerGroup.ContainsKey(sumOfDistances))
                 {
-                    var adjacentSeatsGroups = new AdjacentSeatsGroups();
-                    theBestDistancesNearerTheMiddleOfTheRowPerGroup[sumOfDistances] = adjacentSeatsGroups;
+                    theBestDistancesNearerTheMiddleOfTheRowPerGroup[sumOfDistances] = new AdjacentSeatsGroups();
                 }
 
                 theBestDistancesNearerTheMiddleOfTheRowPerGroup[sumOfDistances].Groups.Add(adjacentSeats);
@@ -82,20 +82,23 @@ namespace SeatsSuggestions.Domain.DeepModel
         {
             SortedDictionary<int, AdjacentSeats> decideBetweenIdenticalScores = new();
 
-            foreach (var adjacentSeats in bestGroups
-                .Values.SelectMany(adjacentSeatsGroups => adjacentSeatsGroups.Groups))
-                SelectTheBestScoreBetweenGroups(decideBetweenIdenticalScores, adjacentSeats);
+            foreach (var adjacentSeatsGroups in bestGroups.Values)
+                SelectTheBestScoreBetweenGroups(decideBetweenIdenticalScores, adjacentSeatsGroups);
 
             return decideBetweenIdenticalScores.LastOrDefault().Value;
         }
 
         private static void
             SelectTheBestScoreBetweenGroups(SortedDictionary<int, AdjacentSeats> decideBetweenIdenticalScores,
-                AdjacentSeats adjacentSeats)
+                AdjacentSeatsGroups adjacentSeatsGroups)
         {
-            if (!decideBetweenIdenticalScores.ContainsKey(adjacentSeats.SeatsWithDistance.Count))
-                decideBetweenIdenticalScores[adjacentSeats.SeatsWithDistance.Count] = adjacentSeats;
+            foreach (var adjacentSeats in adjacentSeatsGroups.Groups)
+            {
+                if (!decideBetweenIdenticalScores.ContainsKey(adjacentSeats.SeatsWithDistance.Count))
+                    decideBetweenIdenticalScores[adjacentSeats.SeatsWithDistance.Count] = adjacentSeats;
+            }
         }
+    
 
         private static AdjacentSeats
             ProjectToAdjacentSeats(SortedDictionary<int, AdjacentSeatsGroups> bestGroups)

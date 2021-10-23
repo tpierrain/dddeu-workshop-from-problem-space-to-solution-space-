@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/SeatsSuggestions")
 public class SeatSuggestionsController {
 
-    private IProvideAuditoriumSeating iProvideAuditoriumSeating;
+    private final IProvideAuditoriumSeating iProvideAuditoriumSeating;
 
     public SeatSuggestionsController(IProvideAuditoriumSeating iProvideAuditoriumSeating) {
         this.iProvideAuditoriumSeating = iProvideAuditoriumSeating;
