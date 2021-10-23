@@ -40,12 +40,10 @@ namespace SeatsSuggestions.Domain.DeepModel
             {
                 if (!IsMatchingPartyRequested(suggestionRequest, adjacentSeats.SeatsWithDistance)) continue;
 
-                var sumOfDistances = adjacentSeats.SeatsWithDistance.Sum(s => s.DistanceFromTheMiddleOfTheRow);
+                var sumOfDistances = SumOfDistancesNearerTheMiddleOfTheRowPerSeat(adjacentSeats);
 
                 if (!theBestDistancesNearerTheMiddleOfTheRowPerGroup.ContainsKey(sumOfDistances))
-                {
                     theBestDistancesNearerTheMiddleOfTheRowPerGroup[sumOfDistances] = new AdjacentSeatsGroups();
-                }
 
                 theBestDistancesNearerTheMiddleOfTheRowPerGroup[sumOfDistances].Groups.Add(adjacentSeats);
             }
@@ -53,6 +51,11 @@ namespace SeatsSuggestions.Domain.DeepModel
             return theBestDistancesNearerTheMiddleOfTheRowPerGroup.Any()
                 ? SelectTheBestGroup(theBestDistancesNearerTheMiddleOfTheRowPerGroup)
                 : NoAdjacentSeatFound;
+        }
+
+        private static int SumOfDistancesNearerTheMiddleOfTheRowPerSeat(AdjacentSeats adjacentSeats)
+        {
+            return adjacentSeats.SeatsWithDistance.Sum(s => s.DistanceFromTheMiddleOfTheRow);
         }
 
         private static AdjacentSeatsGroups
