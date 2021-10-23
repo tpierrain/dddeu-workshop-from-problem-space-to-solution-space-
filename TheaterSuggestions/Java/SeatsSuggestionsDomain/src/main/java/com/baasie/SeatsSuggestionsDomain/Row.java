@@ -62,7 +62,7 @@ public class Row {
                 new OfferingSeatsNearerMiddleOfTheRow(this).offerSeatsNearerTheMiddleOfTheRow(suggestionRequest);
 
         if (doNotLookForAdjacentSeatsWhenThePartyContainsOnlyOnePerson(suggestionRequest)) {
-            return seatWithTheDistanceFromTheMiddleOfTheRows.stream().map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat).collect(Collectors.toList());
+            return seatWithTheDistanceFromTheMiddleOfTheRows.stream().map(SeatWithDistance::seat).collect(Collectors.toList());
         }
         // 2. based on seats with distance from the middle of row,
         //    we offer the best group (close to the middle) of adjacent seats

@@ -16,7 +16,7 @@ public class OfferingSeatsNearerMiddleOfTheRow {
         this.row = row;
     }
 
-    public List<SeatWithTheDistanceFromTheMiddleOfTheRow> offerSeatsNearerTheMiddleOfTheRow(SuggestionRequest suggestionRequest) {
+    public List<SeatWithDistance> offerSeatsNearerTheMiddleOfTheRow(SuggestionRequest suggestionRequest) {
 
         return computeDistancesNearerTheMiddleOfTheRow()
                 .stream()
@@ -28,25 +28,25 @@ public class OfferingSeatsNearerMiddleOfTheRow {
     }
 
 
-    private List<SeatWithTheDistanceFromTheMiddleOfTheRow> computeDistancesNearerTheMiddleOfTheRow() {
+    private List<SeatWithDistance> computeDistancesNearerTheMiddleOfTheRow() {
 
-        List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>> seatWithTheDistanceFromTheMiddleOfTheRows = splitSeatsByDistanceNearerTheMiddleOfTheRow();
+        List<List<SeatWithDistance>> seatWithTheDistanceFromTheMiddleOfTheRows = splitSeatsByDistanceNearerTheMiddleOfTheRow();
 
-        List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsInTheMiddleOfTheRow = seatsInTheMiddleOfTheRow();
+        List<SeatWithDistance> seatsInTheMiddleOfTheRow = seatsInTheMiddleOfTheRow();
 
         seatWithTheDistanceFromTheMiddleOfTheRows.add(seatsInTheMiddleOfTheRow);
 
         return seatWithTheDistanceFromTheMiddleOfTheRows.stream()
                 .flatMap(Collection::stream)
-                .sorted(Comparator.comparing(SeatWithTheDistanceFromTheMiddleOfTheRow::distanceFromTheMiddleOfTheRow))
+                .sorted(Comparator.comparing(SeatWithDistance::distanceFromTheMiddleOfTheRow))
                 .collect(Collectors.toList());
     }
 
-    private List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsInTheMiddleOfTheRow() {
+    private List<SeatWithDistance> seatsInTheMiddleOfTheRow() {
 
         return seatsInTheMiddleOfTheRow(row.seats(), row.theMiddleOfRow())
                 .stream()
-                .map(s -> new SeatWithTheDistanceFromTheMiddleOfTheRow(s, 0))
+                .map(s -> new SeatWithDistance(s, 0))
                 .collect(Collectors.toList());
     }
 
@@ -57,15 +57,15 @@ public class OfferingSeatsNearerMiddleOfTheRow {
                 : new ArrayList<>(Collections.singletonList(seats.get(middle - 1)));
     }
 
-    private List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>> splitSeatsByDistanceNearerTheMiddleOfTheRow() {
+    private List<List<SeatWithDistance>> splitSeatsByDistanceNearerTheMiddleOfTheRow() {
 
-        List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistance = new ArrayList<>();
-        List<List<SeatWithTheDistanceFromTheMiddleOfTheRow>> groupsOfSeatsWithDistance = new ArrayList<>();
+        List<SeatWithDistance> seatsWithDistance = new ArrayList<>();
+        List<List<SeatWithDistance>> groupsOfSeatsWithDistance = new ArrayList<>();
 
         for (Seat seat : row.seats()) {
             if (!row.isTheMiddleOfRow(seat)) {
                 seatsWithDistance
-                        .add(new SeatWithTheDistanceFromTheMiddleOfTheRow(seat, row.distanceFromTheMiddleOfRow(seat)));
+                        .add(new SeatWithDistance(seat, row.distanceFromTheMiddleOfRow(seat)));
             } else {
                 if (!seatsWithDistance.isEmpty())
                     groupsOfSeatsWithDistance.add(seatsWithDistance);

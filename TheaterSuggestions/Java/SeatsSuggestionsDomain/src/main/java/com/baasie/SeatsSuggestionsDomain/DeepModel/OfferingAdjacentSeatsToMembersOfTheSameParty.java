@@ -80,13 +80,13 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
     }
 
     private static AdjacentSeatsGroups
-    splitInGroupsOfAdjacentSeats(List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistances) {
+    splitInGroupsOfAdjacentSeats(List<SeatWithDistance> seatsWithDistances) {
 
         var adjacentSeats = new AdjacentSeats();
         var  adjacentSeatsGroups = new AdjacentSeatsGroups();
-        SeatWithTheDistanceFromTheMiddleOfTheRow seatWithTheDistancePrevious = null;
+        SeatWithDistance seatWithTheDistancePrevious = null;
 
-        for (SeatWithTheDistanceFromTheMiddleOfTheRow seat : orderSeatsByTheirNumberToGroupAdjacent(seatsWithDistances)) {
+        for (SeatWithDistance seat : orderSeatsByTheirNumberToGroupAdjacent(seatsWithDistances)) {
             if (seatWithTheDistancePrevious == null) {
                 seatWithTheDistancePrevious = seat;
                 adjacentSeats.addSeat(seatWithTheDistancePrevious);
@@ -109,7 +109,7 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
 
     private static AdjacentSeats
     buildAdjacentSeatsSortedByDistanceFromMiddleOfTheRow(AdjacentSeats adjacentSeats) {
-        return new AdjacentSeats(adjacentSeats.seatsWithDistance.stream().sorted(Comparator.comparing(SeatWithTheDistanceFromTheMiddleOfTheRow::distanceFromTheMiddleOfTheRow)).collect(Collectors.toList()));
+        return new AdjacentSeats(adjacentSeats.seatsWithDistance.stream().sorted(Comparator.comparing(SeatWithDistance::distanceFromTheMiddleOfTheRow)).collect(Collectors.toList()));
     }
 
     private static boolean
@@ -122,20 +122,20 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
         return adjacentSeats.seatsWithDistance.size() >= suggestionRequest.partyRequested().partySize();
     }
 
-    private static List<SeatWithTheDistanceFromTheMiddleOfTheRow>
-    orderSeatsByTheirNumberToGroupAdjacent(List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistances) {
+    private static List<SeatWithDistance>
+    orderSeatsByTheirNumberToGroupAdjacent(List<SeatWithDistance> seatsWithDistances) {
         return seatsWithDistances.stream()
                 .sorted(Comparator.comparing(s -> s.seat().number()))
                 .collect(Collectors.toList());
     }
 
     public static List<Seat>
-    OfferAdjacentSeats(SuggestionRequest suggestionRequest, List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistances) {
+    OfferAdjacentSeats(SuggestionRequest suggestionRequest, List<SeatWithDistance> seatsWithDistances) {
 
        var groupOfAdjacentSeats = splitInGroupsOfAdjacentSeats(seatsWithDistances);
 
         return selectAdjacentSeatsWithShorterDistanceFromTheMiddleOfTheRow(suggestionRequest, groupOfAdjacentSeats)
-                .seatsWithDistance.stream().map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat).collect(Collectors.toList());
+                .seatsWithDistance.stream().map(SeatWithDistance::seat).collect(Collectors.toList());
     }
 
     private static AdjacentSeats
@@ -165,7 +165,7 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
     sumOfDistancesNearerTheMiddleOfTheRowPerSeat(AdjacentSeats adjacentSeats) {
 
         return adjacentSeats.seatsWithDistance.stream()
-                .map(SeatWithTheDistanceFromTheMiddleOfTheRow::distanceFromTheMiddleOfTheRow)
+                .map(SeatWithDistance::distanceFromTheMiddleOfTheRow)
                 .reduce(0, Integer::sum);
     }
 

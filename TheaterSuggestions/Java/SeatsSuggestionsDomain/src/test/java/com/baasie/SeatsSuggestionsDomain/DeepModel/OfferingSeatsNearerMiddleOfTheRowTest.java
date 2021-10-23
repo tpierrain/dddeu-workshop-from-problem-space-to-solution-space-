@@ -52,7 +52,7 @@ public class OfferingSeatsNearerMiddleOfTheRowTest {
         var seatsWithDistance = new ArrayList<>(new OfferingSeatsNearerMiddleOfTheRow(row)
                 .offerSeatsNearerTheMiddleOfTheRow(new SuggestionRequest(partyRequested, PricingCategory.Mixed)));
 
-        var seats = seatsWithDistance.stream().map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat).limit(partyRequested.partySize()).collect(Collectors.toList());
+        var seats = seatsWithDistance.stream().map(SeatWithDistance::seat).limit(partyRequested.partySize()).collect(Collectors.toList());
 
         assertThat(seats).containsExactly(a5, a6);
     }
@@ -76,7 +76,7 @@ public class OfferingSeatsNearerMiddleOfTheRowTest {
         var seatsWithDistance = new OfferingSeatsNearerMiddleOfTheRow(row)
                 .offerSeatsNearerTheMiddleOfTheRow(new SuggestionRequest(partyRequested, PricingCategory.Mixed)).stream().limit(partyRequested.partySize()).collect(Collectors.toList());
 
-        var seats = seatsWithDistance.stream().map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat).sorted(Comparator.comparingInt(Seat::number)).collect(Collectors.toList());
+        var seats = seatsWithDistance.stream().map(SeatWithDistance::seat).sorted(Comparator.comparingInt(Seat::number)).collect(Collectors.toList());
 
         assertThat(seats).containsExactly(a2, a3, a5, a6, a7);
     }
