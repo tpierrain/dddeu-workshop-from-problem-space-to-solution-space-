@@ -9,45 +9,41 @@ namespace SeatsSuggestions.DeepModel
     /// </summary>
     public static class OfferingAdjacentSeatsToMembersOfTheSameParty
     {
-        private static AdjacentSeats NoAdjacentSeatFound { get; } = new(new List<SeatWithTheDistanceFromTheMiddleOfTheRow>());
+        private static AdjacentSeats NoAdjacentSeatFound { get; } = new(new List<SeatWithDistance>());
 
         public static IEnumerable<Seat>
-            OfferAdjacentSeats(
-                SuggestionRequest suggestionRequest,
-                IEnumerable<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistanceFromTheMiddleOfRow)
+            OfferAdjacentSeats(SuggestionRequest suggestionRequest,
+                IEnumerable<SeatWithDistance> seatsWithDistanceFromTheMiddleOfRow)
         {
-            var splitInGroupsOfAdjacentSeats = SplitInGroupsOfAdjacentSeats(seatsWithDistanceFromTheMiddleOfRow);
+            var adjacentSeatsGroups =
+                SplitInGroupsOfAdjacentSeats(suggestionRequest, seatsWithDistanceFromTheMiddleOfRow);
 
-            var offerAdjacentSeats = SelectAdjacentSeatsWithShorterDistanceFromTheMiddleOfTheRow(
-                    suggestionRequest,
-                    splitInGroupsOfAdjacentSeats)
-                .SeatsWithDistance
-                .Select(s => s.Seat);
+            return SelectAdjacentSeatsWithShorterDistanceFromTheMiddleOfTheRow(suggestionRequest, adjacentSeatsGroups)
+                .AdaptAdjacentSeats();
+        }
 
-            return offerAdjacentSeats;
+
+        private static IEnumerable<Seat> 
+            AdaptAdjacentSeats(this AdjacentSeats adjacentSeats)
+        {
+            return adjacentSeats.SeatsWithDistance.Select(s => s.Seat);
         }
 
         private static AdjacentSeats
-            SelectAdjacentSeatsWithShorterDistanceFromTheMiddleOfTheRow(
-                SuggestionRequest suggestionRequest,
+            SelectAdjacentSeatsWithShorterDistanceFromTheMiddleOfTheRow(SuggestionRequest suggestionRequest,
                 AdjacentSeatsGroups groupOfAdjacentSeats)
         {
-            var theBestDistancesNearerTheMiddleOfTheRowPerGroup =
-                new SortedDictionary<int, AdjacentSeatsGroups>();
+            var theBestDistancesNearerTheMiddleOfTheRowPerGroup = new SortedDictionary<int, AdjacentSeatsGroups>();
 
             // To select the best group of adjacent seats, we sort them by their distances
-            foreach (var adjacentSeats in SortGroupsByDistanceFromMiddleOfTheRow(suggestionRequest,
-                groupOfAdjacentSeats).Groups)
+            foreach (var adjacentSeats in groupOfAdjacentSeats.Groups)
             {
                 if (!IsMatchingPartyRequested(suggestionRequest, adjacentSeats.SeatsWithDistance)) continue;
 
-                var sumOfDistances = adjacentSeats.SeatsWithDistance.Sum(s => s.DistanceFromTheMiddleOfTheRow);
+                var sumOfDistances = SumOfDistancesNearerTheMiddleOfTheRowPerSeat(adjacentSeats);
 
                 if (!theBestDistancesNearerTheMiddleOfTheRowPerGroup.ContainsKey(sumOfDistances))
-                {
-                    var adjacentSeatsGroups = new AdjacentSeatsGroups();
-                    theBestDistancesNearerTheMiddleOfTheRowPerGroup[sumOfDistances] = adjacentSeatsGroups;
-                }
+                    theBestDistancesNearerTheMiddleOfTheRowPerGroup[sumOfDistances] = new AdjacentSeatsGroups();
 
                 theBestDistancesNearerTheMiddleOfTheRowPerGroup[sumOfDistances].Groups.Add(adjacentSeats);
             }
@@ -55,6 +51,11 @@ namespace SeatsSuggestions.DeepModel
             return theBestDistancesNearerTheMiddleOfTheRowPerGroup.Any()
                 ? SelectTheBestGroup(theBestDistancesNearerTheMiddleOfTheRowPerGroup)
                 : NoAdjacentSeatFound;
+        }
+
+        private static int SumOfDistancesNearerTheMiddleOfTheRowPerSeat(AdjacentSeats adjacentSeats)
+        {
+            return adjacentSeats.SeatsWithDistance.Sum(s => s.DistanceFromTheMiddleOfTheRow);
         }
 
         private static AdjacentSeatsGroups
@@ -65,7 +66,8 @@ namespace SeatsSuggestions.DeepModel
 
             foreach (var seats in groupOfAdjacentSeats.Groups.Select(adjacentSeats =>
                 adjacentSeats.SeatsWithDistance.OrderBy(s => s.DistanceFromTheMiddleOfTheRow)))
-                adjacentSeatsGroups.Groups.Add(new AdjacentSeats(seats.Take(suggestionRequest.PartyRequested)));
+                adjacentSeatsGroups.Groups.Add(
+                    new AdjacentSeats(seats.Take(suggestionRequest.PartyRequested)));
 
             return adjacentSeatsGroups;
         }
@@ -83,92 +85,81 @@ namespace SeatsSuggestions.DeepModel
         {
             SortedDictionary<int, AdjacentSeats> decideBetweenIdenticalScores = new();
 
-            foreach (var adjacentSeats in bestGroups
-                .Values.SelectMany(adjacentSeatsGroups => adjacentSeatsGroups.Groups))
-                SelectTheBestScoreBetweenGroups(decideBetweenIdenticalScores, adjacentSeats);
+            foreach (var adjacentSeatsGroups in bestGroups.Values)
+                SelectTheBestScoreBetweenGroups(decideBetweenIdenticalScores, adjacentSeatsGroups);
 
             return decideBetweenIdenticalScores.LastOrDefault().Value;
         }
 
-        private static void SelectTheBestScoreBetweenGroups(
-            SortedDictionary<int, AdjacentSeats> decideBetweenIdenticalScores, AdjacentSeats adjacentSeats)
+        private static void
+            SelectTheBestScoreBetweenGroups(SortedDictionary<int, AdjacentSeats> decideBetweenIdenticalScores,
+                AdjacentSeatsGroups adjacentSeatsGroups)
         {
-            if (decideBetweenIdenticalScores.ContainsKey(adjacentSeats.SeatsWithDistance.Count))
+            foreach (var adjacentSeats in adjacentSeatsGroups.Groups)
             {
-                var (bestGroupScore, bestGroupScoreForContained) =
-                    ExtractScores(adjacentSeats, decideBetweenIdenticalScores);
-
-                if (bestGroupScore < bestGroupScoreForContained)
+                if (!decideBetweenIdenticalScores.ContainsKey(adjacentSeats.SeatsWithDistance.Count))
                     decideBetweenIdenticalScores[adjacentSeats.SeatsWithDistance.Count] = adjacentSeats;
             }
-            else
-            {
-                decideBetweenIdenticalScores[adjacentSeats.SeatsWithDistance.Count] = adjacentSeats;
-            }
         }
+    
 
-        private static (long bestGroupScore, long bestGroupScoreForContained)
-            ExtractScores(AdjacentSeats adjacentSeats,
-                IReadOnlyDictionary<int, AdjacentSeats> decideBetweenIdenticalScores)
-        {
-            // Groups are equivalents, the domain expert have decided to select the group with the smallest seat numbers
-            // =========================================================================================================
-            return (bestGroupScore: adjacentSeats.SeatsWithDistance.Sum(s => s.Seat.Number),
-                bestGroupScoreForContained: decideBetweenIdenticalScores[adjacentSeats.SeatsWithDistance.Count]
-                    .SeatsWithDistance.Sum(s => s.Seat.Number));
-        }
-
-        private static AdjacentSeats ProjectToAdjacentSeats(SortedDictionary<int, AdjacentSeatsGroups> bestGroups)
+        private static AdjacentSeats
+            ProjectToAdjacentSeats(SortedDictionary<int, AdjacentSeatsGroups> bestGroups)
         {
             return FirstValues(bestGroups).Groups[0];
         }
 
-        private static AdjacentSeatsGroups FirstValues(SortedDictionary<int, AdjacentSeatsGroups> bestGroups)
+        private static AdjacentSeatsGroups
+            FirstValues(SortedDictionary<int, AdjacentSeatsGroups> bestGroups)
         {
             return bestGroups.Values.First();
         }
 
 
-        private static bool HasOnlyOneBestGroup(SortedDictionary<int, AdjacentSeatsGroups> bestGroups)
+        private static bool
+            HasOnlyOneBestGroup(SortedDictionary<int, AdjacentSeatsGroups> bestGroups)
         {
             return bestGroups.FirstOrDefault().Value.Groups.Count == 1;
         }
 
-        private static bool IsMatchingPartyRequested(SuggestionRequest suggestionRequest, ICollection seatWithDistances)
+        private static bool
+            IsMatchingPartyRequested(SuggestionRequest suggestionRequest, ICollection seatWithDistances)
         {
             return seatWithDistances.Count >= suggestionRequest.PartyRequested;
         }
 
-        private static AdjacentSeatsGroups SplitInGroupsOfAdjacentSeats(
-            IEnumerable<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistances)
+        private static AdjacentSeatsGroups
+            SplitInGroupsOfAdjacentSeats(SuggestionRequest suggestionRequest,
+                IEnumerable<SeatWithDistance> seatsWithDistances)
         {
-            var adjacentSeats = new AdjacentSeats(new List<SeatWithTheDistanceFromTheMiddleOfTheRow>());
+            var adjacentSeats = new AdjacentSeats();
             var groupsOfAdjacentSeats = new AdjacentSeatsGroups();
 
             using (var enumerator = seatsWithDistances.OrderBy(s => s.Seat.Number).GetEnumerator())
             {
-                SeatWithTheDistanceFromTheMiddleOfTheRow seatWithTheDistancePrevious = null;
+                SeatWithDistance seatWithDistancePrevious = null;
 
                 while (enumerator.MoveNext())
                 {
                     var seatWithDistance = enumerator.Current;
-                    if (seatWithTheDistancePrevious == null)
+                    if (seatWithDistancePrevious == null)
                     {
-                        seatWithTheDistancePrevious = seatWithDistance;
-                        adjacentSeats.AddSeat(seatWithTheDistancePrevious);
+                        seatWithDistancePrevious = seatWithDistance;
+                        adjacentSeats.AddSeat(seatWithDistancePrevious);
                     }
                     else
                     {
-                        if (seatWithDistance?.Seat.Number == seatWithTheDistancePrevious.Seat.Number + 1)
+                        if (seatWithDistance?.Seat.Number == seatWithDistancePrevious.Seat.Number + 1)
                         {
                             adjacentSeats.AddSeat(seatWithDistance);
-                            seatWithTheDistancePrevious = seatWithDistance;
+                            seatWithDistancePrevious = seatWithDistance;
                         }
                         else
                         {
                             groupsOfAdjacentSeats.Groups.Add(adjacentSeats);
-                            adjacentSeats = new AdjacentSeats(new List<SeatWithTheDistanceFromTheMiddleOfTheRow>() {seatWithDistance});
-                            seatWithTheDistancePrevious = null;
+                            adjacentSeats = new AdjacentSeats();
+                            adjacentSeats.AddSeat(seatWithDistance);
+                            seatWithDistancePrevious = null;
                         }
                     }
                 }
@@ -176,7 +167,7 @@ namespace SeatsSuggestions.DeepModel
 
             groupsOfAdjacentSeats.Groups.Add(adjacentSeats);
 
-            return groupsOfAdjacentSeats;
+            return SortGroupsByDistanceFromMiddleOfTheRow(suggestionRequest, groupsOfAdjacentSeats);
         }
     }
 }

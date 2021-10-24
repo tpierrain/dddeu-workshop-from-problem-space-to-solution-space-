@@ -4,16 +4,20 @@ namespace SeatsSuggestions.DeepModel
 {
     public class AdjacentSeats
     {
-        public List<SeatWithTheDistanceFromTheMiddleOfTheRow> SeatsWithDistance { get; } = new();
+        public AdjacentSeats()
+        {
+        }
 
-        public AdjacentSeats(IEnumerable<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithTheDistance)
+        public AdjacentSeats(IEnumerable<SeatWithDistance> seatsWithTheDistance)
         {
             SeatsWithDistance.AddRange(seatsWithTheDistance);
         }
 
-        public void AddSeat(SeatWithTheDistanceFromTheMiddleOfTheRow seatWithTheDistance)
+        public List<SeatWithDistance> SeatsWithDistance { get; } = new();
+
+        public void AddSeat(SeatWithDistance seatWithDistance)
         {
-            SeatsWithDistance.Add(seatWithTheDistance);
+            SeatsWithDistance.Add(seatWithDistance);
         }
 
         public override string ToString()
