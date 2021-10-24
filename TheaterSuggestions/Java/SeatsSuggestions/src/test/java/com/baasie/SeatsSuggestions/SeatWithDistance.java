@@ -1,8 +1,13 @@
 package com.baasie.SeatsSuggestions;
-import lombok.EqualsAndHashCode;
+
 import com.baasie.SeatsSuggestions.Seat;
 
-@EqualsAndHashCode
+/// <summary>
+///     Our model uses a seat with a property DistanceFromTheMiddle
+///     to manage these business rules:
+///     * Offer seats nearer middle of the row.
+///     * Offer adjacent seats to member of the same party.
+/// </summary>
 public class SeatWithDistance {
     private final Seat seat;
     private final int distanceFromTheMiddleOfTheRow;
