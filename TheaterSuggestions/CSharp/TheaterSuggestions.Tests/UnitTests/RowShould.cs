@@ -74,17 +74,23 @@ namespace SeatsSuggestions.Tests.UnitTests
                 .ContainsExactly(a2, a3, a5, a6, a7);
         }
 
-        public IEnumerable<SeatWithTheDistanceFromTheMiddleOfTheRow> OfferSeatsNearerTheMiddleOfTheRow(Row row, PricingCategory pricingCategory)
+        public IEnumerable<SeatWithDistance> OfferSeatsNearerTheMiddleOfTheRow(Row row, PricingCategory pricingCategory)
         {
             // TODO: Implement your logic here
 
-            return new List<SeatWithTheDistanceFromTheMiddleOfTheRow>();
+            return new List<SeatWithDistance>();
         }
     }
 
-    public class SeatWithTheDistanceFromTheMiddleOfTheRow
+    /// <summary>
+    ///     Our model uses a seat with a property DistanceFromTheMiddle
+    ///     to manage these business rules:
+    ///     * Offer seats nearer middle of the row.
+    ///     * Offer adjacent seats to member of the same party.
+    /// </summary>
+    public class SeatWithDistance
     {
-        public SeatWithTheDistanceFromTheMiddleOfTheRow(Seat seat, int distanceFromTheMiddleOfTheRow)
+        public SeatWithDistance(Seat seat, int distanceFromTheMiddleOfTheRow)
         {
             Seat = seat;
             DistanceFromTheMiddleOfTheRow = distanceFromTheMiddleOfTheRow;
@@ -97,5 +103,6 @@ namespace SeatsSuggestions.Tests.UnitTests
         {
             return $"{Seat.RowName}{Seat.Number} {DistanceFromTheMiddleOfTheRow}";
         }
+
     }
 }
