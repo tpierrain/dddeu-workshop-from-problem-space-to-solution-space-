@@ -104,7 +104,7 @@ namespace SeatsSuggestions.Tests.UnitTests
             Check.That(seats).ContainsExactly(a5, a6, a7);
         }
 
-        public IEnumerable<Seat> OfferAdjacentSeats(IEnumerable<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistances, int partySize)
+        public IEnumerable<Seat> OfferAdjacentSeats(IEnumerable<SeatWithDistance> seatsWithDistances, int partySize)
         {
             return new List<Seat>();
         }

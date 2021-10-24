@@ -4,17 +4,14 @@ using Value;
 namespace SeatsSuggestions.DeepModel
 {
     /// <summary>
-    /// 
-    /// Our model uses a seat with a property DistanceFromTheMiddle
-    /// to manage these business rules:
-    /// 
+    ///     Our model uses a seat with a property DistanceFromTheMiddle
+    ///     to manage these business rules:
     ///     * Offer seats nearer middle of the row.
     ///     * Offer adjacent seats to member of the same party.
-    /// 
     /// </summary>
-    public class SeatWithTheDistanceFromTheMiddleOfTheRow : ValueType<SeatWithTheDistanceFromTheMiddleOfTheRow>
+    public class SeatWithDistance : ValueType<SeatWithDistance>
     {
-        public SeatWithTheDistanceFromTheMiddleOfTheRow(Seat seat, int distanceFromTheMiddleOfTheRow)
+        public SeatWithDistance(Seat seat, int distanceFromTheMiddleOfTheRow)
         {
             Seat = seat;
             DistanceFromTheMiddleOfTheRow = distanceFromTheMiddleOfTheRow;
