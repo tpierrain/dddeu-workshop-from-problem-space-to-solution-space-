@@ -1,12 +1,13 @@
 package com.baasie.SeatsSuggestions.DeepModel;
-
+import lombok.EqualsAndHashCode;
 import com.baasie.SeatsSuggestions.Seat;
 
-public class SeatWithTheDistanceFromTheMiddleOfTheRow {
+@EqualsAndHashCode
+public class SeatWithDistance {
     private final Seat seat;
     private final int distanceFromTheMiddleOfTheRow;
 
-    public SeatWithTheDistanceFromTheMiddleOfTheRow(Seat seat, int distanceFromTheMiddleOfTheRow) {
+    public SeatWithDistance(Seat seat, int distanceFromTheMiddleOfTheRow) {
         this.seat = seat;
         this.distanceFromTheMiddleOfTheRow = distanceFromTheMiddleOfTheRow;
     }

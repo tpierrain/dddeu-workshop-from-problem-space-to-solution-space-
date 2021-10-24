@@ -1,7 +1,7 @@
 package com.baasie.SeatsSuggestions;
 
 import com.baasie.SeatsSuggestions.DeepModel.OfferingSeatsNearerMiddleOfTheRow;
-import com.baasie.SeatsSuggestions.DeepModel.SeatWithTheDistanceFromTheMiddleOfTheRow;
+import com.baasie.SeatsSuggestions.DeepModel.SeatWithDistance;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -48,10 +48,10 @@ public class RowTest {
 
         Row row = new Row("A", new ArrayList<>(Arrays.asList(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10)));
 
-        List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistance = new OfferingSeatsNearerMiddleOfTheRow(row)
+        List<SeatWithDistance> seatsWithDistance = new OfferingSeatsNearerMiddleOfTheRow(row)
                 .offerSeatsNearerTheMiddleOfTheRow(new SuggestionRequest(partySize, PricingCategory.Mixed)).stream().collect(Collectors.toList());
 
-        List<Seat> seats = seatsWithDistance.stream().map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat).limit(partySize).collect(Collectors.toList());
+        List<Seat> seats = seatsWithDistance.stream().map(SeatWithDistance::seat).limit(partySize).collect(Collectors.toList());
 
         assertThat(seats).containsExactly(a5, a6);
     }
@@ -73,10 +73,10 @@ public class RowTest {
 
         Row row = new Row("A", new ArrayList<>(Arrays.asList(a1, a2, a3, a4, a5, a6, a7, a8, a9)));
 
-        List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistance = new OfferingSeatsNearerMiddleOfTheRow(row)
+        List<SeatWithDistance> seatsWithDistance = new OfferingSeatsNearerMiddleOfTheRow(row)
                 .offerSeatsNearerTheMiddleOfTheRow(new SuggestionRequest(partySize, PricingCategory.Mixed)).stream().limit(partySize).collect(Collectors.toList());
 
-        List<Seat> seats = seatsWithDistance.stream().map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat).sorted(Comparator.comparingInt(Seat::number)).collect(Collectors.toList());
+        List<Seat> seats = seatsWithDistance.stream().map(SeatWithDistance::seat).sorted(Comparator.comparingInt(Seat::number)).collect(Collectors.toList());
 
         assertThat(seats).containsExactly(a2, a3, a5, a6, a7);
     }
@@ -99,7 +99,7 @@ public class RowTest {
 
         Row row = new Row("A",  new ArrayList<>(Arrays.asList(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 )));
 
-        List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistance =
+        List<SeatWithDistance> seatsWithDistance =
                 new OfferingSeatsNearerMiddleOfTheRow(row).offerSeatsNearerTheMiddleOfTheRow(
                         new SuggestionRequest(5, PricingCategory.Mixed));
 
@@ -108,7 +108,7 @@ public class RowTest {
         assertThat(seats).containsExactly(a5, a6, a7);
     }
 
-    private List<Seat> OfferAdjacentSeats(List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistance, int partySize) {
+    private List<Seat> OfferAdjacentSeats(List<SeatWithDistance> seatsWithDistance, int partySize) {
         // Implement your prototype here
         return new ArrayList<>();
     }
