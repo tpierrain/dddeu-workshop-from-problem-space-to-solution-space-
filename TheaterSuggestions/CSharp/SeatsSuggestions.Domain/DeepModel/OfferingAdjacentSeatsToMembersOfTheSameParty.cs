@@ -23,7 +23,7 @@ namespace SeatsSuggestions.Domain.DeepModel
         }
 
 
-        private static IEnumerable<Seat> 
+        private static IEnumerable<Seat>
             AdaptAdjacentSeats(this AdjacentSeats adjacentSeats)
         {
             return adjacentSeats.SeatsWithDistance.Select(s => s.Seat);
@@ -53,7 +53,8 @@ namespace SeatsSuggestions.Domain.DeepModel
                 : NoAdjacentSeatFound;
         }
 
-        private static int SumOfDistancesNearerTheMiddleOfTheRowPerSeat(AdjacentSeats adjacentSeats)
+        private static int
+            SumOfDistancesNearerTheMiddleOfTheRowPerSeat(AdjacentSeats adjacentSeats)
         {
             return adjacentSeats.SeatsWithDistance.Sum(s => s.DistanceFromTheMiddleOfTheRow);
         }
@@ -96,12 +97,10 @@ namespace SeatsSuggestions.Domain.DeepModel
                 AdjacentSeatsGroups adjacentSeatsGroups)
         {
             foreach (var adjacentSeats in adjacentSeatsGroups.Groups)
-            {
                 if (!decideBetweenIdenticalScores.ContainsKey(adjacentSeats.SeatsWithDistance.Count))
                     decideBetweenIdenticalScores[adjacentSeats.SeatsWithDistance.Count] = adjacentSeats;
-            }
         }
-    
+
 
         private static AdjacentSeats
             ProjectToAdjacentSeats(SortedDictionary<int, AdjacentSeatsGroups> bestGroups)
@@ -134,36 +133,29 @@ namespace SeatsSuggestions.Domain.DeepModel
         {
             var adjacentSeats = new AdjacentSeats();
             var groupsOfAdjacentSeats = new AdjacentSeatsGroups();
+            SeatWithDistance seatWithDistancePrevious = null;
 
-            using (var enumerator = seatsWithDistances.OrderBy(s => s.Seat.Number).GetEnumerator())
-            {
-                SeatWithDistance seatWithDistancePrevious = null;
-
-                while (enumerator.MoveNext())
+            foreach (var seatWithDistance in seatsWithDistances.OrderBy(s => s.Seat.Number))
+                if (seatWithDistancePrevious == null)
                 {
-                    var seatWithDistance = enumerator.Current;
-                    if (seatWithDistancePrevious == null)
+                    seatWithDistancePrevious = seatWithDistance;
+                    adjacentSeats.AddSeat(seatWithDistancePrevious);
+                }
+                else
+                {
+                    if (seatWithDistance.Seat.Number == seatWithDistancePrevious.Seat.Number + 1)
                     {
+                        adjacentSeats.AddSeat(seatWithDistance);
                         seatWithDistancePrevious = seatWithDistance;
-                        adjacentSeats.AddSeat(seatWithDistancePrevious);
                     }
                     else
                     {
-                        if (seatWithDistance?.Seat.Number == seatWithDistancePrevious.Seat.Number + 1)
-                        {
-                            adjacentSeats.AddSeat(seatWithDistance);
-                            seatWithDistancePrevious = seatWithDistance;
-                        }
-                        else
-                        {
-                            groupsOfAdjacentSeats.Groups.Add(adjacentSeats);
-                            adjacentSeats = new AdjacentSeats();
-                            adjacentSeats.AddSeat(seatWithDistance);
-                            seatWithDistancePrevious = null;
-                        }
+                        groupsOfAdjacentSeats.Groups.Add(adjacentSeats);
+                        adjacentSeats = new AdjacentSeats();
+                        adjacentSeats.AddSeat(seatWithDistance);
+                        seatWithDistancePrevious = null;
                     }
                 }
-            }
 
             groupsOfAdjacentSeats.Groups.Add(adjacentSeats);
 
