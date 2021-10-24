@@ -50,11 +50,11 @@ public class Row {
     public List<Seat> offerAdjacentSeatsNearerTheMiddleOfRow(SuggestionRequest suggestionRequest)
     {
         // 1. offer seats from the middle of the row
-        List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatWithTheDistanceFromTheMiddleOfTheRows = new OfferingSeatsNearerMiddleOfTheRow(this).offerSeatsNearerTheMiddleOfTheRow(suggestionRequest);
+        List<SeatWithDistance> seatWithTheDistanceFromTheMiddleOfTheRows = new OfferingSeatsNearerMiddleOfTheRow(this).offerSeatsNearerTheMiddleOfTheRow(suggestionRequest);
 
         return seatWithTheDistanceFromTheMiddleOfTheRows
                 .stream()
-                .map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat)
+                .map(SeatWithDistance::seat)
                 .collect(Collectors.toList());
     }
 
