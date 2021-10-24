@@ -45,9 +45,9 @@ public class RowTest {
 
         Row row = new Row("A", new ArrayList<>(Arrays.asList(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10)));
 
-        List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistance = offerSeatsNearerTheMiddleOfTheRow(row, PricingCategory.Mixed).stream().limit(partySize).collect(Collectors.toList());
+        List<SeatWithDistance> seatsWithDistance = offerSeatsNearerTheMiddleOfTheRow(row, PricingCategory.Mixed).stream().limit(partySize).collect(Collectors.toList());
 
-        List<Seat> seats = seatsWithDistance.stream().map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat).collect(Collectors.toList());
+        List<Seat> seats = seatsWithDistance.stream().map(SeatWithDistance::seat).collect(Collectors.toList());
 
         assertThat(seats).containsExactly(a5, a6);
     }
@@ -69,15 +69,15 @@ public class RowTest {
 
         Row row = new Row("A", new ArrayList<>(Arrays.asList(a1, a2, a3, a4, a5, a6, a7, a8, a9)));
 
-        List<SeatWithTheDistanceFromTheMiddleOfTheRow> seatsWithDistance =
+        List<SeatWithDistance> seatsWithDistance =
                 offerSeatsNearerTheMiddleOfTheRow(row, PricingCategory.Mixed).stream().limit(partySize).collect(Collectors.toList());
 
-        List<Seat> seats = seatsWithDistance.stream().map(SeatWithTheDistanceFromTheMiddleOfTheRow::seat).sorted(Comparator.comparingInt(Seat::number)).collect(Collectors.toList());
+        List<Seat> seats = seatsWithDistance.stream().map(SeatWithDistance::seat).sorted(Comparator.comparingInt(Seat::number)).collect(Collectors.toList());
 
         assertThat(seats).containsExactly(a2, a3, a5, a6, a7);
     }
 
-    public List<SeatWithTheDistanceFromTheMiddleOfTheRow> offerSeatsNearerTheMiddleOfTheRow(Row row, PricingCategory pricingCategory) {
+    public List<SeatWithDistance> offerSeatsNearerTheMiddleOfTheRow(Row row, PricingCategory pricingCategory) {
         // TODO: Implement your logic here
         return new ArrayList<>();
     }
