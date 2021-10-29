@@ -41,7 +41,7 @@ public class OfferingAdjacentSeatsToMembersOfTheSameParty {
 
     private static AdjacentSeats
     projectToSeats(TreeMap<Integer, AdjacentSeatsGroups> bestGroups) {
-        return bestGroups.get(bestGroups.firstKey()).groups.get(0);
+        return bestGroups.get(bestGroups.firstKey()).groups.stream().findFirst().get();
     }
 
     private static boolean

@@ -3,7 +3,6 @@ package com.baasie.SeatsSuggestionsAcceptanceTests;
 import com.baasie.ExternalDependencies.auditoriumlayoutrepository.AuditoriumLayoutRepository;
 import com.baasie.ExternalDependencies.reservationsprovider.ReservationsProvider;
 import com.baasie.SeatsSuggestionsDomain.*;
-import com.baasie.SeatsSuggestionsDomain.port.IAdaptAuditoriumSeating;
 import com.baasie.SeatsSuggestionsInfra.AuditoriumSeatingAdapter;
 import org.junit.Test;
 
