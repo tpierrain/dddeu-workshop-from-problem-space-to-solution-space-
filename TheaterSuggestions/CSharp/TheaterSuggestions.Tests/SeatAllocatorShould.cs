@@ -12,7 +12,7 @@ namespace SeatsSuggestions.Tests
         [Test]
         public void Suggest_one_seat_when_Auditorium_contains_one_available_seat_only()
         {
-            // Example 1 - Happy pass
+            // Example 1 - Happy path
             //
             // * Party 1
             //
@@ -29,7 +29,7 @@ namespace SeatsSuggestions.Tests
         [Test]
         public void Return_SuggestionNotAvailable_when_Auditorium_has_all_its_seats_already_reserved()
         {
-            // Example 2 - Unhappy pass
+            // Example 2 - Unhappy path
             //
             // * Party 1
             //
