@@ -20,7 +20,6 @@ public class SeatAllocatorShould {
         //
         // => A3
 
-
     }
 
     @Test
