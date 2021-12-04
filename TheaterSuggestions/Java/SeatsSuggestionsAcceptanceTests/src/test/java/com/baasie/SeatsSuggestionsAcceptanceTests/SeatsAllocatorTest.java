@@ -8,10 +8,10 @@ import java.io.IOException;
 
 import static com.google.common.truth.Truth.assertThat;
 
-public class SeatAllocatorShould {
+public class SeatsAllocatorTest {
 
     @Test
-    public void suggest_one_seat_when_Auditorium_contains_one_available_seat_only() throws IOException {
+    public void should_suggest_one_seat_when_Auditorium_contains_one_available_seat_only() throws IOException {
         // Ford Auditorium-1
         //
         //       1   2   3   4   5   6   7   8   9  10
@@ -32,7 +32,7 @@ public class SeatAllocatorShould {
     }
 
     @Test
-    public void return_SeatsNotAvailable_when_Auditorium_has_all_its_seats_already_reserved() throws IOException {
+    public void should_return_SeatsNotAvailable_when_Auditorium_has_all_its_seats_already_reserved() throws IOException {
         // Madison Auditorium-5
         //      1   2   3   4   5   6   7   8   9  10
         // A : (2) (2) (1) (1) (1) (1) (1) (1) (2) (2)
