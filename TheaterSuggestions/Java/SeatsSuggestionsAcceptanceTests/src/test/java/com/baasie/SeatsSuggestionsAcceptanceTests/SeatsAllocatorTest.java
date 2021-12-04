@@ -2,12 +2,12 @@ package com.baasie.SeatsSuggestionsAcceptanceTests;
 
 import org.junit.Test;
 
-public class SeatAllocatorShould {
+public class SeatsAllocatorTest {
     /*
      *  Business Rule - Only Suggest available seats
      */
     @Test
-    public void suggest_one_seat_when_Auditorium_contains_one_available_seat_only() {
+    public void should_suggest_one_seat_when_Auditorium_contains_one_available_seat_only() {
         // Example 1 - Happy path
         //
         // * Party 1
@@ -23,7 +23,7 @@ public class SeatAllocatorShould {
     }
 
     @Test
-    public void return_SeatsNotAvailable_when_Auditorium_has_all_its_seats_already_reserved() {
+    public void should_return_SeatsNotAvailable_when_Auditorium_has_all_its_seats_already_reserved() {
         // Example 2 - Unhappy path
         //
         // * Party 1
