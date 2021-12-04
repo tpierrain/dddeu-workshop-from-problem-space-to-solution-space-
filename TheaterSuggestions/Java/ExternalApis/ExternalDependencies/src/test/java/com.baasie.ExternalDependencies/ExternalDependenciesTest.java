@@ -12,10 +12,10 @@ import org.junit.Test;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-public class ExternalDependenciesShould {
+public class ExternalDependenciesTest {
 
     @Test
-    public void allow_us_to_retrieve_reserved_seats_for_a_given_ShowId() throws IOException, URISyntaxException {
+    public void should_allow_us_to_retrieve_reserved_seats_for_a_given_ShowId() throws IOException {
         ReservationsProvider seatsRepository = new ReservationsProvider();
         ReservedSeatsDto reservedSeatsDto = seatsRepository.getReservedSeats(new ShowId("1"));
 
@@ -30,7 +30,7 @@ public class ExternalDependenciesShould {
     }
 
     @Test
-    public void allow_us_to_retrieve_AuditoriumLayout_for_a_given_ShowId() throws IOException, URISyntaxException {
+    public void should_allow_us_to_retrieve_AuditoriumLayout_for_a_given_ShowId() throws IOException {
 
         AuditoriumLayoutRepository eventRepository = new AuditoriumLayoutRepository();
         AuditoriumDto theaterDto = eventRepository.GetAuditoriumLayoutFor(new ShowId("2"));

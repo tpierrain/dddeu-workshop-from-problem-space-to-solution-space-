@@ -1,17 +1,5 @@
 package com.baasie.SeatsSuggestionsApi.controllers.helpers;
 
-import com.baasie.SeatsSuggestionsDomain.SeatAllocator;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.guava.GuavaModule;
-
-import java.io.IOException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
-
 public class Given {
 
     static public class The {

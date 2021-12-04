@@ -7,11 +7,11 @@ import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SeatAllocator implements IProvideAuditoriumSeating {
+public class SeatsAllocator implements IProvideAuditoriumSeating {
     private static final int NUMBER_OF_SUGGESTIONS = 3;
     private final IAdaptAuditoriumSeating iAdaptAuditoriumSeating;
 
-    public SeatAllocator(IAdaptAuditoriumSeating iAdaptAuditoriumSeating) {
+    public SeatsAllocator(IAdaptAuditoriumSeating iAdaptAuditoriumSeating) {
         this.iAdaptAuditoriumSeating = iAdaptAuditoriumSeating;
     }
 
