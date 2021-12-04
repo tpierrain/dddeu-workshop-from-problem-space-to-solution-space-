@@ -5,11 +5,11 @@ import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SeatAllocator {
+public class SeatsAllocator {
     private static final int NUMBER_OF_SUGGESTIONS = 3;
     private final AuditoriumSeatingAdapter auditoriumSeatingAdapter;
 
-    public SeatAllocator(AuditoriumSeatingAdapter auditoriumLayoutAdapter) {
+    public SeatsAllocator(AuditoriumSeatingAdapter auditoriumLayoutAdapter) {
         this.auditoriumSeatingAdapter = auditoriumLayoutAdapter;
     }
 
